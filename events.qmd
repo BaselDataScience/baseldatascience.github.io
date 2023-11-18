@@ -1,0 +1,25 @@
+---
+title: Data science events in Basel 
+listing:
+  contents: posts
+  sort: "date desc"
+  type: grid
+  grid-columns: 3
+  image-height: 450px
+  page-size: 10
+  categories: true
+page-layout: full
+title-block-banner: true 
+image: baseldatasciencelogo.jpeg
+format:
+  html:
+    toc: true
+    toc-location: left
+    code-fold: true
+    code-tools: true
+    code-summary: "Show the code"
+    df-print: paged
+    font-family: ["Ubuntu", sans-serif]
+    mainfont: "Ubuntu"
+    title-block-banner: baseldatasciencelogo.jpeg
+---

@@ -1,12 +1,12 @@
 ---
-title: abc
+title: Basel Data Science
 listing:
   contents: posts
   sort: "date desc"
   type: grid
   grid-columns: 3
-  image-height: 450px
-  page-size: 100
+  image-height: 200px
+  page-size: 10
   categories: true
 page-layout: full
 title-block-banner: true 
@@ -19,34 +19,13 @@ format:
     code-tools: true
     code-summary: "Show the code"
     df-print: paged
-    font-family: ["Unbuntu", sans-serif]
+    font-family: ["Ubuntu", sans-serif]
     mainfont: "Ubuntu"
     title-block-banner: baseldatasciencelogo.jpeg
 ---
-<style>
-
-#title-block-header {
-  margin-block-end: 1rem;
-  position: relative;
-  margin-top: -1px;
-  height: 450px;
-}
-
-.quarto-title-banner {
-  margin-block-end: 1rem;
-  position: relative;
-  margin-top: 0px;
-  height: 100%;
-}
-
-.quarto-title {
-  opacity: 0 !important;
-}
 
 
-</style>
-
-# About
+# About Basel Data Science
 
 **BaselDataScience**'s purpose is to organize **data science events in Basel**.
 Historically mainly focussed on R, we are open for other languages as the landscape is evolving.

@@ -11,7 +11,11 @@ website:
     right:
       - icon: github
         aria-label: github
-        href: https://github.com/baseldatascience/website
+        href: https://baseldatascience.github.io
       - icon: "chat-right-text"
         aria-label: linkedIn
         href: https://www.linkedin.com/groups/12870553/
+        
+format:
+  html:
+    css: styles.css

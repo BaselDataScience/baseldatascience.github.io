@@ -1,0 +1,10 @@
+#title-block-header {
+  margin-block-end: 1rem;
+  position: relative;
+  margin-top: -1px;
+  height: 450px;
+}
+
+.quarto-title {
+  opacity: 0 !important;
+}
