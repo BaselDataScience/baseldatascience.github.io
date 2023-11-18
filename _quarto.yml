@@ -1,0 +1,17 @@
+project:
+  type: website
+
+website:
+  title: "BaselDataScience"
+  repo-url: https://github.com/baseldatascience.github.io
+  open-graph: true 
+  navbar:
+    background: "#eeeeee"
+    title-block-banner: baseldatasciencelogo.jpeg
+    right:
+      - icon: github
+        aria-label: github
+        href: https://github.com/baseldatascience/website
+      - icon: "chat-right-text"
+        aria-label: linkedIn
+        href: https://www.linkedin.com/groups/12870553/
