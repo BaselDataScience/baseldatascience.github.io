@@ -1,0 +1,86 @@
+[
+  {
+    "objectID": "readme.html",
+    "href": "readme.html",
+    "title": "baseldatascience.github.io",
+    "section": "",
+    "text": "baseldatascience.github.io"
+  },
+  {
+    "objectID": "events.html",
+    "href": "events.html",
+    "title": "Data science events in Basel",
+    "section": "",
+    "text": "Nationalratswahlen Basel 2023\n\n\n\n\n\n\nReinhold Koch\n\n\nOct 30, 2023\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWastewater drug monitoring Europe\n\n\nThe analysis of municipal wastewaters for drugs and their metabolic products to estimate community consumption is a developing field, involving scientists working in…\n\n\n\nReinhold Koch\n\n\nSep 6, 2023\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nrtables\n\n\nReporting tables often have structure that goes beyond simple rectangular data. The ‘rtables’ package provides a framework for declaring complex multi-level tabulations and…\n\n\n\nAdrian Waddell\n\n\nNov 27, 2017\n\n\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "posts/nationalratswahlen_2023.html",
+    "href": "posts/nationalratswahlen_2023.html",
+    "title": "Nationalratswahlen Basel 2023",
+    "section": "",
+    "text": "On 2023-10-22 Nationalratswahlen took place in Switzerland, so also in Basel. The results can be seen on https://www.staatskanzlei.bs.ch/politische-rechte/wahlen-abstimmungen/wahlen-2023.html including the protocols how the 4 Basel seats in the Nationalrat were assigned.\nA nice open government data service are the downloadable vote counts from a link on this page. As the Swiss election system is far from simple I thought it informativ to look into the vote counts and see whether I could compute the election results myself and see whether I arrive at the same results as the Basel Staatskanzlei.\n\n\nCode\nlibrary(data.tree)\nlibrary(dplyr, warn.conflicts = FALSE)\nlibrary(philentropy)\nlibrary(readxl, warn.conflicts = FALSE)\n\ndistinctness &lt;- function(x) philentropy::H(table(x, useNA = 'ifany')/length(x)) / log(length(x), 2)\n\n\n\n\nIf not already in the active R session, I download the Excel file containing the vote counts. Excel file, because it is type safe (“01” != 1) and provides a familiar table format.\n\n\nCode\n# read in data if not already present\nif (!exists('dat0')) {\n  download.file('https://data.bs.ch/api/explore/v2.1/catalog/datasets/100281/exports/xlsx', tf &lt;- tempfile(fileext = '.xlsx'))\n  dat0 &lt;- readxl::read_xlsx(tf)\n}\ndim(dat0)\n\n\n[1] 610  90\n\n\n\n\n\nThis is a pretty wide data table with 90 columns. A description of the columns can be found as “Datensatzschema” in the tab “Information” on https://data.bs.ch/explore/dataset/100281/information. The first columns contain constant values, like wahlbezeichnung “Wahl von vier Mitgliedern des Nationalrates”.\nTo find and remove such columns I employ the entropy of a column’s values. The distinctness() function defined above returns 0 for columns with constant values and 1 for columns that have a different value for each row in the table (row identifying columns).\n\n\nCode\n# determine constant columns, move them to \"general\" dataframe\nentropy0 &lt;- sapply(dat0, distinctness)\ngeneral &lt;- unique(dat0[,names(entropy0[entropy0==0])])\ngeneral\n\n\n\n\n  \n\n\n\nCode\ndat1 &lt;- dat0[, setdiff(names(dat0), names(general))]\ndim(dat1)\n\n\n[1] 610  85"
+  },
+  {
+    "objectID": "posts/nationalratswahlen_2023.html#nationalratswahlen-basel-2023",
+    "href": "posts/nationalratswahlen_2023.html#nationalratswahlen-basel-2023",
+    "title": "Nationalratswahlen Basel 2023",
+    "section": "",
+    "text": "On 2023-10-22 Nationalratswahlen took place in Switzerland, so also in Basel. The results can be seen on https://www.staatskanzlei.bs.ch/politische-rechte/wahlen-abstimmungen/wahlen-2023.html including the protocols how the 4 Basel seats in the Nationalrat were assigned.\nA nice open government data service are the downloadable vote counts from a link on this page. As the Swiss election system is far from simple I thought it informativ to look into the vote counts and see whether I could compute the election results myself and see whether I arrive at the same results as the Basel Staatskanzlei.\n\n\nCode\nlibrary(data.tree)\nlibrary(dplyr, warn.conflicts = FALSE)\nlibrary(philentropy)\nlibrary(readxl, warn.conflicts = FALSE)\n\ndistinctness &lt;- function(x) philentropy::H(table(x, useNA = 'ifany')/length(x)) / log(length(x), 2)\n\n\n\n\nIf not already in the active R session, I download the Excel file containing the vote counts. Excel file, because it is type safe (“01” != 1) and provides a familiar table format.\n\n\nCode\n# read in data if not already present\nif (!exists('dat0')) {\n  download.file('https://data.bs.ch/api/explore/v2.1/catalog/datasets/100281/exports/xlsx', tf &lt;- tempfile(fileext = '.xlsx'))\n  dat0 &lt;- readxl::read_xlsx(tf)\n}\ndim(dat0)\n\n\n[1] 610  90\n\n\n\n\n\nThis is a pretty wide data table with 90 columns. A description of the columns can be found as “Datensatzschema” in the tab “Information” on https://data.bs.ch/explore/dataset/100281/information. The first columns contain constant values, like wahlbezeichnung “Wahl von vier Mitgliedern des Nationalrates”.\nTo find and remove such columns I employ the entropy of a column’s values. The distinctness() function defined above returns 0 for columns with constant values and 1 for columns that have a different value for each row in the table (row identifying columns).\n\n\nCode\n# determine constant columns, move them to \"general\" dataframe\nentropy0 &lt;- sapply(dat0, distinctness)\ngeneral &lt;- unique(dat0[,names(entropy0[entropy0==0])])\ngeneral\n\n\n\n\n  \n\n\n\nCode\ndat1 &lt;- dat0[, setdiff(names(dat0), names(general))]\ndim(dat1)\n\n\n[1] 610  85"
+  },
+  {
+    "objectID": "posts/nationalratswahlen_2023.html#wahlkreise",
+    "href": "posts/nationalratswahlen_2023.html#wahlkreise",
+    "title": "Nationalratswahlen Basel 2023",
+    "section": "Wahlkreise",
+    "text": "Wahlkreise\nAmong the remaining 85 columns there are 3 that identify Wahlkreise. I am not interested in the individual Wahlkreise (electoral district), but in the “Kanton Basel-Stadt”. So I split dat1 accordingly and concentrate on this pseudo Wahlkreis.\n\n\nCode\n## find right Wahlkreis for Kanton\ntable(dat1$wahlkreisbezeichnung)\n\n\n\n  Auslandschweizer Gemeinde Bettingen    Gemeinde Riehen Kanton Basel-Stadt        Stadt Basel \n               122                122                122                122                122 \n\n\nCode\n# split dat1 by Wahlkreise\nwahlkreise &lt;- split(dat1, dat1$wahlkreisbezeichnung)\n# concentrate on Kanton\nkanton0 &lt;- wahlkreise[['Kanton Basel-Stadt']]\ndim(kanton0)\n\n\n[1] 122  85\n\n\n\nscrub kanton\nThere are a number of constant columns in the kanton data table. Like with the original data table I move them out to a separate table.\n\n\nCode\nentropy_kanton &lt;- sapply(kanton0, distinctness)\nkanton_general &lt;- unique(kanton0[,names(entropy_kanton[entropy_kanton==0])])\n\nkanton &lt;- kanton0[, setdiff(names(kanton0), names(kanton_general))]\ndim(kanton)\n\n\n[1] 122  67\n\n\nThe entropy shows that the candidates’ name and its equivalents kandidaten_nr and personen_id uniquely determine a single row in the kanton table.\n\n\nexcursion: distribution of candidate ages\nJust for fun let us have a look at the distribution of the candidates’ ages:\n\n\nCode\n## age distribution of candidates\nage_distr &lt;- function(dat, dataspec=NULL) {\n  hist(dat$alter_am_jahresende_2023, freq = FALSE,\n       main = paste('Altersverteilung der Kandidaten', dataspec), xlab = 'Kandidatenalter',\n       breaks = seq(15,90,5))\n  lines(density(dat$alter_am_jahresende_2023, adjust=.5), col='blue')\n  lines(density(dat$alter_am_jahresende_2023), col='red')\n}\nage_distr(kanton)\n\n\n\n\n\nCode\n# by gender\npar(mfrow=c(2,1))\nage_distr(subset(kanton, geschlecht=='F'), 'weiblich')\nage_distr(subset(kanton, geschlecht=='M'), 'männlich')\n\n\n\n\n\nCode\npar(mfrow=c(1,1))"
+  },
+  {
+    "objectID": "posts/nationalratswahlen_2023.html#candidate-votes",
+    "href": "posts/nationalratswahlen_2023.html#candidate-votes",
+    "title": "Nationalratswahlen Basel 2023",
+    "section": "candidate votes",
+    "text": "candidate votes\nBack to the main topic: number of votes. How many did each candidate collect?\n\n\nCode\nkanton %&gt;% \n  dplyr::select(kandidaten_nr, parteikurzbezeichnung, bisher, gewahlt, ganzer_name, stimmen_total_aus_wahlzettel, hlv_nr) %&gt;% \n  dplyr::arrange(desc(stimmen_total_aus_wahlzettel))\n\n\n\n\n  \n\n\n\nNaively one could imagine the seats go to the 4 candidates with the most votes - but that ignores the intention to try to assign seats in a fashion that mirrors the votes for lists; here in Switzerland the most decisive seat distribution factor are the votes for a “Listenverbindung”."
+  },
+  {
+    "objectID": "posts/nationalratswahlen_2023.html#tree-structure-of-listenverbindungen",
+    "href": "posts/nationalratswahlen_2023.html#tree-structure-of-listenverbindungen",
+    "title": "Nationalratswahlen Basel 2023",
+    "section": "tree structure of Listenverbindungen",
+    "text": "tree structure of Listenverbindungen\nThere are Hauptlistenverbindungen and Unterlistenverbindungen, though these are not mandatory for lists, they generate a tree structure with 3 major blocks competing for 4 seats.\nAnalysis of a values in tree structures is not mainstream in R. I employ the package data.tree to do so and first need to construct another column in table lists that indicates the position in the tree:\n\n\nCode\n# tree structure of the lists:\nlists$pathString &lt;- paste('basel',\n                          dplyr::coalesce(lists$hlv_nr, ''),\n                          dplyr::coalesce(lists$ulv_nr, ''),\n                          lists$listen_nr,\n                          sep = '/'\n                          )\nzz &lt;- data.tree::as.Node(lists)\nprint(zz, 'parteikurzbezeichnung')\n\n\n        levelName parteikurzbezeichnung\n1  basel                               \n2   ¦--1                               \n3   ¦   ¦--1                           \n4   ¦   ¦   ¦--01                   FDP\n5   ¦   ¦   ¦--06                  JFDP\n6   ¦   ¦   °--26                  FDP+\n7   ¦   ¦--2                           \n8   ¦   ¦   ¦--03                   LDP\n9   ¦   ¦   ¦--23                   JLB\n10  ¦   ¦   °--34               LDP-Gew\n11  ¦   ¦--04                       EVP\n12  ¦   ¦--4                           \n13  ¦   ¦   ¦--07                 Mitte\n14  ¦   ¦   ¦--22                JMITTE\n15  ¦   ¦   °--36              Mitte60+\n16  ¦   °--6                           \n17  ¦       ¦--10                   GLP\n18  ¦       ¦--25                  JGLP\n19  ¦       ¦--32               GLP-K-U\n20  ¦       ¦--33                 GLP-B\n21  ¦       ¦--35               GLP-R-E\n22  ¦       ¦--37               GLP-KMU\n23  ¦       °--38                 GLP-I\n24  ¦--2                               \n25  ¦   ¦--3                           \n26  ¦   ¦   ¦--05                    SP\n27  ¦   ¦   ¦--20                  JUSO\n28  ¦   ¦   °--24                 SP60+\n29  ¦   °--5                           \n30  ¦       ¦--08                   BGB\n31  ¦       ¦--17              Basta-rm\n32  ¦       ¦--21                   jgb\n33  ¦       °--27              BastA-jA\n34  ¦--3                               \n35  ¦   ¦--09                       EDU\n36  ¦   °--7                           \n37  ¦       ¦--12                   SVP\n38  ¦       ¦--18                  JSVP\n39  ¦       ¦--30               SVP-Gew\n40  ¦       °--31                SVP60+\n41  ¦--11                           PdA\n42  ¦--14                            VA\n43  °--28                            MV\n\n\nThree lists, PdA, VA, and MV, do not belong to any Listenverbindung. There are three Hauptlistenverbindungen:\n\n1 conservatives\n2 moderate left\n3 SVP\n\namong which the seats have to be distributed.\n\ncandidates per Hauptlistenverbindung\n\n\nCode\n# number of candidates per Hauptliste\nzz$Do( function(x) {\n  x$kandidaten_total &lt;- Aggregate(node = x,\n                       attribute = \"kandidates\",\n                       aggFun = sum)\n                  }\n     )\ndata.tree::Get(zz$children, 'kandidaten_total')\n\n\n 1  2  3 11 14 28 \n68 28 18  3  2  3 \n\n\nExtensive use of Listenverbindungen blows up the number of candidates; Hauptlistenverbindung 1 comes with 68 of these!"
+  },
+  {
+    "objectID": "posts/nationalratswahlen_2023.html#seats-per-hauptlistenverbindung",
+    "href": "posts/nationalratswahlen_2023.html#seats-per-hauptlistenverbindung",
+    "title": "Nationalratswahlen Basel 2023",
+    "section": "seats per Hauptlistenverbindung",
+    "text": "seats per Hauptlistenverbindung\nFirst step in seat distribution is to determine the quorum: the number of votes is divided by number of seats plus 1, then the next higher integer number is set as quorum. The integer part of the division of the votes of Hauptlistenverbindungen by the quorum indicates number of seats given to the Hauplistenverbindung.\nIt is possible that this first round does not distribute all seats - as is the case here. Votes of the Hauptlistenverbindung then are divided by 1 plus number of seats received and the remaining seat goes to the Hauptlistenverbindung with the highest quotient, here 1.\n\n\nCode\n# 1st seat distribution\n(quorum1 &lt;- ceiling(sum(hl_votes)/(4+1)))\n\n\n[1] 44935\n\n\nCode\n(seats1 &lt;- floor(hl_votes/quorum1))\n\n\n 2  1  3 28 11 14 \n 2  1  0  0  0  0 \n\n\nCode\n# 2nd seat distribution\nsort(hl_votes/(1+seats1), decreasing = TRUE)\n\n\n       1        2        3       28       11       14 \n38677.00 36644.67 31600.00  2163.00  1933.00  1690.00 \n\n\nWithin the Hauptlistenverbindung the seats get distributed according to the same multi-step process first to Unterlistenverbindung, then Liste.\nDetailed protocols of this process are provided by the Basel Staatskanzlei, see https://www.staatskanzlei.bs.ch/dam/jcr:302a9016-ef8c-41b8-888a-f6d7332ff1ab/Ausw_5a.pdf.\nFor a general picture what Swiss voters can do with their ballot paper, see https://www.srf.ch/news/schweiz/wahlhilfe/kumulieren-und-panaschieren-so-waehlt-man-mit-listen."
+  },
+  {
+    "objectID": "ev2.html",
+    "href": "ev2.html",
+    "title": "Data science events in Basel",
+    "section": "",
+    "text": "Order By\n       Default\n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n         \n          Title\n        \n         \n          Author\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\nDate\n\n\nTitle\n\n\nAuthor\n\n\n\n\n\n\nOct 30, 2023\n\n\nNationalratswahlen Basel 2023\n\n\nReinhold Koch\n\n\n\n\nSep 6, 2023\n\n\nWastewater drug monitoring Europe\n\n\nReinhold Koch\n\n\n\n\n\nNov 27, 2017\n\n\nrtables\n\n\nAdrian Waddell\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "posts/rtables.html",
+    "href": "posts/rtables.html",
+    "title": "rtables",
+    "section": "",
+    "text": "rtables"
+  },
+  {
+    "objectID": "posts/2023-09-06_wastewater.html",
+    "href": "posts/2023-09-06_wastewater.html",
+    "title": "Wastewater drug monitoring Europe",
+    "section": "",
+    "text": "Wastewater drug monitoring Europe\nSee https://reikoch.shinyapps.io/wastewater/ for an interactive application based on data from https://www.emcdda.europa.eu/publications/html/pods/waste-water-analysis_en#sourceData\ncode in https://github.com/baseldatascience/wastewater."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Basel Data Science",
+    "section": "",
+    "text": "About Basel Data Science\nBaselDataScience’s purpose is to organize data science events in Basel. Historically mainly focussed on R, we are open for other languages as the landscape is evolving. Right now we begin with a monthly jour fixe, the first Wednesday of each month, starting at 18:00 in Unternehmen Mitte, Gerbergasse 30, 4001 Basel. Look for some laptops and some Basel data science pictures.\nTopics are open to suggestions and contributions in the form of short presentations / discussions! Longer topics are welcome, too, but please announce these in the corresponding event on linkedIn.\n\n\nEvents\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNationalratswahlen Basel 2023\n\n\n\n\n\n\nReinhold Koch\n\n\nOct 30, 2023\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWastewater drug monitoring Europe\n\n\nThe analysis of municipal wastewaters for drugs and their metabolic products to estimate community consumption is a developing field, involving scientists working in…\n\n\n\nReinhold Koch\n\n\nSep 6, 2023\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nrtables\n\n\nReporting tables often have structure that goes beyond simple rectangular data. The ‘rtables’ package provides a framework for declaring complex multi-level tabulations and…\n\n\n\nAdrian Waddell\n\n\nNov 27, 2017\n\n\n\n\n\n\n\n\nNo matching items"
+  }
+]

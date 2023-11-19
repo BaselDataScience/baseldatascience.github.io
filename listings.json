@@ -1,0 +1,26 @@
+[
+  {
+    "listing": "/events.html",
+    "items": [
+      "/posts/nationalratswahlen_2023.html",
+      "/posts/2023-09-06_wastewater.html",
+      "/posts/rtables.html"
+    ]
+  },
+  {
+    "listing": "/ev2.html",
+    "items": [
+      "/posts/nationalratswahlen_2023.html",
+      "/posts/2023-09-06_wastewater.html",
+      "/posts/rtables.html"
+    ]
+  },
+  {
+    "listing": "/index.html",
+    "items": [
+      "/posts/nationalratswahlen_2023.html",
+      "/posts/2023-09-06_wastewater.html",
+      "/posts/rtables.html"
+    ]
+  }
+]
