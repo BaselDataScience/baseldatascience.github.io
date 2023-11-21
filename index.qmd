@@ -24,6 +24,7 @@ format:
     title-block-banner: baseldatasciencelogo.jpeg
 ---
 
+[^banner]
 
 # About Basel Data Science
 
@@ -38,6 +39,14 @@ Longer topics are welcome, too, but please announce these in the corresponding e
 
 # [Events](events.qmd)
 
+
+ | Next meeting
+---- | ----
+When | 2022-12-06 18:00
+Where | Unternehmen Mitte, Gerbergasse 30, 4001 Basel
+Topics | * linkedIn as electronic backbone for the group <br/> * better (?) analysis of UVB irradiation and vitamin D studied in [paper](https://www.pnas.org/doi/10.1073/pnas.2015867118)
+
+### from past events
 ```{r write-redirects}
 #| echo: false
 # list names of post folders
@@ -81,3 +90,5 @@ category_redirects <- paste0("/category/", keys, " ", "/#category=", values)
 # write the _redirect file
 writeLines(c(post_redirects, category_redirects), here::here("_site", "_redirects"))
 ```
+
+[^banner]: banner picture (c) CC-BY-4.0 based on [https://commons.wikimedia.org/wiki/File:Basel-Muenster-04-gje.jpg](https://commons.wikimedia.org/wiki/File:Basel-Muenster-04-gje.jpg)
