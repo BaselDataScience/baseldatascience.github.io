@@ -4,14 +4,28 @@
     "href": "readme.html",
     "title": "baseldatascience.github.io",
     "section": "",
-    "text": "baseldatascience.github.io"
+    "text": "baseldatascience.github.io\nbanner picture (c) CC-BY-4.0 based on https://commons.wikimedia.org/wiki/File:Basel-Muenster-04-gje.jpg"
   },
   {
     "objectID": "events.html",
     "href": "events.html",
     "title": "Data science events in Basel",
     "section": "",
-    "text": "Nationalratswahlen Basel 2023\n\n\n\n\n\n\nReinhold Koch\n\n\nOct 30, 2023\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWastewater drug monitoring Europe\n\n\nThe analysis of municipal wastewaters for drugs and their metabolic products to estimate community consumption is a developing field, involving scientists working in…\n\n\n\nReinhold Koch\n\n\nSep 6, 2023\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nrtables\n\n\nReporting tables often have structure that goes beyond simple rectangular data. The ‘rtables’ package provides a framework for declaring complex multi-level tabulations and…\n\n\n\nAdrian Waddell\n\n\nNov 27, 2017\n\n\n\n\n\n\n\n\nNo matching items"
+    "text": "1"
+  },
+  {
+    "objectID": "events.html#from-past-events",
+    "href": "events.html#from-past-events",
+    "title": "Data science events in Basel",
+    "section": "from past events",
+    "text": "from past events"
+  },
+  {
+    "objectID": "events.html#footnotes",
+    "href": "events.html#footnotes",
+    "title": "Data science events in Basel",
+    "section": "Footnotes",
+    "text": "Footnotes\n\n\nbanner picture (c) CC-BY-4.0 based on https://commons.wikimedia.org/wiki/File:Basel-Muenster-04-gje.jpg↩︎"
   },
   {
     "objectID": "posts/nationalratswahlen_2023.html",
@@ -56,13 +70,6 @@
     "text": "seats per Hauptlistenverbindung\nFirst step in seat distribution is to determine the quorum: the number of votes is divided by number of seats plus 1, then the next higher integer number is set as quorum. The integer part of the division of the votes of Hauptlistenverbindungen by the quorum indicates number of seats given to the Hauplistenverbindung.\nIt is possible that this first round does not distribute all seats - as is the case here. Votes of the Hauptlistenverbindung then are divided by 1 plus number of seats received and the remaining seat goes to the Hauptlistenverbindung with the highest quotient, here 1.\n\n\nCode\n# 1st seat distribution\n(quorum1 &lt;- ceiling(sum(hl_votes)/(4+1)))\n\n\n[1] 44935\n\n\nCode\n(seats1 &lt;- floor(hl_votes/quorum1))\n\n\n 2  1  3 28 11 14 \n 2  1  0  0  0  0 \n\n\nCode\n# 2nd seat distribution\nsort(hl_votes/(1+seats1), decreasing = TRUE)\n\n\n       1        2        3       28       11       14 \n38677.00 36644.67 31600.00  2163.00  1933.00  1690.00 \n\n\nWithin the Hauptlistenverbindung the seats get distributed according to the same multi-step process first to Unterlistenverbindung, then Liste.\nDetailed protocols of this process are provided by the Basel Staatskanzlei, see https://www.staatskanzlei.bs.ch/dam/jcr:302a9016-ef8c-41b8-888a-f6d7332ff1ab/Ausw_5a.pdf.\nFor a general picture what Swiss voters can do with their ballot paper, see https://www.srf.ch/news/schweiz/wahlhilfe/kumulieren-und-panaschieren-so-waehlt-man-mit-listen."
   },
   {
-    "objectID": "ev2.html",
-    "href": "ev2.html",
-    "title": "Data science events in Basel",
-    "section": "",
-    "text": "Order By\n       Default\n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n         \n          Title\n        \n         \n          Author\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\nDate\n\n\nTitle\n\n\nAuthor\n\n\n\n\n\n\nOct 30, 2023\n\n\nNationalratswahlen Basel 2023\n\n\nReinhold Koch\n\n\n\n\nSep 6, 2023\n\n\nWastewater drug monitoring Europe\n\n\nReinhold Koch\n\n\n\n\n\nNov 27, 2017\n\n\nrtables\n\n\nAdrian Waddell\n\n\n\n\n\n\nNo matching items"
-  },
-  {
     "objectID": "posts/rtables.html",
     "href": "posts/rtables.html",
     "title": "rtables",
@@ -81,6 +88,13 @@
     "href": "index.html",
     "title": "Basel Data Science",
     "section": "",
-    "text": "About Basel Data Science\nBaselDataScience’s purpose is to organize data science events in Basel. Historically mainly focussed on R, we are open for other languages as the landscape is evolving. Right now we begin with a monthly jour fixe, the first Wednesday of each month, starting at 18:00 in Unternehmen Mitte, Gerbergasse 30, 4001 Basel. Look for some laptops and some Basel data science pictures.\nTopics are open to suggestions and contributions in the form of short presentations / discussions! Longer topics are welcome, too, but please announce these in the corresponding event on linkedIn.\n\n\nEvents\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNationalratswahlen Basel 2023\n\n\n\n\n\n\nReinhold Koch\n\n\nOct 30, 2023\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWastewater drug monitoring Europe\n\n\nThe analysis of municipal wastewaters for drugs and their metabolic products to estimate community consumption is a developing field, involving scientists working in…\n\n\n\nReinhold Koch\n\n\nSep 6, 2023\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nrtables\n\n\nReporting tables often have structure that goes beyond simple rectangular data. The ‘rtables’ package provides a framework for declaring complex multi-level tabulations and…\n\n\n\nAdrian Waddell\n\n\nNov 27, 2017\n\n\n\n\n\n\n\n\nNo matching items"
+    "text": "1"
+  },
+  {
+    "objectID": "index.html#footnotes",
+    "href": "index.html#footnotes",
+    "title": "Basel Data Science",
+    "section": "Footnotes",
+    "text": "Footnotes\n\n\nbanner picture (c) CC-BY-4.0 based on https://commons.wikimedia.org/wiki/File:Basel-Muenster-04-gje.jpg↩︎"
   }
 ]
