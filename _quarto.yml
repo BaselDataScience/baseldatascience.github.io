@@ -3,7 +3,8 @@ project:
 
 website:
   title: "BaselDataScience"
-  repo-url: https://github.com/baseldatascience.github.io
+  repo-url: https://github.com/baseldatascience/baseldatascience.github.io
+  repo-actions: [source, issue]
   open-graph: true 
   navbar:
     background: "#eeeeee"
@@ -11,7 +12,7 @@ website:
     right:
       - icon: github
         aria-label: github
-        href: https://baseldatascience.github.io
+        href: https://github.com/baseldatascience/baseldatascience.github.io
       - icon: "chat-right-text"
         aria-label: linkedIn
         href: https://www.linkedin.com/groups/12870553/
