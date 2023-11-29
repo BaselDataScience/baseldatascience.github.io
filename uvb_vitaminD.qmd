@@ -1,0 +1,208 @@
+---
+title: "UVB radiation and vitamin D balance"
+author: "Reinhold Koch"
+date: 2023-12-06
+format:
+  revealjs:
+    footer: "Basel Data Science"
+    theme: beige
+execute: 
+  echo: true
+editor: visual
+---
+
+```{r setup}
+#| echo: false
+options(width = 113)
+
+library(dplyr)
+library(ggplot2)
+library(lme4)
+library(mixedup)
+library(readxl)
+library(stats)
+library(stringr)
+library(tidyr)
+library(tidyselect)
+```
+
+## Background
+
+Vitamin D has attracted considerable attention in recent years
+
+::: incremental
+-   humans produce vitamin D in their skin using UVB from sunlight
+-   values neither for minimum nor maximum (!) blood concentration of vitamin D are [universally accepted](https://ods.od.nih.gov/factsheets/VitaminD-HealthProfessional/ "NIH recommendation")
+-   with little UV - as in winter - natural supply seems to be too low in our latitude
+:::
+
+## Clinical study UVB -\> vitamin D
+
+::: incremental
+interesting article 2021 in PNAS: <https://www.pnas.org/doi/10.1073/pnas.2015867118>
+
+::: incremental
+-   75 participants in London
+-   5 times UVB irradiated in 3-4 days time intervals
+-   5 different UVB sources
+-   full body or partial exposure
+:::
+
+-   what can I see when I redo the authors' analysis?
+:::
+
+## Data
+
+Most journals require also data to be published.
+
+Here it is an excel spreadsheet stored on <https://osf.io>, freely accessible:
+
+![](pnas_xlsx.jpg){fig-align="center"}
+
+## Download data {.smaller}
+
+downloading the data into temporary file `tf`
+
+```{r download}
+tf <- tempfile(pattern = 'vitamin_d', fileext = '.xlsx')
+download.file('https://osf.io/download/3x2q8/', destfile = tf)
+```
+
+-   there is a legend block underneath the data block
+-   variable names are going to be fun!
+
+```{r inspect spreadsheet}
+print(readxl::read_xlsx(tf, col_names = FALSE), n=5)
+```
+
+## Name variables
+
+-   strip off all rows that have empty first column
+-   Row 4 and 3 seem to describe the column
+
+```{r columns}
+dat0 <- readxl::read_xlsx(tf, skip = 4, col_names = FALSE) |>
+  dplyr::filter(!is.na(...1))
+nam <- readxl::read_xlsx(tf, skip = 2, n_max = 1)
+names(dat0) <- unname(dplyr::coalesce(unlist(nam),
+                                      paste0('blue', names(nam))))
+```
+
+## Fix variable names
+
+blanks are bad in names, but '-' and '(' are even worse
+
+```{r fix names}
+names(dat0) <- vapply(X = names(dat0),
+                      FUN = function(x) {
+  if (x == 'New Vol No') return('pid')
+  if (startsWith(x, 'CIE pre')) return('blue0nm')
+  if (stringr::str_count(x, ' ') == 1) {
+    # up to first (and only) blank
+    return(stringr::str_split_1(x, ' ')[1])
+  }
+  if (stringr::str_count(x, ' \\(')) {
+    # up to first ( and replace blanks with underscores
+    gsub(' ', '_', stringr::str_split_1(x, pattern = ' \\(')[[1]])
+  } else x
+},
+                      FUN.VALUE = 'character')
+```
+
+## Variable names {.smaller}
+
+```{r varnames}
+str(dat0)
+```
+
+## Create time variable
+
+Variables `Baseline`, `Post UVR 1`, `Post UVR 2`, ... provide the D3 measurements at the consecutive visits. For a decent model I need an explicit time variable.
+
+```{r make time}
+dat_ts <- dat0 |>
+  dplyr::select(-c('Study', 'Original Vol No', 'Date of 1st irrad')) |>
+  tidyr::pivot_longer(
+    cols = c('Baseline',
+             tidyselect::starts_with('Post', ignore.case=FALSE)),
+    values_to = 'd3',
+    values_drop_na = TRUE) |> 
+  dplyr::mutate(
+    time = dplyr::coalesce(
+      as.integer(stringr::str_split_i(name, ' ', 3)), 0),
+    .after = UV6)
+```
+
+## Full vs partial body irradiation
+
+```{r full vs partial}
+ggplot(dat_ts, aes(x=time, y=d3, group=pid, color=UVR)) +
+  geom_line() + geom_point() + facet_wrap(vars(BSA))
+```
+
+## Full vs partial trends
+
+```{r trends}
+ggplot(dat_ts, aes(x=time, y=d3, group=BSA, color=BSA)) + geom_point() + geom_smooth(method = lm)
+```
+
+## Control of similar baseline
+
+```{r similar baseline}
+ggplot(data=dat_ts |> dplyr::filter(time == 0),
+       aes(x=BSA, y=d3, group=BSA, fill=BSA)) +
+  geom_boxplot(alpha=.8) +
+  geom_point() + theme(legend.position="none")
+```
+
+## Mixed model
+
+```{r model}
+(m5 <- lme4::lmer(d3 ~ time + BSA:time + UVR:time + (time|pid),
+                  data = dat_ts))
+```
+
+## Quality control: residuals vs predictions
+
+```{r resplot}
+plot(m5)
+```
+
+## Confidence intervals of model parameters
+
+```{r confint}
+mixedup::summarise_model(m5)
+```
+
+## D3 time courses by exposure & by radiation source
+
+```{r time courses}
+#| output-location: slide
+# import model prediction
+# create a factor of all combinations of BSA and UVR
+# replace radiation doses with cumulative dose over study
+dat <- dat_ts |>
+  dplyr::mutate(pred=predict(m5),
+                BSA_UVR=interaction(BSA,UVR, lex.order = TRUE),
+                across(CIE_Erythema:Olds, function(x) x*time))
+ggplot2::ggplot(
+  data=dat,
+  aes(x=time, y=d3, color=BSA_UVR, group=BSA_UVR)) +
+  geom_point() + geom_path(aes(group=pid)) + 
+  geom_path(aes(group=pid, y=pred, alpha=0.4)) +
+  ggplot2::facet_wrap(~BSA_UVR) + theme(legend.position = "none")
+```
+
+## Measurements vs predictions
+
+```{r measures}
+ggplot(aes(x=pred, y=d3, colour=BSA_UVR, group=BSA_UVR), data=dat) +
+  geom_point() + geom_smooth(se=FALSE)
+```
+
+## Correlation of radiation profiles with predicted D3
+
+```{r corr}
+options(width=78)
+stats::cor(dat |> dplyr::select(c('d3', tidyselect::starts_with('blue'))))
+```

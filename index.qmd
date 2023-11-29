@@ -46,7 +46,7 @@ When | 2023-12-06 18:00
 Where | Unternehmen Mitte, Gerbergasse 30, 4001 Basel
 Topics | * linkedIn as electronic backbone for the group <br/> * better (?) analysis of UVB irradiation and vitamin D studied in [paper](https://www.pnas.org/doi/10.1073/pnas.2015867118)
 
-### from past events
+### contributions from events
 ```{r write-redirects}
 #| echo: false
 # list names of post folders
