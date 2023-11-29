@@ -25,6 +25,6 @@ format:
 ---
 [^banner]
 
-## from past events
+## contributions from events
 
 [^banner]: banner picture (c) CC-BY-4.0 based on [https://commons.wikimedia.org/wiki/File:Basel-Muenster-04-gje.jpg](https://commons.wikimedia.org/wiki/File:Basel-Muenster-04-gje.jpg)
