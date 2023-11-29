@@ -1,6 +1,6 @@
 [
   {
-    "listing": "/events.html",
+    "listing": "/index.html",
     "items": [
       "/posts/nationalratswahlen_2023.html",
       "/posts/2023-09-06_wastewater.html",
@@ -8,7 +8,7 @@
     ]
   },
   {
-    "listing": "/index.html",
+    "listing": "/events.html",
     "items": [
       "/posts/nationalratswahlen_2023.html",
       "/posts/2023-09-06_wastewater.html",

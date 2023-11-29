@@ -1,31 +1,157 @@
 [
   {
-    "objectID": "readme.html",
-    "href": "readme.html",
-    "title": "baseldatascience.github.io",
-    "section": "",
-    "text": "baseldatascience.github.io\nbanner picture (c) CC-BY-4.0 based on https://commons.wikimedia.org/wiki/File:Basel-Muenster-04-gje.jpg"
+    "objectID": "uvb_vitaminD.html#background",
+    "href": "uvb_vitaminD.html#background",
+    "title": "UVB radiation and vitamin D balance",
+    "section": "Background",
+    "text": "Background\nVitamin D has attracted considerable attention in recent years\n\n\nhumans produce vitamin D in their skin using UVB from sunlight\nvalues neither for minimum nor maximum (!) blood concentration of vitamin D are universally accepted\nwith little UV - as in winter - natural supply seems to be too low in our latitude"
   },
   {
-    "objectID": "events.html",
-    "href": "events.html",
-    "title": "Data science events in Basel",
+    "objectID": "uvb_vitaminD.html#clinical-study-uvb---vitamin-d",
+    "href": "uvb_vitaminD.html#clinical-study-uvb---vitamin-d",
+    "title": "UVB radiation and vitamin D balance",
+    "section": "Clinical study UVB -> vitamin D",
+    "text": "Clinical study UVB -&gt; vitamin D\n\ninteresting article 2021 in PNAS: https://www.pnas.org/doi/10.1073/pnas.2015867118\n\n\n75 participants in London\n5 times UVB irradiated in 3-4 days time intervals\n5 different UVB sources\nfull body or partial exposure\n\n\n\nwhat can I see when I redo the authors’ analysis?"
+  },
+  {
+    "objectID": "uvb_vitaminD.html#data",
+    "href": "uvb_vitaminD.html#data",
+    "title": "UVB radiation and vitamin D balance",
+    "section": "Data",
+    "text": "Data\nMost journals require also data to be published.\nHere it is an excel spreadsheet stored on https://osf.io, freely accessible:"
+  },
+  {
+    "objectID": "uvb_vitaminD.html#download-data",
+    "href": "uvb_vitaminD.html#download-data",
+    "title": "UVB radiation and vitamin D balance",
+    "section": "Download data",
+    "text": "Download data\ndownloading the data into temporary file tf\n\ntf &lt;- tempfile(pattern = 'vitamin_d', fileext = '.xlsx')\ndownload.file('https://osf.io/download/3x2q8/', destfile = tf)\n\n\nthere is a legend block underneath the data block\nvariable names are going to be fun!\n\n\nprint(readxl::read_xlsx(tf, col_names = FALSE), n=5)\n\n# A tibble: 90 × 29\n  ...1      ...2  ...3  ...4  ...5  ...6  ...7  ...8  ...9  ...10 ...11 ...12 ...13 ...14 ...15 ...16 ...17 ...18\n  &lt;chr&gt;     &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;\n1 &lt;NA&gt;      &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  Seru… &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  Weig… &lt;NA&gt; \n2 &lt;NA&gt;      &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt; \n3 &lt;NA&gt;      &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  Seru… &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt; \n4 Study na… Orig… New … Age   FST   Sex   BSA … UVR … UV6 … Date… Base… Post… Post… Post… Post… Post… CIE … CIE …\n5 ICE56 A2b 008   1     29    II    F     PB    UV6   DDC   40963 51.4… 50.4  44.4… 49.3  53.5  53.8  211.… 341.…\n# ℹ 85 more rows\n# ℹ 11 more variables: ...19 &lt;chr&gt;, ...20 &lt;chr&gt;, ...21 &lt;chr&gt;, ...22 &lt;chr&gt;, ...23 &lt;chr&gt;, ...24 &lt;chr&gt;,\n#   ...25 &lt;chr&gt;, ...26 &lt;chr&gt;, ...27 &lt;chr&gt;, ...28 &lt;chr&gt;, ...29 &lt;chr&gt;"
+  },
+  {
+    "objectID": "uvb_vitaminD.html#name-variables",
+    "href": "uvb_vitaminD.html#name-variables",
+    "title": "UVB radiation and vitamin D balance",
+    "section": "Name variables",
+    "text": "Name variables\n\nstrip off all rows that have empty first column\nRow 4 and 3 seem to describe the column\n\n\ndat0 &lt;- readxl::read_xlsx(tf, skip = 4, col_names = FALSE) |&gt;\n  dplyr::filter(!is.na(...1))\nnam &lt;- readxl::read_xlsx(tf, skip = 2, n_max = 1)\nnames(dat0) &lt;- unname(dplyr::coalesce(unlist(nam),\n                                      paste0('blue', names(nam))))"
+  },
+  {
+    "objectID": "uvb_vitaminD.html#fix-variable-names",
+    "href": "uvb_vitaminD.html#fix-variable-names",
+    "title": "UVB radiation and vitamin D balance",
+    "section": "Fix variable names",
+    "text": "Fix variable names\nblanks are bad in names, but ‘-’ and ‘(’ are even worse\n\nnames(dat0) &lt;- vapply(X = names(dat0),\n                      FUN = function(x) {\n  if (x == 'New Vol No') return('pid')\n  if (startsWith(x, 'CIE pre')) return('blue0nm')\n  if (stringr::str_count(x, ' ') == 1) {\n    # up to first (and only) blank\n    return(stringr::str_split_1(x, ' ')[1])\n  }\n  if (stringr::str_count(x, ' \\\\(')) {\n    # up to first ( and replace blanks with underscores\n    gsub(' ', '_', stringr::str_split_1(x, pattern = ' \\\\(')[[1]])\n  } else x\n},\n                      FUN.VALUE = 'character')"
+  },
+  {
+    "objectID": "uvb_vitaminD.html#variable-names",
+    "href": "uvb_vitaminD.html#variable-names",
+    "title": "UVB radiation and vitamin D balance",
+    "section": "Variable names",
+    "text": "Variable names\n\nstr(dat0)\n\ntibble [75 × 29] (S3: tbl_df/tbl/data.frame)\n $ Study            : chr [1:75] \"ICE56 A2b\" \"ICE56 A2b\" \"ICE56 A2b\" \"ICE56 A2b\" ...\n $ Original Vol No  : chr [1:75] \"008\" \"009\" \"010\" \"011\" ...\n $ pid              : num [1:75] 1 2 3 4 5 6 7 8 9 10 ...\n $ Age              : num [1:75] 29 26 32 21 29 24 26 25 23 21 ...\n $ FST              : chr [1:75] \"II\" \"I\" \"I\" \"I\" ...\n $ Sex              : chr [1:75] \"F\" \"F\" \"F\" \"F\" ...\n $ BSA              : chr [1:75] \"PB\" \"PB\" \"PB\" \"PB\" ...\n $ UVR              : chr [1:75] \"UV6\" \"UV6\" \"UV6\" \"UV6\" ...\n $ UV6              : chr [1:75] \"DDC\" \"DDC\" \"DDC\" \"DDC\" ...\n $ Date of 1st irrad: POSIXct[1:75], format: \"2012-02-24\" \"2012-02-24\" \"2012-02-24\" \"2012-02-24\" ...\n $ Baseline         : num [1:75] 51.5 61.8 32 13.9 26.9 ...\n $ Post UVR 1       : num [1:75] 50.4 64.2 30.1 17.4 35.2 ...\n $ Post UVR 2       : num [1:75] 44.4 79.2 30.5 20.1 42.2 ...\n $ Post UVR 3       : num [1:75] 49.3 71.8 39.1 22.8 44.3 ...\n $ Post UVR 4       : num [1:75] 53.5 70.6 42 28.8 44.3 ...\n $ Post UVR 5       : num [1:75] 53.8 79.3 41.1 27.7 47.8 ...\n $ CIE_Erythema     : num [1:75] 211 211 211 211 211 ...\n $ blue0nm          : num [1:75] 342 342 342 342 342 ...\n $ blue1nm          : num [1:75] 304 304 304 304 304 ...\n $ blue2nm          : num [1:75] 269 269 269 269 269 ...\n $ blue3nm          : num [1:75] 237 237 237 237 237 ...\n $ blue4nm          : num [1:75] 208 208 208 208 208 ...\n $ blue5nm          : num [1:75] 182 182 182 182 182 ...\n $ blue6nm          : num [1:75] 157 157 157 157 157 ...\n $ blue7nm          : num [1:75] 135 135 135 135 135 ...\n $ blue8nm          : num [1:75] 115 115 115 115 115 ...\n $ blue9nm          : num [1:75] 97.8 97.8 97.8 97.8 97.8 ...\n $ Bolsee           : num [1:75] 65.1 65.1 65.1 65.1 65.1 ...\n $ Olds             : num [1:75] 149 149 149 149 149 ..."
+  },
+  {
+    "objectID": "uvb_vitaminD.html#create-time-variable",
+    "href": "uvb_vitaminD.html#create-time-variable",
+    "title": "UVB radiation and vitamin D balance",
+    "section": "Create time variable",
+    "text": "Create time variable\nVariables Baseline, Post UVR 1, Post UVR 2, … provide the D3 measurements at the consecutive visits. For a decent model I need an explicit time variable.\n\ndat_ts &lt;- dat0 |&gt;\n  dplyr::select(-c('Study', 'Original Vol No', 'Date of 1st irrad')) |&gt;\n  tidyr::pivot_longer(\n    cols = c('Baseline',\n             tidyselect::starts_with('Post', ignore.case=FALSE)),\n    values_to = 'd3',\n    values_drop_na = TRUE) |&gt; \n  dplyr::mutate(\n    time = dplyr::coalesce(\n      as.integer(stringr::str_split_i(name, ' ', 3)), 0),\n    .after = UV6)"
+  },
+  {
+    "objectID": "uvb_vitaminD.html#full-vs-partial-body-irradiation",
+    "href": "uvb_vitaminD.html#full-vs-partial-body-irradiation",
+    "title": "UVB radiation and vitamin D balance",
+    "section": "Full vs partial body irradiation",
+    "text": "Full vs partial body irradiation\n\nggplot(dat_ts, aes(x=time, y=d3, group=pid, color=UVR)) +\n  geom_line() + geom_point() + facet_wrap(vars(BSA))"
+  },
+  {
+    "objectID": "uvb_vitaminD.html#full-vs-partial-trends",
+    "href": "uvb_vitaminD.html#full-vs-partial-trends",
+    "title": "UVB radiation and vitamin D balance",
+    "section": "Full vs partial trends",
+    "text": "Full vs partial trends\n\nggplot(dat_ts, aes(x=time, y=d3, group=BSA, color=BSA)) + geom_point() + geom_smooth(method = lm)"
+  },
+  {
+    "objectID": "uvb_vitaminD.html#control-of-similar-baseline",
+    "href": "uvb_vitaminD.html#control-of-similar-baseline",
+    "title": "UVB radiation and vitamin D balance",
+    "section": "Control of similar baseline",
+    "text": "Control of similar baseline\n\nggplot(data=dat_ts |&gt; dplyr::filter(time == 0),\n       aes(x=BSA, y=d3, group=BSA, fill=BSA)) +\n  geom_boxplot(alpha=.8) +\n  geom_point() + theme(legend.position=\"none\")"
+  },
+  {
+    "objectID": "uvb_vitaminD.html#mixed-model",
+    "href": "uvb_vitaminD.html#mixed-model",
+    "title": "UVB radiation and vitamin D balance",
+    "section": "Mixed model",
+    "text": "Mixed model\n\n(m5 &lt;- lme4::lmer(d3 ~ time + BSA:time + UVR:time + (time|pid),\n                  data = dat_ts))\n\nLinear mixed model fit by REML ['lmerMod']\nFormula: d3 ~ time + BSA:time + UVR:time + (time | pid)\n   Data: dat_ts\nREML criterion at convergence: 2811.554\nRandom effects:\n Groups   Name        Std.Dev. Corr \n pid      (Intercept) 16.629        \n          time         1.983   -0.51\n Residual              5.180        \nNumber of obs: 400, groups:  pid, 75\nFixed Effects:\n (Intercept)          time    time:BSAPB  time:UVRFIL2  time:UVRFIL9  time:UVRPUVA   time:UVRUV6  \n     34.7330        8.0092       -7.1377        1.1129        0.6351       -3.9687        1.7181"
+  },
+  {
+    "objectID": "uvb_vitaminD.html#quality-control-residuals-vs-predictions",
+    "href": "uvb_vitaminD.html#quality-control-residuals-vs-predictions",
+    "title": "UVB radiation and vitamin D balance",
+    "section": "Quality control: residuals vs predictions",
+    "text": "Quality control: residuals vs predictions\n\nplot(m5)"
+  },
+  {
+    "objectID": "uvb_vitaminD.html#confidence-intervals-of-model-parameters",
+    "href": "uvb_vitaminD.html#confidence-intervals-of-model-parameters",
+    "title": "UVB radiation and vitamin D balance",
+    "section": "Confidence intervals of model parameters",
+    "text": "Confidence intervals of model parameters\n\nmixedup::summarise_model(m5)\n\n    Group    Effect Variance    SD SD_2.5 SD_97.5 Var_prop\n      pid Intercept   276.53 16.63  14.04   19.71     0.90\n      pid      time     3.93  1.98   1.48    2.39     0.01\n Residual        NA    26.83  5.18   4.76    5.67     0.09\n         Term Value   SE     t P_value Lower_2.5 Upper_97.5\n    Intercept 34.73 1.97 17.61    0.00     30.87      38.60\n         time  8.01 0.48 16.70    0.00      7.07       8.95\n   time:BSAPB -7.14 0.82 -8.75    0.00     -8.74      -5.54\n time:UVRFIL2  1.11 1.13  0.99    0.32     -1.10       3.33\n time:UVRFIL9  0.64 1.13  0.56    0.57     -1.58       2.85\n time:UVRPUVA -3.97 0.76 -5.24    0.00     -5.45      -2.48\n  time:UVRUV6  1.72 0.78  2.20    0.03      0.19       3.25"
+  },
+  {
+    "objectID": "uvb_vitaminD.html#d3-time-courses-by-exposure-by-radiation-source",
+    "href": "uvb_vitaminD.html#d3-time-courses-by-exposure-by-radiation-source",
+    "title": "UVB radiation and vitamin D balance",
+    "section": "D3 time courses by exposure & by radiation source",
+    "text": "D3 time courses by exposure & by radiation source\n\n# import model prediction\n# create a factor of all combinations of BSA and UVR\n# replace radiation doses with cumulative dose over study\ndat &lt;- dat_ts |&gt;\n  dplyr::mutate(pred=predict(m5),\n                BSA_UVR=interaction(BSA,UVR, lex.order = TRUE),\n                across(CIE_Erythema:Olds, function(x) x*time))\nggplot2::ggplot(\n  data=dat,\n  aes(x=time, y=d3, color=BSA_UVR, group=BSA_UVR)) +\n  geom_point() + geom_path(aes(group=pid)) + \n  geom_path(aes(group=pid, y=pred, alpha=0.4)) +\n  ggplot2::facet_wrap(~BSA_UVR) + theme(legend.position = \"none\")"
+  },
+  {
+    "objectID": "uvb_vitaminD.html#d3-time-courses-by-exposure-by-radiation-source-output",
+    "href": "uvb_vitaminD.html#d3-time-courses-by-exposure-by-radiation-source-output",
+    "title": "UVB radiation and vitamin D balance",
+    "section": "D3 time courses by exposure & by radiation source",
+    "text": "D3 time courses by exposure & by radiation source"
+  },
+  {
+    "objectID": "uvb_vitaminD.html#measurements-vs-predictions",
+    "href": "uvb_vitaminD.html#measurements-vs-predictions",
+    "title": "UVB radiation and vitamin D balance",
+    "section": "Measurements vs predictions",
+    "text": "Measurements vs predictions\n\nggplot(aes(x=pred, y=d3, colour=BSA_UVR, group=BSA_UVR), data=dat) +\n  geom_point() + geom_smooth(se=FALSE)"
+  },
+  {
+    "objectID": "uvb_vitaminD.html#correlation-of-radiation-profiles-with-predicted-d3",
+    "href": "uvb_vitaminD.html#correlation-of-radiation-profiles-with-predicted-d3",
+    "title": "UVB radiation and vitamin D balance",
+    "section": "Correlation of radiation profiles with predicted D3",
+    "text": "Correlation of radiation profiles with predicted D3\n\noptions(width=78)\nstats::cor(dat |&gt; dplyr::select(c('d3', tidyselect::starts_with('blue'))))\n\n               d3   blue0nm   blue1nm   blue2nm   blue3nm   blue4nm   blue5nm\nd3      1.0000000 0.4131079 0.4207088 0.4289413 0.4354258 0.4402644 0.4416013\nblue0nm 0.4131079 1.0000000 0.9968950 0.9870326 0.9692452 0.9431757 0.9087768\nblue1nm 0.4207088 0.9968950 1.0000000 0.9965712 0.9854712 0.9660437 0.9381268\nblue2nm 0.4289413 0.9870326 0.9965712 1.0000000 0.9961381 0.9840550 0.9634114\nblue3nm 0.4354258 0.9692452 0.9854712 0.9961381 1.0000000 0.9958556 0.9831601\nblue4nm 0.4402644 0.9431757 0.9660437 0.9840550 0.9958556 1.0000000 0.9957017\nblue5nm 0.4416013 0.9087768 0.9381268 0.9634114 0.9831601 0.9957017 1.0000000\nblue6nm 0.4374423 0.8667492 0.9023448 0.9346632 0.9621595 0.9829376 0.9957418\nblue7nm 0.4287545 0.8189607 0.8603039 0.8991626 0.9339357 0.9625240 0.9834741\nblue8nm 0.4166475 0.7679570 0.8143766 0.8590846 0.9004365 0.9361598 0.9646269\nblue9nm 0.4023697 0.7165619 0.7672847 0.8170271 0.8641078 0.9061162 0.9412731\n          blue6nm   blue7nm   blue8nm   blue9nm\nd3      0.4374423 0.4287545 0.4166475 0.4023697\nblue0nm 0.8667492 0.8189607 0.7679570 0.7165619\nblue1nm 0.9023448 0.8603039 0.8143766 0.7672847\nblue2nm 0.9346632 0.8991626 0.8590846 0.8170271\nblue3nm 0.9621595 0.9339357 0.9004365 0.8641078\nblue4nm 0.9829376 0.9625240 0.9361598 0.9061162\nblue5nm 0.9957418 0.9834741 0.9646269 0.9412731\nblue6nm 1.0000000 0.9959728 0.9848030 0.9683425\nblue7nm 0.9959728 1.0000000 0.9964056 0.9868094\nblue8nm 0.9848030 0.9964056 1.0000000 0.9969735\nblue9nm 0.9683425 0.9868094 0.9969735 1.0000000\n\n\n\n\nBasel Data Science"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Basel Data Science",
     "section": "",
     "text": "1"
   },
   {
-    "objectID": "events.html#from-past-events",
-    "href": "events.html#from-past-events",
-    "title": "Data science events in Basel",
-    "section": "from past events",
-    "text": "from past events"
-  },
-  {
-    "objectID": "events.html#footnotes",
-    "href": "events.html#footnotes",
-    "title": "Data science events in Basel",
+    "objectID": "index.html#footnotes",
+    "href": "index.html#footnotes",
+    "title": "Basel Data Science",
     "section": "Footnotes",
     "text": "Footnotes\n\n\nbanner picture (c) CC-BY-4.0 based on https://commons.wikimedia.org/wiki/File:Basel-Muenster-04-gje.jpg↩︎"
+  },
+  {
+    "objectID": "posts/2023-09-06_wastewater.html",
+    "href": "posts/2023-09-06_wastewater.html",
+    "title": "Wastewater drug monitoring Europe",
+    "section": "",
+    "text": "Wastewater drug monitoring Europe\nSee https://reikoch.shinyapps.io/wastewater/ for an interactive application based on data from https://www.emcdda.europa.eu/publications/html/pods/waste-water-analysis_en#sourceData\ncode in https://github.com/baseldatascience/wastewater."
+  },
+  {
+    "objectID": "posts/rtables.html",
+    "href": "posts/rtables.html",
+    "title": "rtables",
+    "section": "",
+    "text": "rtables"
   },
   {
     "objectID": "posts/nationalratswahlen_2023.html",
@@ -70,31 +196,31 @@
     "text": "seats per Hauptlistenverbindung\nFirst step in seat distribution is to determine the quorum: the number of votes is divided by number of seats plus 1, then the next higher integer number is set as quorum. The integer part of the division of the votes of Hauptlistenverbindungen by the quorum indicates number of seats given to the Hauplistenverbindung.\nIt is possible that this first round does not distribute all seats - as is the case here. Votes of the Hauptlistenverbindung then are divided by 1 plus number of seats received and the remaining seat goes to the Hauptlistenverbindung with the highest quotient, here 1.\n\n\nCode\n# 1st seat distribution\n(quorum1 &lt;- ceiling(sum(hl_votes)/(4+1)))\n\n\n[1] 44935\n\n\nCode\n(seats1 &lt;- floor(hl_votes/quorum1))\n\n\n 2  1  3 28 11 14 \n 2  1  0  0  0  0 \n\n\nCode\n# 2nd seat distribution\nsort(hl_votes/(1+seats1), decreasing = TRUE)\n\n\n       1        2        3       28       11       14 \n38677.00 36644.67 31600.00  2163.00  1933.00  1690.00 \n\n\nWithin the Hauptlistenverbindung the seats get distributed according to the same multi-step process first to Unterlistenverbindung, then Liste.\nDetailed protocols of this process are provided by the Basel Staatskanzlei, see https://www.staatskanzlei.bs.ch/dam/jcr:302a9016-ef8c-41b8-888a-f6d7332ff1ab/Ausw_5a.pdf.\nFor a general picture what Swiss voters can do with their ballot paper, see https://www.srf.ch/news/schweiz/wahlhilfe/kumulieren-und-panaschieren-so-waehlt-man-mit-listen."
   },
   {
-    "objectID": "posts/rtables.html",
-    "href": "posts/rtables.html",
-    "title": "rtables",
-    "section": "",
-    "text": "rtables"
-  },
-  {
-    "objectID": "posts/2023-09-06_wastewater.html",
-    "href": "posts/2023-09-06_wastewater.html",
-    "title": "Wastewater drug monitoring Europe",
-    "section": "",
-    "text": "Wastewater drug monitoring Europe\nSee https://reikoch.shinyapps.io/wastewater/ for an interactive application based on data from https://www.emcdda.europa.eu/publications/html/pods/waste-water-analysis_en#sourceData\ncode in https://github.com/baseldatascience/wastewater."
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Basel Data Science",
+    "objectID": "events.html",
+    "href": "events.html",
+    "title": "Data science events in Basel",
     "section": "",
     "text": "1"
   },
   {
-    "objectID": "index.html#footnotes",
-    "href": "index.html#footnotes",
-    "title": "Basel Data Science",
+    "objectID": "events.html#from-past-events",
+    "href": "events.html#from-past-events",
+    "title": "Data science events in Basel",
+    "section": "from past events",
+    "text": "from past events"
+  },
+  {
+    "objectID": "events.html#footnotes",
+    "href": "events.html#footnotes",
+    "title": "Data science events in Basel",
     "section": "Footnotes",
     "text": "Footnotes\n\n\nbanner picture (c) CC-BY-4.0 based on https://commons.wikimedia.org/wiki/File:Basel-Muenster-04-gje.jpg↩︎"
+  },
+  {
+    "objectID": "readme.html",
+    "href": "readme.html",
+    "title": "baseldatascience.github.io",
+    "section": "",
+    "text": "baseldatascience.github.io\nbanner picture (c) CC-BY-4.0 based on https://commons.wikimedia.org/wiki/File:Basel-Muenster-04-gje.jpg"
   }
 ]
