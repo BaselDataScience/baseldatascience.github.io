@@ -1,15 +1,17 @@
 [
   {
-    "listing": "/index.html",
+    "listing": "/events.html",
     "items": [
+      "/posts/uvb_vitaminD.html",
       "/posts/nationalratswahlen_2023.html",
       "/posts/2023-09-06_wastewater.html",
       "/posts/rtables.html"
     ]
   },
   {
-    "listing": "/events.html",
+    "listing": "/index.html",
     "items": [
+      "/posts/uvb_vitaminD.html",
       "/posts/nationalratswahlen_2023.html",
       "/posts/2023-09-06_wastewater.html",
       "/posts/rtables.html"
