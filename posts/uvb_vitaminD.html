@@ -389,6 +389,8 @@
   <link href="../site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
   <script src="../site_libs/pagedtable-1.1/js/pagedtable.js"></script>
 <meta property="og:title" content="BaselDataScience - UVB radiation and vitamin D balance">
+<meta property="og:description" content="Redoing the analysis of a London based study of UVB application in winter on 75 subjects.">
+<meta property="og:image" content="https://BaselDataScience.github.io/baseldatascience.github.io/posts/uvb_vitD.jpeg">
 <meta property="og:site-name" content="BaselDataScience">
 </head>
 <body class="quarto-light">
@@ -407,61 +409,6 @@ Reinhold Koch
 </div>
 
   <p class="date">2023-12-06</p>
-</section><section id="TOC">
-<nav role="doc-toc"> 
-<h2 id="toc-title">Table of contents</h2>
-<ul>
-<li></li>
-<li><a href="#/background" id="/toc-background">Background</a></li>
-<li><a href="#/clinical-study-uvb---vitamin-d" id="/toc-clinical-study-uvb---vitamin-d">Clinical study UVB -&gt; vitamin D</a></li>
-<li><a href="#/data" id="/toc-data">Data</a></li>
-<li><a href="#/download-data" id="/toc-download-data">Download data</a></li>
-<li><a href="#/name-variables" id="/toc-name-variables">Name variables</a></li>
-<li><a href="#/fix-variable-names" id="/toc-fix-variable-names">Fix variable names</a></li>
-<li><a href="#/variable-names" id="/toc-variable-names">Variable names</a></li>
-<li><a href="#/create-time-variable" id="/toc-create-time-variable">Create time variable</a></li>
-<li><a href="#/full-vs-partial-body-irradiation" id="/toc-full-vs-partial-body-irradiation">Full vs partial body irradiation</a></li>
-<li><a href="#/full-vs-partial-trends" id="/toc-full-vs-partial-trends">Full vs partial trends</a></li>
-<li><a href="#/control-of-similar-baseline" id="/toc-control-of-similar-baseline">Control of similar baseline</a></li>
-<li><a href="#/mixed-model" id="/toc-mixed-model">Mixed model</a></li>
-<li><a href="#/quality-control-residuals-vs-predictions" id="/toc-quality-control-residuals-vs-predictions">Quality control: residuals vs predictions</a></li>
-<li><a href="#/confidence-intervals-of-model-parameters" id="/toc-confidence-intervals-of-model-parameters">Confidence intervals of model parameters</a></li>
-<li><a href="#/d3-time-courses-by-exposure-by-radiation-source" id="/toc-d3-time-courses-by-exposure-by-radiation-source">D3 time courses by exposure &amp; by radiation source</a></li>
-<li><a href="#/measurements-vs-predictions" id="/toc-measurements-vs-predictions">Measurements vs predictions</a></li>
-<li><a href="#/correlation-of-radiation-profiles-with-predicted-d3" id="/toc-correlation-of-radiation-profiles-with-predicted-d3">Correlation of radiation profiles with predicted D3</a></li>
-</ul>
-</nav>
-</section>
-<section class="slide level2">
-
-<div class="cell" data-hash="uvb_vitaminD_cache/revealjs/setup_c8783371d04cea8f85a0ca30d5d0b4ad">
-<div class="cell-output cell-output-stderr">
-<pre><code>
-Attaching package: 'dplyr'</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The following objects are masked from 'package:stats':
-
-    filter, lag</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The following objects are masked from 'package:base':
-
-    intersect, setdiff, setequal, union</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Loading required package: Matrix</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-Attaching package: 'tidyr'</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The following objects are masked from 'package:Matrix':
-
-    expand, pack, unpack</code></pre>
-</div>
-</div>
 </section>
 <section id="background" class="slide level2">
 <h2>Background</h2>
@@ -500,54 +447,16 @@ Attaching package: 'tidyr'</code></pre>
 <section id="download-data" class="slide level2 smaller">
 <h2>Download data</h2>
 <p>downloading the data into temporary file <code>tf</code></p>
-<div class="cell" data-hash="uvb_vitaminD_cache/revealjs/download_0b315a0e720967bf94492635dd7bbd15">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>tf <span class="ot">&lt;-</span> <span class="fu">tempfile</span>(<span class="at">pattern =</span> <span class="st">'vitamin_d'</span>, <span class="at">fileext =</span> <span class="st">'.xlsx'</span>)</span>
-<span id="cb7-2"><a href="#cb7-2"></a><span class="fu">download.file</span>(<span class="st">'https://osf.io/download/3x2q8/'</span>, <span class="at">destfile =</span> tf)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="cell" data-hash="uvb_vitaminD_cache/revealjs/download_5a6e5fe4bb3483e16ba7a13d87eeee5d">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>tf <span class="ot">&lt;-</span> <span class="fu">tempfile</span>(<span class="at">pattern =</span> <span class="st">'vitamin_d'</span>, <span class="at">fileext =</span> <span class="st">'.xlsx'</span>)</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">download.file</span>(<span class="st">'https://osf.io/download/3x2q8/'</span>, <span class="at">destfile =</span> tf)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li>there is a legend block underneath the data block</li>
 <li>variable names are going to be fun!</li>
 </ul>
-<div class="cell" data-hash="uvb_vitaminD_cache/revealjs/inspect spreadsheet_05354db6e93a6cb64e1b80dedbab5e30">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">print</span>(readxl<span class="sc">::</span><span class="fu">read_xlsx</span>(tf, <span class="at">col_names =</span> <span class="cn">FALSE</span>), <span class="at">n=</span><span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stderr">
-<pre><code>New names:
-• `` -&gt; `...1`
-• `` -&gt; `...2`
-• `` -&gt; `...3`
-• `` -&gt; `...4`
-• `` -&gt; `...5`
-• `` -&gt; `...6`
-• `` -&gt; `...7`
-• `` -&gt; `...8`
-• `` -&gt; `...9`
-• `` -&gt; `...10`
-• `` -&gt; `...11`
-• `` -&gt; `...12`
-• `` -&gt; `...13`
-• `` -&gt; `...14`
-• `` -&gt; `...15`
-• `` -&gt; `...16`
-• `` -&gt; `...17`
-• `` -&gt; `...18`
-• `` -&gt; `...19`
-• `` -&gt; `...20`
-• `` -&gt; `...21`
-• `` -&gt; `...22`
-• `` -&gt; `...23`
-• `` -&gt; `...24`
-• `` -&gt; `...25`
-• `` -&gt; `...26`
-• `` -&gt; `...27`
-• `` -&gt; `...28`
-• `` -&gt; `...29`</code></pre>
-</div>
+<div class="cell" data-hash="uvb_vitaminD_cache/revealjs/inspect spreadsheet_2814b9b5fdc07f924f4d863a6c4f1aed">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="fu">print</span>(readxl<span class="sc">::</span><span class="fu">read_xlsx</span>(tf, <span class="at">col_names =</span> <span class="cn">FALSE</span>), <span class="at">n=</span><span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 90 × 29
   ...1      ...2  ...3  ...4  ...5  ...6  ...7  ...8  ...9  ...10 ...11 ...12 ...13 ...14 ...15 ...16 ...17 ...18
@@ -569,107 +478,38 @@ Attaching package: 'tidyr'</code></pre>
 <li>strip off all rows that have empty first column</li>
 <li>Row 4 and 3 seem to describe the column</li>
 </ul>
-<div class="cell" data-hash="uvb_vitaminD_cache/revealjs/columns_0762f968d0c399e299e4a5e7d30ed0bb">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>dat0 <span class="ot">&lt;-</span> readxl<span class="sc">::</span><span class="fu">read_xlsx</span>(tf, <span class="at">skip =</span> <span class="dv">4</span>, <span class="at">col_names =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span></span>
-<span id="cb11-2"><a href="#cb11-2"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(...<span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stderr">
-<pre><code>New names:
-• `` -&gt; `...1`
-• `` -&gt; `...2`
-• `` -&gt; `...3`
-• `` -&gt; `...4`
-• `` -&gt; `...5`
-• `` -&gt; `...6`
-• `` -&gt; `...7`
-• `` -&gt; `...8`
-• `` -&gt; `...9`
-• `` -&gt; `...10`
-• `` -&gt; `...11`
-• `` -&gt; `...12`
-• `` -&gt; `...13`
-• `` -&gt; `...14`
-• `` -&gt; `...15`
-• `` -&gt; `...16`
-• `` -&gt; `...17`
-• `` -&gt; `...18`
-• `` -&gt; `...19`
-• `` -&gt; `...20`
-• `` -&gt; `...21`
-• `` -&gt; `...22`
-• `` -&gt; `...23`
-• `` -&gt; `...24`
-• `` -&gt; `...25`
-• `` -&gt; `...26`
-• `` -&gt; `...27`
-• `` -&gt; `...28`
-• `` -&gt; `...29`</code></pre>
-</div>
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>nam <span class="ot">&lt;-</span> readxl<span class="sc">::</span><span class="fu">read_xlsx</span>(tf, <span class="at">skip =</span> <span class="dv">2</span>, <span class="at">n_max =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stderr">
-<pre><code>New names:
-• `` -&gt; `...1`
-• `` -&gt; `...2`
-• `` -&gt; `...3`
-• `` -&gt; `...4`
-• `` -&gt; `...5`
-• `` -&gt; `...6`
-• `` -&gt; `...7`
-• `` -&gt; `...8`
-• `` -&gt; `...9`
-• `` -&gt; `...10`
-• `` -&gt; `...12`
-• `` -&gt; `...13`
-• `` -&gt; `...14`
-• `` -&gt; `...15`
-• `` -&gt; `...16`
-• `` -&gt; `...17`
-• `` -&gt; `...18`
-• `` -&gt; `...28`
-• `` -&gt; `...29`</code></pre>
-</div>
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="fu">names</span>(dat0) <span class="ot">&lt;-</span> <span class="fu">unname</span>(dplyr<span class="sc">::</span><span class="fu">coalesce</span>(<span class="fu">unlist</span>(nam),</span>
-<span id="cb15-2"><a href="#cb15-2"></a>                                      <span class="fu">paste0</span>(<span class="st">'blue'</span>, <span class="fu">names</span>(nam))))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="cell" data-hash="uvb_vitaminD_cache/revealjs/columns_a2ace562f3a6756b65ff0dfc1f45173b">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>dat0 <span class="ot">&lt;-</span> readxl<span class="sc">::</span><span class="fu">read_xlsx</span>(tf, <span class="at">skip =</span> <span class="dv">4</span>, <span class="at">col_names =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(...<span class="dv">1</span>))</span>
+<span id="cb4-3"><a href="#cb4-3"></a>nam <span class="ot">&lt;-</span> readxl<span class="sc">::</span><span class="fu">read_xlsx</span>(tf, <span class="at">skip =</span> <span class="dv">2</span>, <span class="at">n_max =</span> <span class="dv">1</span>)</span>
+<span id="cb4-4"><a href="#cb4-4"></a><span class="fu">names</span>(dat0) <span class="ot">&lt;-</span> <span class="fu">unname</span>(dplyr<span class="sc">::</span><span class="fu">coalesce</span>(<span class="fu">unlist</span>(nam),</span>
+<span id="cb4-5"><a href="#cb4-5"></a>                                      <span class="fu">paste0</span>(<span class="st">'blue'</span>, <span class="fu">names</span>(nam))))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="fix-variable-names" class="slide level2">
 <h2>Fix variable names</h2>
 <p>blanks are bad in names, but ‘-’ and ‘(’ are even worse</p>
-<div class="cell" data-hash="uvb_vitaminD_cache/revealjs/fix names_9de143f41485fe8d2ef13235c25fbf18">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="fu">names</span>(dat0) <span class="ot">&lt;-</span> <span class="fu">vapply</span>(<span class="at">X =</span> <span class="fu">names</span>(dat0),</span>
-<span id="cb16-2"><a href="#cb16-2"></a>                      <span class="at">FUN =</span> <span class="cf">function</span>(x) {</span>
-<span id="cb16-3"><a href="#cb16-3"></a>  <span class="cf">if</span> (x <span class="sc">==</span> <span class="st">'New Vol No'</span>) <span class="fu">return</span>(<span class="st">'pid'</span>)</span>
-<span id="cb16-4"><a href="#cb16-4"></a>  <span class="cf">if</span> (<span class="fu">startsWith</span>(x, <span class="st">'CIE pre'</span>)) <span class="fu">return</span>(<span class="st">'blue0nm'</span>)</span>
-<span id="cb16-5"><a href="#cb16-5"></a>  <span class="cf">if</span> (stringr<span class="sc">::</span><span class="fu">str_count</span>(x, <span class="st">' '</span>) <span class="sc">==</span> <span class="dv">1</span>) {</span>
-<span id="cb16-6"><a href="#cb16-6"></a>    <span class="co"># up to first (and only) blank</span></span>
-<span id="cb16-7"><a href="#cb16-7"></a>    <span class="fu">return</span>(stringr<span class="sc">::</span><span class="fu">str_split_1</span>(x, <span class="st">' '</span>)[<span class="dv">1</span>])</span>
-<span id="cb16-8"><a href="#cb16-8"></a>  }</span>
-<span id="cb16-9"><a href="#cb16-9"></a>  <span class="cf">if</span> (stringr<span class="sc">::</span><span class="fu">str_count</span>(x, <span class="st">' </span><span class="sc">\\</span><span class="st">('</span>)) {</span>
-<span id="cb16-10"><a href="#cb16-10"></a>    <span class="co"># up to first ( and replace blanks with underscores</span></span>
-<span id="cb16-11"><a href="#cb16-11"></a>    <span class="fu">gsub</span>(<span class="st">' '</span>, <span class="st">'_'</span>, stringr<span class="sc">::</span><span class="fu">str_split_1</span>(x, <span class="at">pattern =</span> <span class="st">' </span><span class="sc">\\</span><span class="st">('</span>)[[<span class="dv">1</span>]])</span>
-<span id="cb16-12"><a href="#cb16-12"></a>  } <span class="cf">else</span> x</span>
-<span id="cb16-13"><a href="#cb16-13"></a>},</span>
-<span id="cb16-14"><a href="#cb16-14"></a>                      <span class="at">FUN.VALUE =</span> <span class="st">'character'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="cell" data-hash="uvb_vitaminD_cache/revealjs/fix names_0881518ded33b06a18a77f042457de3d">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">names</span>(dat0) <span class="ot">&lt;-</span> <span class="fu">vapply</span>(<span class="at">X =</span> <span class="fu">names</span>(dat0),</span>
+<span id="cb5-2"><a href="#cb5-2"></a>                      <span class="at">FUN =</span> <span class="cf">function</span>(x) {</span>
+<span id="cb5-3"><a href="#cb5-3"></a>  <span class="cf">if</span> (x <span class="sc">==</span> <span class="st">'New Vol No'</span>) <span class="fu">return</span>(<span class="st">'pid'</span>)</span>
+<span id="cb5-4"><a href="#cb5-4"></a>  <span class="cf">if</span> (<span class="fu">startsWith</span>(x, <span class="st">'CIE pre'</span>)) <span class="fu">return</span>(<span class="st">'blue0nm'</span>)</span>
+<span id="cb5-5"><a href="#cb5-5"></a>  <span class="cf">if</span> (stringr<span class="sc">::</span><span class="fu">str_count</span>(x, <span class="st">' '</span>) <span class="sc">==</span> <span class="dv">1</span>) {</span>
+<span id="cb5-6"><a href="#cb5-6"></a>    <span class="co"># up to first (and only) blank</span></span>
+<span id="cb5-7"><a href="#cb5-7"></a>    <span class="fu">return</span>(stringr<span class="sc">::</span><span class="fu">str_split_1</span>(x, <span class="st">' '</span>)[<span class="dv">1</span>])</span>
+<span id="cb5-8"><a href="#cb5-8"></a>  }</span>
+<span id="cb5-9"><a href="#cb5-9"></a>  <span class="cf">if</span> (stringr<span class="sc">::</span><span class="fu">str_count</span>(x, <span class="st">' </span><span class="sc">\\</span><span class="st">('</span>)) {</span>
+<span id="cb5-10"><a href="#cb5-10"></a>    <span class="co"># up to first ( and replace blanks with underscores</span></span>
+<span id="cb5-11"><a href="#cb5-11"></a>    <span class="fu">gsub</span>(<span class="st">' '</span>, <span class="st">'_'</span>, stringr<span class="sc">::</span><span class="fu">str_split_1</span>(x, <span class="at">pattern =</span> <span class="st">' </span><span class="sc">\\</span><span class="st">('</span>)[[<span class="dv">1</span>]])</span>
+<span id="cb5-12"><a href="#cb5-12"></a>  } <span class="cf">else</span> x</span>
+<span id="cb5-13"><a href="#cb5-13"></a>},</span>
+<span id="cb5-14"><a href="#cb5-14"></a>                      <span class="at">FUN.VALUE =</span> <span class="st">'character'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="variable-names" class="slide level2 smaller">
 <h2>Variable names</h2>
-<div class="cell" data-hash="uvb_vitaminD_cache/revealjs/varnames_e0b7127c4e0a41ad5a0d9b6bdc15590a">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="fu">str</span>(dat0)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="cell" data-hash="uvb_vitaminD_cache/revealjs/varnames_ec49b83ddd24c929033bdf5f2838ac2c">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="fu">str</span>(dat0)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>tibble [75 × 29] (S3: tbl_df/tbl/data.frame)
  $ Study            : chr [1:75] "ICE56 A2b" "ICE56 A2b" "ICE56 A2b" "ICE56 A2b" ...
@@ -707,68 +547,50 @@ Attaching package: 'tidyr'</code></pre>
 <section id="create-time-variable" class="slide level2">
 <h2>Create time variable</h2>
 <p>Variables <code>Baseline</code>, <code>Post UVR 1</code>, <code>Post UVR 2</code>, … provide the D3 measurements at the consecutive visits. For a decent model I need an explicit time variable.</p>
-<div class="cell" data-hash="uvb_vitaminD_cache/revealjs/make time_569831b337584c72080f87d2a134c325">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a>dat_ts <span class="ot">&lt;-</span> dat0 <span class="sc">|&gt;</span></span>
-<span id="cb19-2"><a href="#cb19-2"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(<span class="st">'Study'</span>, <span class="st">'Original Vol No'</span>, <span class="st">'Date of 1st irrad'</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb19-3"><a href="#cb19-3"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>(</span>
-<span id="cb19-4"><a href="#cb19-4"></a>    <span class="at">cols =</span> <span class="fu">c</span>(<span class="st">'Baseline'</span>,</span>
-<span id="cb19-5"><a href="#cb19-5"></a>             tidyselect<span class="sc">::</span><span class="fu">starts_with</span>(<span class="st">'Post'</span>, <span class="at">ignore.case=</span><span class="cn">FALSE</span>)),</span>
-<span id="cb19-6"><a href="#cb19-6"></a>    <span class="at">values_to =</span> <span class="st">'d3'</span>,</span>
-<span id="cb19-7"><a href="#cb19-7"></a>    <span class="at">values_drop_na =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb19-8"><a href="#cb19-8"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
-<span id="cb19-9"><a href="#cb19-9"></a>    <span class="at">time =</span> dplyr<span class="sc">::</span><span class="fu">coalesce</span>(</span>
-<span id="cb19-10"><a href="#cb19-10"></a>      <span class="fu">as.integer</span>(stringr<span class="sc">::</span><span class="fu">str_split_i</span>(name, <span class="st">' '</span>, <span class="dv">3</span>)), <span class="dv">0</span>),</span>
-<span id="cb19-11"><a href="#cb19-11"></a>    <span class="at">.after =</span> UV6)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="cell" data-hash="uvb_vitaminD_cache/revealjs/make time_b2174b12253244bdf197f9255e2606d0">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>dat_ts <span class="ot">&lt;-</span> dat0 <span class="sc">|&gt;</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(<span class="st">'Study'</span>, <span class="st">'Original Vol No'</span>, <span class="st">'Date of 1st irrad'</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb8-3"><a href="#cb8-3"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>(</span>
+<span id="cb8-4"><a href="#cb8-4"></a>    <span class="at">cols =</span> <span class="fu">c</span>(<span class="st">'Baseline'</span>,</span>
+<span id="cb8-5"><a href="#cb8-5"></a>             tidyselect<span class="sc">::</span><span class="fu">starts_with</span>(<span class="st">'Post'</span>, <span class="at">ignore.case=</span><span class="cn">FALSE</span>)),</span>
+<span id="cb8-6"><a href="#cb8-6"></a>    <span class="at">values_to =</span> <span class="st">'d3'</span>,</span>
+<span id="cb8-7"><a href="#cb8-7"></a>    <span class="at">values_drop_na =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb8-8"><a href="#cb8-8"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb8-9"><a href="#cb8-9"></a>    <span class="at">time =</span> dplyr<span class="sc">::</span><span class="fu">coalesce</span>(</span>
+<span id="cb8-10"><a href="#cb8-10"></a>      <span class="fu">as.integer</span>(stringr<span class="sc">::</span><span class="fu">str_split_i</span>(name, <span class="st">' '</span>, <span class="dv">3</span>)), <span class="dv">0</span>),</span>
+<span id="cb8-11"><a href="#cb8-11"></a>    <span class="at">.after =</span> UV6)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="full-vs-partial-body-irradiation" class="slide level2">
 <h2>Full vs partial body irradiation</h2>
-<div class="cell" data-hash="uvb_vitaminD_cache/revealjs/full vs partial_3d121d6e0811306abdcaddec850a1e95">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a><span class="fu">ggplot</span>(dat_ts, <span class="fu">aes</span>(<span class="at">x=</span>time, <span class="at">y=</span>d3, <span class="at">group=</span>pid, <span class="at">color=</span>UVR)) <span class="sc">+</span></span>
-<span id="cb20-2"><a href="#cb20-2"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">facet_wrap</span>(<span class="fu">vars</span>(BSA))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="cell" data-hash="uvb_vitaminD_cache/revealjs/full vs partial_0c5ca34654fc6e317962908580f738cc">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">ggplot</span>(dat_ts, <span class="fu">aes</span>(<span class="at">x=</span>time, <span class="at">y=</span>d3, <span class="at">group=</span>pid, <span class="at">color=</span>UVR)) <span class="sc">+</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">facet_wrap</span>(<span class="fu">vars</span>(BSA))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
 <img data-src="uvb_vitaminD_files/figure-revealjs/full vs partial-1.png" width="960" class="r-stretch"></section>
 <section id="full-vs-partial-trends" class="slide level2">
 <h2>Full vs partial trends</h2>
-<div class="cell" data-hash="uvb_vitaminD_cache/revealjs/trends_2ecd1d37b715404192eff1ea17f0cbb0">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="fu">ggplot</span>(dat_ts, <span class="fu">aes</span>(<span class="at">x=</span>time, <span class="at">y=</span>d3, <span class="at">group=</span>BSA, <span class="at">color=</span>BSA)) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">geom_smooth</span>(<span class="at">method =</span> lm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stderr">
-<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
-</div>
+<div class="cell" data-hash="uvb_vitaminD_cache/revealjs/trends_baf348200bceae1238460629b4f03c9d">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="fu">ggplot</span>(dat_ts, <span class="fu">aes</span>(<span class="at">x=</span>time, <span class="at">y=</span>d3, <span class="at">group=</span>BSA, <span class="at">color=</span>BSA)) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">geom_smooth</span>(<span class="at">method =</span> lm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
 <img data-src="uvb_vitaminD_files/figure-revealjs/trends-1.png" width="960" class="r-stretch"></section>
 <section id="control-of-similar-baseline" class="slide level2">
 <h2>Control of similar baseline</h2>
-<div class="cell" data-hash="uvb_vitaminD_cache/revealjs/similar baseline_364e3449f1b5535554e3cee9e038a317">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>dat_ts <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(time <span class="sc">==</span> <span class="dv">0</span>),</span>
-<span id="cb23-2"><a href="#cb23-2"></a>       <span class="fu">aes</span>(<span class="at">x=</span>BSA, <span class="at">y=</span>d3, <span class="at">group=</span>BSA, <span class="at">fill=</span>BSA)) <span class="sc">+</span></span>
-<span id="cb23-3"><a href="#cb23-3"></a>  <span class="fu">geom_boxplot</span>(<span class="at">alpha=</span>.<span class="dv">8</span>) <span class="sc">+</span></span>
-<span id="cb23-4"><a href="#cb23-4"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"none"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="cell" data-hash="uvb_vitaminD_cache/revealjs/similar baseline_dff652c53ae08b041aeb162c9ee2b559">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>dat_ts <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(time <span class="sc">==</span> <span class="dv">0</span>),</span>
+<span id="cb11-2"><a href="#cb11-2"></a>       <span class="fu">aes</span>(<span class="at">x=</span>BSA, <span class="at">y=</span>d3, <span class="at">group=</span>BSA, <span class="at">fill=</span>BSA)) <span class="sc">+</span></span>
+<span id="cb11-3"><a href="#cb11-3"></a>  <span class="fu">geom_boxplot</span>(<span class="at">alpha=</span>.<span class="dv">8</span>) <span class="sc">+</span></span>
+<span id="cb11-4"><a href="#cb11-4"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"none"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
 <img data-src="uvb_vitaminD_files/figure-revealjs/similar baseline-1.png" width="960" class="r-stretch"></section>
 <section id="mixed-model" class="slide level2">
 <h2>Mixed model</h2>
-<div class="cell" data-hash="uvb_vitaminD_cache/revealjs/model_00be1f3de32d3b61607aaaaf9f9db9cc">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a>(m5 <span class="ot">&lt;-</span> lme4<span class="sc">::</span><span class="fu">lmer</span>(d3 <span class="sc">~</span> time <span class="sc">+</span> BSA<span class="sc">:</span>time <span class="sc">+</span> UVR<span class="sc">:</span>time <span class="sc">+</span> (time<span class="sc">|</span>pid),</span>
-<span id="cb24-2"><a href="#cb24-2"></a>                  <span class="at">data =</span> dat_ts))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="cell" data-hash="uvb_vitaminD_cache/revealjs/model_bbd7a48f71d705bbba67179d14dea158">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>(m5 <span class="ot">&lt;-</span> lme4<span class="sc">::</span><span class="fu">lmer</span>(d3 <span class="sc">~</span> time <span class="sc">+</span> BSA<span class="sc">:</span>time <span class="sc">+</span> UVR<span class="sc">:</span>time <span class="sc">+</span> (time<span class="sc">|</span>pid),</span>
+<span id="cb12-2"><a href="#cb12-2"></a>                  <span class="at">data =</span> dat_ts))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Linear mixed model fit by REML ['lmerMod']
 Formula: d3 ~ time + BSA:time + UVR:time + (time | pid)
@@ -788,40 +610,21 @@ Fixed Effects:
 </section>
 <section id="quality-control-residuals-vs-predictions" class="slide level2">
 <h2>Quality control: residuals vs predictions</h2>
-<div class="cell" data-hash="uvb_vitaminD_cache/revealjs/resplot_3ce29e2b604259fe24ee114c3d05d474">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a><span class="fu">plot</span>(m5)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="cell" data-hash="uvb_vitaminD_cache/revealjs/resplot_a946befbd4c51c3743e6eb65006a40a7">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="fu">plot</span>(m5)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
 <img data-src="uvb_vitaminD_files/figure-revealjs/resplot-1.png" width="960" class="r-stretch"></section>
 <section id="confidence-intervals-of-model-parameters" class="slide level2">
 <h2>Confidence intervals of model parameters</h2>
-<div class="cell" data-hash="uvb_vitaminD_cache/revealjs/confint_25d36573325b387df9a52afb6837db61">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a>mixedup<span class="sc">::</span><span class="fu">summarise_model</span>(m5)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stderr">
-<pre><code>Computing profile confidence intervals ...</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-Variance Components:</code></pre>
-</div>
+<div class="cell" data-hash="uvb_vitaminD_cache/revealjs/confint_13ce6f5bb67f9253a7634dacaa181449">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>mixedup<span class="sc">::</span><span class="fu">summarise_model</span>(m5)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>    Group    Effect Variance    SD SD_2.5 SD_97.5 Var_prop
       pid Intercept   276.53 16.63  14.04   19.71     0.90
       pid      time     3.93  1.98   1.48    2.39     0.01
- Residual        NA    26.83  5.18   4.76    5.67     0.09</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-Fixed Effects:</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>         Term Value   SE     t P_value Lower_2.5 Upper_97.5
+ Residual        NA    26.83  5.18   4.76    5.67     0.09
+         Term Value   SE     t P_value Lower_2.5 Upper_97.5
     Intercept 34.73 1.97 17.61    0.00     30.87      38.60
          time  8.01 0.48 16.70    0.00      7.07       8.95
    time:BSAPB -7.14 0.82 -8.75    0.00     -8.74      -5.54
@@ -834,52 +637,40 @@ Fixed Effects:</code></pre>
 </section>
 <section id="d3-time-courses-by-exposure-by-radiation-source" class="slide level2">
 <h2>D3 time courses by exposure &amp; by radiation source</h2>
-<div class="cell" data-hash="uvb_vitaminD_cache/revealjs/time courses_a51e71446bbf40ffb63ac29cccaad051">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a><span class="co"># import model prediction</span></span>
-<span id="cb33-2"><a href="#cb33-2"></a><span class="co"># create a factor of all combinations of BSA and UVR</span></span>
-<span id="cb33-3"><a href="#cb33-3"></a><span class="co"># replace radiation doses with cumulative dose over study</span></span>
-<span id="cb33-4"><a href="#cb33-4"></a>dat <span class="ot">&lt;-</span> dat_ts <span class="sc">|&gt;</span></span>
-<span id="cb33-5"><a href="#cb33-5"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">pred=</span><span class="fu">predict</span>(m5),</span>
-<span id="cb33-6"><a href="#cb33-6"></a>                <span class="at">BSA_UVR=</span><span class="fu">interaction</span>(BSA,UVR, <span class="at">lex.order =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb33-7"><a href="#cb33-7"></a>                <span class="fu">across</span>(CIE_Erythema<span class="sc">:</span>Olds, <span class="cf">function</span>(x) x<span class="sc">*</span>time))</span>
-<span id="cb33-8"><a href="#cb33-8"></a>ggplot2<span class="sc">::</span><span class="fu">ggplot</span>(</span>
-<span id="cb33-9"><a href="#cb33-9"></a>  <span class="at">data=</span>dat,</span>
-<span id="cb33-10"><a href="#cb33-10"></a>  <span class="fu">aes</span>(<span class="at">x=</span>time, <span class="at">y=</span>d3, <span class="at">color=</span>BSA_UVR, <span class="at">group=</span>BSA_UVR)) <span class="sc">+</span></span>
-<span id="cb33-11"><a href="#cb33-11"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">geom_path</span>(<span class="fu">aes</span>(<span class="at">group=</span>pid)) <span class="sc">+</span> </span>
-<span id="cb33-12"><a href="#cb33-12"></a>  <span class="fu">geom_path</span>(<span class="fu">aes</span>(<span class="at">group=</span>pid, <span class="at">y=</span>pred, <span class="at">alpha=</span><span class="fl">0.4</span>)) <span class="sc">+</span></span>
-<span id="cb33-13"><a href="#cb33-13"></a>  ggplot2<span class="sc">::</span><span class="fu">facet_wrap</span>(<span class="sc">~</span>BSA_UVR) <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="cell" data-hash="uvb_vitaminD_cache/revealjs/time courses_5e592ab76712335b803bf180976e9e11">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="co"># import model prediction</span></span>
+<span id="cb17-2"><a href="#cb17-2"></a><span class="co"># create a factor of all combinations of BSA and UVR</span></span>
+<span id="cb17-3"><a href="#cb17-3"></a><span class="co"># replace radiation doses with cumulative dose over study</span></span>
+<span id="cb17-4"><a href="#cb17-4"></a>dat <span class="ot">&lt;-</span> dat_ts <span class="sc">|&gt;</span></span>
+<span id="cb17-5"><a href="#cb17-5"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">pred=</span><span class="fu">predict</span>(m5),</span>
+<span id="cb17-6"><a href="#cb17-6"></a>                <span class="at">BSA_UVR=</span><span class="fu">interaction</span>(BSA,UVR, <span class="at">lex.order =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb17-7"><a href="#cb17-7"></a>                <span class="fu">across</span>(CIE_Erythema<span class="sc">:</span>Olds, <span class="cf">function</span>(x) x<span class="sc">*</span>time))</span>
+<span id="cb17-8"><a href="#cb17-8"></a>ggplot2<span class="sc">::</span><span class="fu">ggplot</span>(</span>
+<span id="cb17-9"><a href="#cb17-9"></a>  <span class="at">data=</span>dat,</span>
+<span id="cb17-10"><a href="#cb17-10"></a>  <span class="fu">aes</span>(<span class="at">x=</span>time, <span class="at">y=</span>d3, <span class="at">color=</span>BSA_UVR, <span class="at">group=</span>BSA_UVR)) <span class="sc">+</span></span>
+<span id="cb17-11"><a href="#cb17-11"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">geom_path</span>(<span class="fu">aes</span>(<span class="at">group=</span>pid)) <span class="sc">+</span> </span>
+<span id="cb17-12"><a href="#cb17-12"></a>  <span class="fu">geom_path</span>(<span class="fu">aes</span>(<span class="at">group=</span>pid, <span class="at">y=</span>pred, <span class="at">alpha=</span><span class="fl">0.4</span>)) <span class="sc">+</span></span>
+<span id="cb17-13"><a href="#cb17-13"></a>  ggplot2<span class="sc">::</span><span class="fu">facet_wrap</span>(<span class="sc">~</span>BSA_UVR) <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 </section>
-<section id="d3-time-courses-by-exposure-by-radiation-source-output" class="slide level2 output-location-slide"><h2>D3 time courses by exposure &amp; by radiation source</h2><div class="cell output-location-slide" data-hash="uvb_vitaminD_cache/revealjs/time courses_a51e71446bbf40ffb63ac29cccaad051">
+<section id="d3-time-courses-by-exposure-by-radiation-source-output" class="slide level2 output-location-slide"><h2>D3 time courses by exposure &amp; by radiation source</h2><div class="cell output-location-slide" data-hash="uvb_vitaminD_cache/revealjs/time courses_5e592ab76712335b803bf180976e9e11">
 <div class="cell-output-display">
 <p><img data-src="uvb_vitaminD_files/figure-revealjs/time courses-1.png" width="960"></p>
 </div>
 </div></section><section id="measurements-vs-predictions" class="slide level2">
 <h2>Measurements vs predictions</h2>
-<div class="cell" data-hash="uvb_vitaminD_cache/revealjs/measures_ac31c3d5efe1ea10339e2410e9673974">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a><span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>pred, <span class="at">y=</span>d3, <span class="at">colour=</span>BSA_UVR, <span class="at">group=</span>BSA_UVR), <span class="at">data=</span>dat) <span class="sc">+</span></span>
-<span id="cb34-2"><a href="#cb34-2"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">geom_smooth</span>(<span class="at">se=</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stderr">
-<pre><code>`geom_smooth()` using method = 'loess' and formula = 'y ~ x'</code></pre>
-</div>
+<div class="cell" data-hash="uvb_vitaminD_cache/revealjs/measures_0fdeaf8187c2d9de5097caf2acbe2a58">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>pred, <span class="at">y=</span>d3, <span class="at">colour=</span>BSA_UVR, <span class="at">group=</span>BSA_UVR), <span class="at">data=</span>dat) <span class="sc">+</span></span>
+<span id="cb18-2"><a href="#cb18-2"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">geom_smooth</span>(<span class="at">se=</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
 <img data-src="uvb_vitaminD_files/figure-revealjs/measures-1.png" width="960" class="r-stretch"></section>
 <section id="correlation-of-radiation-profiles-with-predicted-d3" class="slide level2">
 <h2>Correlation of radiation profiles with predicted D3</h2>
-<div class="cell" data-hash="uvb_vitaminD_cache/revealjs/corr_3c4e6d9e3c7e46063b68846e9ab50a2b">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a><span class="fu">options</span>(<span class="at">width=</span><span class="dv">78</span>)</span>
-<span id="cb36-2"><a href="#cb36-2"></a>stats<span class="sc">::</span><span class="fu">cor</span>(dat <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="fu">c</span>(<span class="st">'d3'</span>, tidyselect<span class="sc">::</span><span class="fu">starts_with</span>(<span class="st">'blue'</span>))))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="cell" data-hash="uvb_vitaminD_cache/revealjs/corr_07cf82a813c79018e1eb0474294cd9b2">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="fu">options</span>(<span class="at">width=</span><span class="dv">78</span>)</span>
+<span id="cb19-2"><a href="#cb19-2"></a>stats<span class="sc">::</span><span class="fu">cor</span>(dat <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="fu">c</span>(<span class="st">'d3'</span>, tidyselect<span class="sc">::</span><span class="fu">starts_with</span>(<span class="st">'blue'</span>))))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>               d3   blue0nm   blue1nm   blue2nm   blue3nm   blue4nm   blue5nm
 d3      1.0000000 0.4131079 0.4207088 0.4289413 0.4354258 0.4402644 0.4416013
