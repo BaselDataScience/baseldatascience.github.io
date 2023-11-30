@@ -51,7 +51,7 @@ Topics | * linkedIn as electronic backbone for the group <br/> * better (?) anal
 #| echo: false
 # list names of post folders
 posts <- list.dirs(
-  path = here::here("posts"),
+  path = "posts",
   full.names = FALSE,
   recursive = FALSE
 )

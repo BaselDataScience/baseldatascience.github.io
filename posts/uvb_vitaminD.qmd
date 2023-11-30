@@ -2,8 +2,13 @@
 title: "UVB radiation and vitamin D balance"
 author: "Reinhold Koch"
 date: 2023-12-06
+image: uvb_vitD.jpeg
+abstract: Redoing the analysis of a London based study of UVB application in winter
+  on 75 subjects.
 format:
   revealjs:
+    code-fold: false
+    toc: false
     footer: "Basel Data Science"
     theme: beige
 execute: 
