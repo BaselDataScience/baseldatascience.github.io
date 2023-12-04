@@ -3,7 +3,7 @@ title: "UVB radiation and vitamin D balance"
 author: "Reinhold Koch"
 date: 2023-12-06
 image: uvb_vitD.jpeg
-abstract: Redoing the analysis of a London based study of UVB application in winter
+abstract: Reanalysis of a London based study of UVB application towards end of winter
   on 75 subjects.
 format:
   revealjs:
@@ -122,7 +122,7 @@ str(dat0)
 
 ## Create time variable
 
-Variables `Baseline`, `Post UVR 1`, `Post UVR 2`, ... provide the D3 measurements at the consecutive visits. For a decent model I need an explicit time variable.
+Variables `Baseline`, `Post UVR 1`, `Post UVR 2`, ... provide the D3 measurements at the consecutive visits. For a decent model I want an explicit time variable.
 
 ```{r make time}
 dat_ts <- dat0 |>
@@ -156,27 +156,28 @@ ggplot(dat_ts, aes(x=time, y=d3, group=BSA, color=BSA)) + geom_point() + geom_sm
 ```{r similar baseline}
 ggplot(data=dat_ts |> dplyr::filter(time == 0),
        aes(x=BSA, y=d3, group=BSA, fill=BSA)) +
-  geom_boxplot(alpha=.8) +
+  geom_boxplot() +
   geom_point() + theme(legend.position="none")
 ```
 
 ## Mixed model
 
 ```{r model}
-(m5 <- lme4::lmer(d3 ~ time + BSA:time + UVR:time + (time|pid),
+options(width=78)
+(m1 <- lme4::lmer(d3 ~ time + BSA:time + UVR:time + (time|pid),
                   data = dat_ts))
 ```
 
 ## Quality control: residuals vs predictions
 
 ```{r resplot}
-plot(m5)
+plot(m1)
 ```
 
 ## Confidence intervals of model parameters
 
 ```{r confint}
-mixedup::summarise_model(m5)
+mixedup::summarise_model(m1)
 ```
 
 ## D3 time courses by exposure & by radiation source
@@ -187,27 +188,85 @@ mixedup::summarise_model(m5)
 # create a factor of all combinations of BSA and UVR
 # replace radiation doses with cumulative dose over study
 dat <- dat_ts |>
-  dplyr::mutate(pred=predict(m5),
+  dplyr::mutate(pred1=predict(m1),
                 BSA_UVR=interaction(BSA,UVR, lex.order = TRUE),
-                across(CIE_Erythema:Olds, function(x) x*time))
+                across(CIE_Erythema:Olds, function(x) x*time/100))
 ggplot2::ggplot(
   data=dat,
   aes(x=time, y=d3, color=BSA_UVR, group=BSA_UVR)) +
   geom_point() + geom_path(aes(group=pid)) + 
-  geom_path(aes(group=pid, y=pred, alpha=0.4)) +
+  geom_path(aes(group=pid, y=pred1)) +
   ggplot2::facet_wrap(~BSA_UVR) + theme(legend.position = "none")
 ```
 
 ## Measurements vs predictions
 
 ```{r measures}
-ggplot(aes(x=pred, y=d3, colour=BSA_UVR, group=BSA_UVR), data=dat) +
+ggplot(aes(x=pred1, y=d3, colour=BSA_UVR, group=BSA_UVR), data=dat) +
   geom_point() + geom_smooth(se=FALSE)
 ```
 
 ## Correlation of radiation profiles with predicted D3
 
 ```{r corr}
-options(width=78)
 stats::cor(dat |> dplyr::select(c('d3', tidyselect::starts_with('blue'))))
+```
+
+## cumulative irradiation dose instead of time
+
+```{r model2}
+(m2 <- lme4::lmer(d3 ~ blue5nm + BSA:blue5nm + UVR:blue5nm + (blue5nm|pid),
+                  data = dat,
+                  control=lmerControl(optimizer = 'Nelder_Mead')))
+```
+
+## Quality control: residuals vs predictions
+
+```{r resplot2}
+plot(m2)
+```
+
+## Confidence intervals of model 2 parameters
+
+```{r confint2}
+mixedup::summarise_model(m2)
+```
+
+-   That means the source of UVB radiation, UVR, is not significant here!
+
+## simplest(?) model
+
+```{r model3}
+(m3 <- lme4::lmer(d3 ~ blue5nm + BSA:blue5nm + (blue5nm|pid),
+                  data = dat,
+                  control=lmerControl(optimizer = 'Nelder_Mead')))
+```
+
+## Quality control: residuals vs predictions
+
+```{r resplot3}
+plot(m3)
+```
+
+## Confidence intervals of model 3 parameters
+
+```{r confint3}
+mixedup::summarise_model(m3)
+```
+
+## Measurements vs final predictions
+
+```{r measures vs final predictions}
+dat_final <- dat |>
+  dplyr::mutate(pred3=predict(m3))
+ggplot(aes(x=pred3, y=d3, colour=BSA_UVR, group=BSA_UVR), data=dat_final) +
+  geom_point() + geom_smooth(se=FALSE)
+```
+
+## comparison of prediction quality
+
+```{r prediction quality}
+ggplot(data=dat_final, aes(x=d3, y=pred1)) + geom_point(color='black') +
+  geom_point(aes(y=pred3, alpha=0.4), color='red') +
+  theme(legend.position="none")
 ```
