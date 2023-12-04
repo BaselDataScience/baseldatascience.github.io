@@ -137,7 +137,7 @@
     "href": "posts/uvb_vitaminD.html#create-time-variable",
     "title": "UVB radiation and vitamin D balance",
     "section": "Create time variable",
-    "text": "Create time variable\nVariables Baseline, Post UVR 1, Post UVR 2, … provide the D3 measurements at the consecutive visits. For a decent model I need an explicit time variable.\n\ndat_ts &lt;- dat0 |&gt;\n  dplyr::select(-c('Study', 'Original Vol No', 'Date of 1st irrad')) |&gt;\n  tidyr::pivot_longer(\n    cols = c('Baseline',\n             tidyselect::starts_with('Post', ignore.case=FALSE)),\n    values_to = 'd3',\n    values_drop_na = TRUE) |&gt; \n  dplyr::mutate(\n    time = dplyr::coalesce(\n      as.integer(stringr::str_split_i(name, ' ', 3)), 0),\n    .after = UV6)"
+    "text": "Create time variable\nVariables Baseline, Post UVR 1, Post UVR 2, … provide the D3 measurements at the consecutive visits. For a decent model I want an explicit time variable.\n\ndat_ts &lt;- dat0 |&gt;\n  dplyr::select(-c('Study', 'Original Vol No', 'Date of 1st irrad')) |&gt;\n  tidyr::pivot_longer(\n    cols = c('Baseline',\n             tidyselect::starts_with('Post', ignore.case=FALSE)),\n    values_to = 'd3',\n    values_drop_na = TRUE) |&gt; \n  dplyr::mutate(\n    time = dplyr::coalesce(\n      as.integer(stringr::str_split_i(name, ' ', 3)), 0),\n    .after = UV6)"
   },
   {
     "objectID": "posts/uvb_vitaminD.html#full-vs-partial-body-irradiation",
@@ -158,35 +158,35 @@
     "href": "posts/uvb_vitaminD.html#control-of-similar-baseline",
     "title": "UVB radiation and vitamin D balance",
     "section": "Control of similar baseline",
-    "text": "Control of similar baseline\n\nggplot(data=dat_ts |&gt; dplyr::filter(time == 0),\n       aes(x=BSA, y=d3, group=BSA, fill=BSA)) +\n  geom_boxplot(alpha=.8) +\n  geom_point() + theme(legend.position=\"none\")"
+    "text": "Control of similar baseline\n\nggplot(data=dat_ts |&gt; dplyr::filter(time == 0),\n       aes(x=BSA, y=d3, group=BSA, fill=BSA)) +\n  geom_boxplot() +\n  geom_point() + theme(legend.position=\"none\")"
   },
   {
     "objectID": "posts/uvb_vitaminD.html#mixed-model",
     "href": "posts/uvb_vitaminD.html#mixed-model",
     "title": "UVB radiation and vitamin D balance",
     "section": "Mixed model",
-    "text": "Mixed model\n\n(m5 &lt;- lme4::lmer(d3 ~ time + BSA:time + UVR:time + (time|pid),\n                  data = dat_ts))\n\nLinear mixed model fit by REML ['lmerMod']\nFormula: d3 ~ time + BSA:time + UVR:time + (time | pid)\n   Data: dat_ts\nREML criterion at convergence: 2811.554\nRandom effects:\n Groups   Name        Std.Dev. Corr \n pid      (Intercept) 16.629        \n          time         1.983   -0.51\n Residual              5.180        \nNumber of obs: 400, groups:  pid, 75\nFixed Effects:\n (Intercept)          time    time:BSAPB  time:UVRFIL2  time:UVRFIL9  time:UVRPUVA   time:UVRUV6  \n     34.7330        8.0092       -7.1377        1.1129        0.6351       -3.9687        1.7181"
+    "text": "Mixed model\n\noptions(width=78)\n(m1 &lt;- lme4::lmer(d3 ~ time + BSA:time + UVR:time + (time|pid),\n                  data = dat_ts))\n\nLinear mixed model fit by REML ['lmerMod']\nFormula: d3 ~ time + BSA:time + UVR:time + (time | pid)\n   Data: dat_ts\nREML criterion at convergence: 2811.554\nRandom effects:\n Groups   Name        Std.Dev. Corr \n pid      (Intercept) 16.629        \n          time         1.983   -0.51\n Residual              5.180        \nNumber of obs: 400, groups:  pid, 75\nFixed Effects:\n (Intercept)          time    time:BSAPB  time:UVRFIL2  time:UVRFIL9  \n     34.7330        8.0092       -7.1377        1.1129        0.6351  \ntime:UVRPUVA   time:UVRUV6  \n     -3.9687        1.7181"
   },
   {
     "objectID": "posts/uvb_vitaminD.html#quality-control-residuals-vs-predictions",
     "href": "posts/uvb_vitaminD.html#quality-control-residuals-vs-predictions",
     "title": "UVB radiation and vitamin D balance",
     "section": "Quality control: residuals vs predictions",
-    "text": "Quality control: residuals vs predictions\n\nplot(m5)"
+    "text": "Quality control: residuals vs predictions\n\nplot(m1)"
   },
   {
     "objectID": "posts/uvb_vitaminD.html#confidence-intervals-of-model-parameters",
     "href": "posts/uvb_vitaminD.html#confidence-intervals-of-model-parameters",
     "title": "UVB radiation and vitamin D balance",
     "section": "Confidence intervals of model parameters",
-    "text": "Confidence intervals of model parameters\n\nmixedup::summarise_model(m5)\n\n    Group    Effect Variance    SD SD_2.5 SD_97.5 Var_prop\n      pid Intercept   276.53 16.63  14.04   19.71     0.90\n      pid      time     3.93  1.98   1.48    2.39     0.01\n Residual        NA    26.83  5.18   4.76    5.67     0.09\n         Term Value   SE     t P_value Lower_2.5 Upper_97.5\n    Intercept 34.73 1.97 17.61    0.00     30.87      38.60\n         time  8.01 0.48 16.70    0.00      7.07       8.95\n   time:BSAPB -7.14 0.82 -8.75    0.00     -8.74      -5.54\n time:UVRFIL2  1.11 1.13  0.99    0.32     -1.10       3.33\n time:UVRFIL9  0.64 1.13  0.56    0.57     -1.58       2.85\n time:UVRPUVA -3.97 0.76 -5.24    0.00     -5.45      -2.48\n  time:UVRUV6  1.72 0.78  2.20    0.03      0.19       3.25"
+    "text": "Confidence intervals of model parameters\n\nmixedup::summarise_model(m1)\n\n    Group    Effect Variance    SD SD_2.5 SD_97.5 Var_prop\n      pid Intercept   276.53 16.63  14.04   19.71     0.90\n      pid      time     3.93  1.98   1.48    2.39     0.01\n Residual        NA    26.83  5.18   4.76    5.67     0.09\n         Term Value   SE     t P_value Lower_2.5 Upper_97.5\n    Intercept 34.73 1.97 17.61    0.00     30.87      38.60\n         time  8.01 0.48 16.70    0.00      7.07       8.95\n   time:BSAPB -7.14 0.82 -8.75    0.00     -8.74      -5.54\n time:UVRFIL2  1.11 1.13  0.99    0.32     -1.10       3.33\n time:UVRFIL9  0.64 1.13  0.56    0.57     -1.58       2.85\n time:UVRPUVA -3.97 0.76 -5.24    0.00     -5.45      -2.48\n  time:UVRUV6  1.72 0.78  2.20    0.03      0.19       3.25"
   },
   {
     "objectID": "posts/uvb_vitaminD.html#d3-time-courses-by-exposure-by-radiation-source",
     "href": "posts/uvb_vitaminD.html#d3-time-courses-by-exposure-by-radiation-source",
     "title": "UVB radiation and vitamin D balance",
     "section": "D3 time courses by exposure & by radiation source",
-    "text": "D3 time courses by exposure & by radiation source\n\n# import model prediction\n# create a factor of all combinations of BSA and UVR\n# replace radiation doses with cumulative dose over study\ndat &lt;- dat_ts |&gt;\n  dplyr::mutate(pred=predict(m5),\n                BSA_UVR=interaction(BSA,UVR, lex.order = TRUE),\n                across(CIE_Erythema:Olds, function(x) x*time))\nggplot2::ggplot(\n  data=dat,\n  aes(x=time, y=d3, color=BSA_UVR, group=BSA_UVR)) +\n  geom_point() + geom_path(aes(group=pid)) + \n  geom_path(aes(group=pid, y=pred, alpha=0.4)) +\n  ggplot2::facet_wrap(~BSA_UVR) + theme(legend.position = \"none\")"
+    "text": "D3 time courses by exposure & by radiation source\n\n# import model prediction\n# create a factor of all combinations of BSA and UVR\n# replace radiation doses with cumulative dose over study\ndat &lt;- dat_ts |&gt;\n  dplyr::mutate(pred1=predict(m1),\n                BSA_UVR=interaction(BSA,UVR, lex.order = TRUE),\n                across(CIE_Erythema:Olds, function(x) x*time/100))\nggplot2::ggplot(\n  data=dat,\n  aes(x=time, y=d3, color=BSA_UVR, group=BSA_UVR)) +\n  geom_point() + geom_path(aes(group=pid)) + \n  geom_path(aes(group=pid, y=pred1)) +\n  ggplot2::facet_wrap(~BSA_UVR) + theme(legend.position = \"none\")"
   },
   {
     "objectID": "posts/uvb_vitaminD.html#d3-time-courses-by-exposure-by-radiation-source-output",
@@ -200,14 +200,70 @@
     "href": "posts/uvb_vitaminD.html#measurements-vs-predictions",
     "title": "UVB radiation and vitamin D balance",
     "section": "Measurements vs predictions",
-    "text": "Measurements vs predictions\n\nggplot(aes(x=pred, y=d3, colour=BSA_UVR, group=BSA_UVR), data=dat) +\n  geom_point() + geom_smooth(se=FALSE)"
+    "text": "Measurements vs predictions\n\nggplot(aes(x=pred1, y=d3, colour=BSA_UVR, group=BSA_UVR), data=dat) +\n  geom_point() + geom_smooth(se=FALSE)"
   },
   {
     "objectID": "posts/uvb_vitaminD.html#correlation-of-radiation-profiles-with-predicted-d3",
     "href": "posts/uvb_vitaminD.html#correlation-of-radiation-profiles-with-predicted-d3",
     "title": "UVB radiation and vitamin D balance",
     "section": "Correlation of radiation profiles with predicted D3",
-    "text": "Correlation of radiation profiles with predicted D3\n\noptions(width=78)\nstats::cor(dat |&gt; dplyr::select(c('d3', tidyselect::starts_with('blue'))))\n\n               d3   blue0nm   blue1nm   blue2nm   blue3nm   blue4nm   blue5nm\nd3      1.0000000 0.4131079 0.4207088 0.4289413 0.4354258 0.4402644 0.4416013\nblue0nm 0.4131079 1.0000000 0.9968950 0.9870326 0.9692452 0.9431757 0.9087768\nblue1nm 0.4207088 0.9968950 1.0000000 0.9965712 0.9854712 0.9660437 0.9381268\nblue2nm 0.4289413 0.9870326 0.9965712 1.0000000 0.9961381 0.9840550 0.9634114\nblue3nm 0.4354258 0.9692452 0.9854712 0.9961381 1.0000000 0.9958556 0.9831601\nblue4nm 0.4402644 0.9431757 0.9660437 0.9840550 0.9958556 1.0000000 0.9957017\nblue5nm 0.4416013 0.9087768 0.9381268 0.9634114 0.9831601 0.9957017 1.0000000\nblue6nm 0.4374423 0.8667492 0.9023448 0.9346632 0.9621595 0.9829376 0.9957418\nblue7nm 0.4287545 0.8189607 0.8603039 0.8991626 0.9339357 0.9625240 0.9834741\nblue8nm 0.4166475 0.7679570 0.8143766 0.8590846 0.9004365 0.9361598 0.9646269\nblue9nm 0.4023697 0.7165619 0.7672847 0.8170271 0.8641078 0.9061162 0.9412731\n          blue6nm   blue7nm   blue8nm   blue9nm\nd3      0.4374423 0.4287545 0.4166475 0.4023697\nblue0nm 0.8667492 0.8189607 0.7679570 0.7165619\nblue1nm 0.9023448 0.8603039 0.8143766 0.7672847\nblue2nm 0.9346632 0.8991626 0.8590846 0.8170271\nblue3nm 0.9621595 0.9339357 0.9004365 0.8641078\nblue4nm 0.9829376 0.9625240 0.9361598 0.9061162\nblue5nm 0.9957418 0.9834741 0.9646269 0.9412731\nblue6nm 1.0000000 0.9959728 0.9848030 0.9683425\nblue7nm 0.9959728 1.0000000 0.9964056 0.9868094\nblue8nm 0.9848030 0.9964056 1.0000000 0.9969735\nblue9nm 0.9683425 0.9868094 0.9969735 1.0000000\n\n\n\n\nBasel Data Science"
+    "text": "Correlation of radiation profiles with predicted D3\n\nstats::cor(dat |&gt; dplyr::select(c('d3', tidyselect::starts_with('blue'))))\n\n               d3   blue0nm   blue1nm   blue2nm   blue3nm   blue4nm   blue5nm\nd3      1.0000000 0.4131079 0.4207088 0.4289413 0.4354258 0.4402644 0.4416013\nblue0nm 0.4131079 1.0000000 0.9968950 0.9870326 0.9692452 0.9431757 0.9087768\nblue1nm 0.4207088 0.9968950 1.0000000 0.9965712 0.9854712 0.9660437 0.9381268\nblue2nm 0.4289413 0.9870326 0.9965712 1.0000000 0.9961381 0.9840550 0.9634114\nblue3nm 0.4354258 0.9692452 0.9854712 0.9961381 1.0000000 0.9958556 0.9831601\nblue4nm 0.4402644 0.9431757 0.9660437 0.9840550 0.9958556 1.0000000 0.9957017\nblue5nm 0.4416013 0.9087768 0.9381268 0.9634114 0.9831601 0.9957017 1.0000000\nblue6nm 0.4374423 0.8667492 0.9023448 0.9346632 0.9621595 0.9829376 0.9957418\nblue7nm 0.4287545 0.8189607 0.8603039 0.8991626 0.9339357 0.9625240 0.9834741\nblue8nm 0.4166475 0.7679570 0.8143766 0.8590846 0.9004365 0.9361598 0.9646269\nblue9nm 0.4023697 0.7165619 0.7672847 0.8170271 0.8641078 0.9061162 0.9412731\n          blue6nm   blue7nm   blue8nm   blue9nm\nd3      0.4374423 0.4287545 0.4166475 0.4023697\nblue0nm 0.8667492 0.8189607 0.7679570 0.7165619\nblue1nm 0.9023448 0.8603039 0.8143766 0.7672847\nblue2nm 0.9346632 0.8991626 0.8590846 0.8170271\nblue3nm 0.9621595 0.9339357 0.9004365 0.8641078\nblue4nm 0.9829376 0.9625240 0.9361598 0.9061162\nblue5nm 0.9957418 0.9834741 0.9646269 0.9412731\nblue6nm 1.0000000 0.9959728 0.9848030 0.9683425\nblue7nm 0.9959728 1.0000000 0.9964056 0.9868094\nblue8nm 0.9848030 0.9964056 1.0000000 0.9969735\nblue9nm 0.9683425 0.9868094 0.9969735 1.0000000"
+  },
+  {
+    "objectID": "posts/uvb_vitaminD.html#cumulative-irradiation-dose-instead-of-time",
+    "href": "posts/uvb_vitaminD.html#cumulative-irradiation-dose-instead-of-time",
+    "title": "UVB radiation and vitamin D balance",
+    "section": "cumulative irradiation dose instead of time",
+    "text": "cumulative irradiation dose instead of time\n\n(m2 &lt;- lme4::lmer(d3 ~ blue5nm + BSA:blue5nm + UVR:blue5nm + (blue5nm|pid),\n                  data = dat,\n                  control=lmerControl(optimizer = 'Nelder_Mead')))\n\nLinear mixed model fit by REML ['lmerMod']\nFormula: d3 ~ blue5nm + BSA:blue5nm + UVR:blue5nm + (blue5nm | pid)\n   Data: dat\nREML criterion at convergence: 2817.294\nRandom effects:\n Groups   Name        Std.Dev. Corr \n pid      (Intercept) 16.48         \n          blue5nm      1.42    -0.53\n Residual              5.27         \nNumber of obs: 400, groups:  pid, 75\nFixed Effects:\n    (Intercept)          blue5nm    blue5nm:BSAPB  blue5nm:UVRFIL2  \n        34.7326           5.3637          -4.1213           0.1152  \nblue5nm:UVRFIL9  blue5nm:UVRPUVA   blue5nm:UVRUV6  \n         0.5710           1.3815           0.2030"
+  },
+  {
+    "objectID": "posts/uvb_vitaminD.html#quality-control-residuals-vs-predictions-1",
+    "href": "posts/uvb_vitaminD.html#quality-control-residuals-vs-predictions-1",
+    "title": "UVB radiation and vitamin D balance",
+    "section": "Quality control: residuals vs predictions",
+    "text": "Quality control: residuals vs predictions\n\nplot(m2)"
+  },
+  {
+    "objectID": "posts/uvb_vitaminD.html#confidence-intervals-of-model-2-parameters",
+    "href": "posts/uvb_vitaminD.html#confidence-intervals-of-model-2-parameters",
+    "title": "UVB radiation and vitamin D balance",
+    "section": "Confidence intervals of model 2 parameters",
+    "text": "Confidence intervals of model 2 parameters\n\nmixedup::summarise_model(m2)\n\n    Group    Effect Variance    SD SD_2.5 SD_97.5 Var_prop\n      pid Intercept   271.74 16.48  13.91   19.54     0.90\n      pid   blue5nm     2.02  1.42   1.03    1.75     0.01\n Residual        NA    27.77  5.27   4.84    5.77     0.09\n            Term Value   SE     t P_value Lower_2.5 Upper_97.5\n       Intercept 34.73 1.96 17.74    0.00     30.89      38.57\n         blue5nm  5.36 0.34 16.01    0.00      4.71       6.02\n   blue5nm:BSAPB -4.12 0.55 -7.56    0.00     -5.19      -3.05\n blue5nm:UVRFIL2  0.12 0.77  0.15    0.88     -1.40       1.63\n blue5nm:UVRFIL9  0.57 0.86  0.66    0.51     -1.12       2.27\n blue5nm:UVRPUVA  1.38 0.76  1.81    0.07     -0.11       2.87\n  blue5nm:UVRUV6  0.20 0.53  0.38    0.70     -0.84       1.24\n\n\n\nThat means the source of UVB radiation, UVR, is not significant here!"
+  },
+  {
+    "objectID": "posts/uvb_vitaminD.html#simplest-model",
+    "href": "posts/uvb_vitaminD.html#simplest-model",
+    "title": "UVB radiation and vitamin D balance",
+    "section": "simplest(?) model",
+    "text": "simplest(?) model\n\n(m3 &lt;- lme4::lmer(d3 ~ blue5nm + BSA:blue5nm + (blue5nm|pid),\n                  data = dat,\n                  control=lmerControl(optimizer = 'Nelder_Mead')))\n\nLinear mixed model fit by REML ['lmerMod']\nFormula: d3 ~ blue5nm + BSA:blue5nm + (blue5nm | pid)\n   Data: dat\nREML criterion at convergence: 2824.432\nRandom effects:\n Groups   Name        Std.Dev. Corr \n pid      (Intercept) 16.494        \n          blue5nm      1.401   -0.54\n Residual              5.283        \nNumber of obs: 400, groups:  pid, 75\nFixed Effects:\n  (Intercept)        blue5nm  blue5nm:BSAPB  \n       34.902          5.582         -4.109"
+  },
+  {
+    "objectID": "posts/uvb_vitaminD.html#quality-control-residuals-vs-predictions-2",
+    "href": "posts/uvb_vitaminD.html#quality-control-residuals-vs-predictions-2",
+    "title": "UVB radiation and vitamin D balance",
+    "section": "Quality control: residuals vs predictions",
+    "text": "Quality control: residuals vs predictions\n\nplot(m3)"
+  },
+  {
+    "objectID": "posts/uvb_vitaminD.html#confidence-intervals-of-model-3-parameters",
+    "href": "posts/uvb_vitaminD.html#confidence-intervals-of-model-3-parameters",
+    "title": "UVB radiation and vitamin D balance",
+    "section": "Confidence intervals of model 3 parameters",
+    "text": "Confidence intervals of model 3 parameters\n\nmixedup::summarise_model(m3)\n\n    Group    Effect Variance    SD SD_2.5 SD_97.5 Var_prop\n      pid Intercept   272.06 16.49  13.92   19.55     0.90\n      pid   blue5nm     1.96  1.40   1.04    1.77     0.01\n Residual        NA    27.91  5.28   4.85    5.79     0.09\n          Term Value   SE      t P_value Lower_2.5 Upper_97.5\n     Intercept 34.90 1.96  17.83    0.00     31.07      38.74\n       blue5nm  5.58 0.26  21.59    0.00      5.07       6.09\n blue5nm:BSAPB -4.11 0.34 -12.11    0.00     -4.77      -3.44"
+  },
+  {
+    "objectID": "posts/uvb_vitaminD.html#measurements-vs-final-predictions",
+    "href": "posts/uvb_vitaminD.html#measurements-vs-final-predictions",
+    "title": "UVB radiation and vitamin D balance",
+    "section": "Measurements vs final predictions",
+    "text": "Measurements vs final predictions\n\ndat_final &lt;- dat |&gt;\n  dplyr::mutate(pred3=predict(m3))\nggplot(aes(x=pred3, y=d3, colour=BSA_UVR, group=BSA_UVR), data=dat_final) +\n  geom_point() + geom_smooth(se=FALSE)"
+  },
+  {
+    "objectID": "posts/uvb_vitaminD.html#comparison-of-prediction-quality",
+    "href": "posts/uvb_vitaminD.html#comparison-of-prediction-quality",
+    "title": "UVB radiation and vitamin D balance",
+    "section": "comparison of prediction quality",
+    "text": "comparison of prediction quality\n\nggplot(data=dat_final, aes(x=d3, y=pred1)) + geom_point(color='black') +\n  geom_point(aes(y=pred3, alpha=0.4), color='red') +\n  theme(legend.position=\"none\")\n\n\n\n\nBasel Data Science"
   },
   {
     "objectID": "index.html",

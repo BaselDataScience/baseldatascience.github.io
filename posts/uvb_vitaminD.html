@@ -389,7 +389,7 @@
   <link href="../site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
   <script src="../site_libs/pagedtable-1.1/js/pagedtable.js"></script>
 <meta property="og:title" content="BaselDataScience - UVB radiation and vitamin D balance">
-<meta property="og:description" content="Redoing the analysis of a London based study of UVB application in winter on 75 subjects.">
+<meta property="og:description" content="Reanalysis of a London based study of UVB application towards end of winter on 75 subjects.">
 <meta property="og:image" content="https://BaselDataScience.github.io/baseldatascience.github.io/posts/uvb_vitD.jpeg">
 <meta property="og:site-name" content="BaselDataScience">
 </head>
@@ -546,7 +546,7 @@ Reinhold Koch
 </section>
 <section id="create-time-variable" class="slide level2">
 <h2>Create time variable</h2>
-<p>Variables <code>Baseline</code>, <code>Post UVR 1</code>, <code>Post UVR 2</code>, … provide the D3 measurements at the consecutive visits. For a decent model I need an explicit time variable.</p>
+<p>Variables <code>Baseline</code>, <code>Post UVR 1</code>, <code>Post UVR 2</code>, … provide the D3 measurements at the consecutive visits. For a decent model I want an explicit time variable.</p>
 <div class="cell" data-hash="uvb_vitaminD_cache/revealjs/make time_b2174b12253244bdf197f9255e2606d0">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>dat_ts <span class="ot">&lt;-</span> dat0 <span class="sc">|&gt;</span></span>
 <span id="cb8-2"><a href="#cb8-2"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(<span class="st">'Study'</span>, <span class="st">'Original Vol No'</span>, <span class="st">'Date of 1st irrad'</span>)) <span class="sc">|&gt;</span></span>
@@ -578,19 +578,20 @@ Reinhold Koch
 <img data-src="uvb_vitaminD_files/figure-revealjs/trends-1.png" width="960" class="r-stretch"></section>
 <section id="control-of-similar-baseline" class="slide level2">
 <h2>Control of similar baseline</h2>
-<div class="cell" data-hash="uvb_vitaminD_cache/revealjs/similar baseline_dff652c53ae08b041aeb162c9ee2b559">
+<div class="cell" data-hash="uvb_vitaminD_cache/revealjs/similar baseline_cbfa43fe86e29bf138e2a7ddb4a5355f">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>dat_ts <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(time <span class="sc">==</span> <span class="dv">0</span>),</span>
 <span id="cb11-2"><a href="#cb11-2"></a>       <span class="fu">aes</span>(<span class="at">x=</span>BSA, <span class="at">y=</span>d3, <span class="at">group=</span>BSA, <span class="at">fill=</span>BSA)) <span class="sc">+</span></span>
-<span id="cb11-3"><a href="#cb11-3"></a>  <span class="fu">geom_boxplot</span>(<span class="at">alpha=</span>.<span class="dv">8</span>) <span class="sc">+</span></span>
+<span id="cb11-3"><a href="#cb11-3"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
 <span id="cb11-4"><a href="#cb11-4"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"none"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
 <img data-src="uvb_vitaminD_files/figure-revealjs/similar baseline-1.png" width="960" class="r-stretch"></section>
 <section id="mixed-model" class="slide level2">
 <h2>Mixed model</h2>
-<div class="cell" data-hash="uvb_vitaminD_cache/revealjs/model_bbd7a48f71d705bbba67179d14dea158">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>(m5 <span class="ot">&lt;-</span> lme4<span class="sc">::</span><span class="fu">lmer</span>(d3 <span class="sc">~</span> time <span class="sc">+</span> BSA<span class="sc">:</span>time <span class="sc">+</span> UVR<span class="sc">:</span>time <span class="sc">+</span> (time<span class="sc">|</span>pid),</span>
-<span id="cb12-2"><a href="#cb12-2"></a>                  <span class="at">data =</span> dat_ts))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="uvb_vitaminD_cache/revealjs/model_8869229f4934fdf5989f7029b62b7342">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="fu">options</span>(<span class="at">width=</span><span class="dv">78</span>)</span>
+<span id="cb12-2"><a href="#cb12-2"></a>(m1 <span class="ot">&lt;-</span> lme4<span class="sc">::</span><span class="fu">lmer</span>(d3 <span class="sc">~</span> time <span class="sc">+</span> BSA<span class="sc">:</span>time <span class="sc">+</span> UVR<span class="sc">:</span>time <span class="sc">+</span> (time<span class="sc">|</span>pid),</span>
+<span id="cb12-3"><a href="#cb12-3"></a>                  <span class="at">data =</span> dat_ts))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Linear mixed model fit by REML ['lmerMod']
 Formula: d3 ~ time + BSA:time + UVR:time + (time | pid)
@@ -603,22 +604,24 @@ Random effects:
  Residual              5.180        
 Number of obs: 400, groups:  pid, 75
 Fixed Effects:
- (Intercept)          time    time:BSAPB  time:UVRFIL2  time:UVRFIL9  time:UVRPUVA   time:UVRUV6  
-     34.7330        8.0092       -7.1377        1.1129        0.6351       -3.9687        1.7181  </code></pre>
+ (Intercept)          time    time:BSAPB  time:UVRFIL2  time:UVRFIL9  
+     34.7330        8.0092       -7.1377        1.1129        0.6351  
+time:UVRPUVA   time:UVRUV6  
+     -3.9687        1.7181  </code></pre>
 </div>
 </div>
 </section>
 <section id="quality-control-residuals-vs-predictions" class="slide level2">
 <h2>Quality control: residuals vs predictions</h2>
-<div class="cell" data-hash="uvb_vitaminD_cache/revealjs/resplot_a946befbd4c51c3743e6eb65006a40a7">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="fu">plot</span>(m5)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="uvb_vitaminD_cache/revealjs/resplot_5de688de2fa8bee4a2605ae7b73bf533">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="fu">plot</span>(m1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
 <img data-src="uvb_vitaminD_files/figure-revealjs/resplot-1.png" width="960" class="r-stretch"></section>
 <section id="confidence-intervals-of-model-parameters" class="slide level2">
 <h2>Confidence intervals of model parameters</h2>
-<div class="cell" data-hash="uvb_vitaminD_cache/revealjs/confint_13ce6f5bb67f9253a7634dacaa181449">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>mixedup<span class="sc">::</span><span class="fu">summarise_model</span>(m5)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="uvb_vitaminD_cache/revealjs/confint_52f5d979c857c4c623cd2d6cc5741c17">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>mixedup<span class="sc">::</span><span class="fu">summarise_model</span>(m1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>    Group    Effect Variance    SD SD_2.5 SD_97.5 Var_prop
       pid Intercept   276.53 16.63  14.04   19.71     0.90
@@ -637,40 +640,39 @@ Fixed Effects:
 </section>
 <section id="d3-time-courses-by-exposure-by-radiation-source" class="slide level2">
 <h2>D3 time courses by exposure &amp; by radiation source</h2>
-<div class="cell" data-hash="uvb_vitaminD_cache/revealjs/time courses_5e592ab76712335b803bf180976e9e11">
+<div class="cell" data-hash="uvb_vitaminD_cache/revealjs/time courses_9279b43d1c77a03cbc4d7a2985302e81">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="co"># import model prediction</span></span>
 <span id="cb17-2"><a href="#cb17-2"></a><span class="co"># create a factor of all combinations of BSA and UVR</span></span>
 <span id="cb17-3"><a href="#cb17-3"></a><span class="co"># replace radiation doses with cumulative dose over study</span></span>
 <span id="cb17-4"><a href="#cb17-4"></a>dat <span class="ot">&lt;-</span> dat_ts <span class="sc">|&gt;</span></span>
-<span id="cb17-5"><a href="#cb17-5"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">pred=</span><span class="fu">predict</span>(m5),</span>
+<span id="cb17-5"><a href="#cb17-5"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">pred1=</span><span class="fu">predict</span>(m1),</span>
 <span id="cb17-6"><a href="#cb17-6"></a>                <span class="at">BSA_UVR=</span><span class="fu">interaction</span>(BSA,UVR, <span class="at">lex.order =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb17-7"><a href="#cb17-7"></a>                <span class="fu">across</span>(CIE_Erythema<span class="sc">:</span>Olds, <span class="cf">function</span>(x) x<span class="sc">*</span>time))</span>
+<span id="cb17-7"><a href="#cb17-7"></a>                <span class="fu">across</span>(CIE_Erythema<span class="sc">:</span>Olds, <span class="cf">function</span>(x) x<span class="sc">*</span>time<span class="sc">/</span><span class="dv">100</span>))</span>
 <span id="cb17-8"><a href="#cb17-8"></a>ggplot2<span class="sc">::</span><span class="fu">ggplot</span>(</span>
 <span id="cb17-9"><a href="#cb17-9"></a>  <span class="at">data=</span>dat,</span>
 <span id="cb17-10"><a href="#cb17-10"></a>  <span class="fu">aes</span>(<span class="at">x=</span>time, <span class="at">y=</span>d3, <span class="at">color=</span>BSA_UVR, <span class="at">group=</span>BSA_UVR)) <span class="sc">+</span></span>
 <span id="cb17-11"><a href="#cb17-11"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">geom_path</span>(<span class="fu">aes</span>(<span class="at">group=</span>pid)) <span class="sc">+</span> </span>
-<span id="cb17-12"><a href="#cb17-12"></a>  <span class="fu">geom_path</span>(<span class="fu">aes</span>(<span class="at">group=</span>pid, <span class="at">y=</span>pred, <span class="at">alpha=</span><span class="fl">0.4</span>)) <span class="sc">+</span></span>
+<span id="cb17-12"><a href="#cb17-12"></a>  <span class="fu">geom_path</span>(<span class="fu">aes</span>(<span class="at">group=</span>pid, <span class="at">y=</span>pred1)) <span class="sc">+</span></span>
 <span id="cb17-13"><a href="#cb17-13"></a>  ggplot2<span class="sc">::</span><span class="fu">facet_wrap</span>(<span class="sc">~</span>BSA_UVR) <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 </section>
-<section id="d3-time-courses-by-exposure-by-radiation-source-output" class="slide level2 output-location-slide"><h2>D3 time courses by exposure &amp; by radiation source</h2><div class="cell output-location-slide" data-hash="uvb_vitaminD_cache/revealjs/time courses_5e592ab76712335b803bf180976e9e11">
+<section id="d3-time-courses-by-exposure-by-radiation-source-output" class="slide level2 output-location-slide"><h2>D3 time courses by exposure &amp; by radiation source</h2><div class="cell output-location-slide" data-hash="uvb_vitaminD_cache/revealjs/time courses_9279b43d1c77a03cbc4d7a2985302e81">
 <div class="cell-output-display">
 <p><img data-src="uvb_vitaminD_files/figure-revealjs/time courses-1.png" width="960"></p>
 </div>
 </div></section><section id="measurements-vs-predictions" class="slide level2">
 <h2>Measurements vs predictions</h2>
-<div class="cell" data-hash="uvb_vitaminD_cache/revealjs/measures_0fdeaf8187c2d9de5097caf2acbe2a58">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>pred, <span class="at">y=</span>d3, <span class="at">colour=</span>BSA_UVR, <span class="at">group=</span>BSA_UVR), <span class="at">data=</span>dat) <span class="sc">+</span></span>
+<div class="cell" data-hash="uvb_vitaminD_cache/revealjs/measures_4ba433aef0b7c944b3a223d45e63c1df">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>pred1, <span class="at">y=</span>d3, <span class="at">colour=</span>BSA_UVR, <span class="at">group=</span>BSA_UVR), <span class="at">data=</span>dat) <span class="sc">+</span></span>
 <span id="cb18-2"><a href="#cb18-2"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">geom_smooth</span>(<span class="at">se=</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
 <img data-src="uvb_vitaminD_files/figure-revealjs/measures-1.png" width="960" class="r-stretch"></section>
 <section id="correlation-of-radiation-profiles-with-predicted-d3" class="slide level2">
 <h2>Correlation of radiation profiles with predicted D3</h2>
-<div class="cell" data-hash="uvb_vitaminD_cache/revealjs/corr_07cf82a813c79018e1eb0474294cd9b2">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="fu">options</span>(<span class="at">width=</span><span class="dv">78</span>)</span>
-<span id="cb19-2"><a href="#cb19-2"></a>stats<span class="sc">::</span><span class="fu">cor</span>(dat <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="fu">c</span>(<span class="st">'d3'</span>, tidyselect<span class="sc">::</span><span class="fu">starts_with</span>(<span class="st">'blue'</span>))))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="uvb_vitaminD_cache/revealjs/corr_b0f0dd65613a0bc76794c82a2167abe1">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a>stats<span class="sc">::</span><span class="fu">cor</span>(dat <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="fu">c</span>(<span class="st">'d3'</span>, tidyselect<span class="sc">::</span><span class="fu">starts_with</span>(<span class="st">'blue'</span>))))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>               d3   blue0nm   blue1nm   blue2nm   blue3nm   blue4nm   blue5nm
 d3      1.0000000 0.4131079 0.4207088 0.4289413 0.4354258 0.4402644 0.4416013
@@ -698,8 +700,128 @@ blue8nm 0.9848030 0.9964056 1.0000000 0.9969735
 blue9nm 0.9683425 0.9868094 0.9969735 1.0000000</code></pre>
 </div>
 </div>
+</section>
+<section id="cumulative-irradiation-dose-instead-of-time" class="slide level2">
+<h2>cumulative irradiation dose instead of time</h2>
+<div class="cell" data-hash="uvb_vitaminD_cache/revealjs/model2_bddcb21594ec516a96179bb578707068">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a>(m2 <span class="ot">&lt;-</span> lme4<span class="sc">::</span><span class="fu">lmer</span>(d3 <span class="sc">~</span> blue5nm <span class="sc">+</span> BSA<span class="sc">:</span>blue5nm <span class="sc">+</span> UVR<span class="sc">:</span>blue5nm <span class="sc">+</span> (blue5nm<span class="sc">|</span>pid),</span>
+<span id="cb21-2"><a href="#cb21-2"></a>                  <span class="at">data =</span> dat,</span>
+<span id="cb21-3"><a href="#cb21-3"></a>                  <span class="at">control=</span><span class="fu">lmerControl</span>(<span class="at">optimizer =</span> <span class="st">'Nelder_Mead'</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Linear mixed model fit by REML ['lmerMod']
+Formula: d3 ~ blue5nm + BSA:blue5nm + UVR:blue5nm + (blue5nm | pid)
+   Data: dat
+REML criterion at convergence: 2817.294
+Random effects:
+ Groups   Name        Std.Dev. Corr 
+ pid      (Intercept) 16.48         
+          blue5nm      1.42    -0.53
+ Residual              5.27         
+Number of obs: 400, groups:  pid, 75
+Fixed Effects:
+    (Intercept)          blue5nm    blue5nm:BSAPB  blue5nm:UVRFIL2  
+        34.7326           5.3637          -4.1213           0.1152  
+blue5nm:UVRFIL9  blue5nm:UVRPUVA   blue5nm:UVRUV6  
+         0.5710           1.3815           0.2030  </code></pre>
+</div>
+</div>
+</section>
+<section id="quality-control-residuals-vs-predictions-1" class="slide level2">
+<h2>Quality control: residuals vs predictions</h2>
+<div class="cell" data-hash="uvb_vitaminD_cache/revealjs/resplot2_9378210b918d99d93f8dc2d8d6b2e718">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="fu">plot</span>(m2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
-<div class="footer footer-default">
+</div>
+<img data-src="uvb_vitaminD_files/figure-revealjs/resplot2-1.png" width="960" class="r-stretch"></section>
+<section id="confidence-intervals-of-model-2-parameters" class="slide level2">
+<h2>Confidence intervals of model 2 parameters</h2>
+<div class="cell" data-hash="uvb_vitaminD_cache/revealjs/confint2_d97b3397c5541180732e622a364a8bcc">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a>mixedup<span class="sc">::</span><span class="fu">summarise_model</span>(m2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    Group    Effect Variance    SD SD_2.5 SD_97.5 Var_prop
+      pid Intercept   271.74 16.48  13.91   19.54     0.90
+      pid   blue5nm     2.02  1.42   1.03    1.75     0.01
+ Residual        NA    27.77  5.27   4.84    5.77     0.09
+            Term Value   SE     t P_value Lower_2.5 Upper_97.5
+       Intercept 34.73 1.96 17.74    0.00     30.89      38.57
+         blue5nm  5.36 0.34 16.01    0.00      4.71       6.02
+   blue5nm:BSAPB -4.12 0.55 -7.56    0.00     -5.19      -3.05
+ blue5nm:UVRFIL2  0.12 0.77  0.15    0.88     -1.40       1.63
+ blue5nm:UVRFIL9  0.57 0.86  0.66    0.51     -1.12       2.27
+ blue5nm:UVRPUVA  1.38 0.76  1.81    0.07     -0.11       2.87
+  blue5nm:UVRUV6  0.20 0.53  0.38    0.70     -0.84       1.24</code></pre>
+</div>
+</div>
+<ul>
+<li>That means the source of UVB radiation, UVR, is not significant here!</li>
+</ul>
+</section>
+<section id="simplest-model" class="slide level2">
+<h2>simplest(?) model</h2>
+<div class="cell" data-hash="uvb_vitaminD_cache/revealjs/model3_a3ac7b285a1f196b3b6849a93c061e5b">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a>(m3 <span class="ot">&lt;-</span> lme4<span class="sc">::</span><span class="fu">lmer</span>(d3 <span class="sc">~</span> blue5nm <span class="sc">+</span> BSA<span class="sc">:</span>blue5nm <span class="sc">+</span> (blue5nm<span class="sc">|</span>pid),</span>
+<span id="cb26-2"><a href="#cb26-2"></a>                  <span class="at">data =</span> dat,</span>
+<span id="cb26-3"><a href="#cb26-3"></a>                  <span class="at">control=</span><span class="fu">lmerControl</span>(<span class="at">optimizer =</span> <span class="st">'Nelder_Mead'</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Linear mixed model fit by REML ['lmerMod']
+Formula: d3 ~ blue5nm + BSA:blue5nm + (blue5nm | pid)
+   Data: dat
+REML criterion at convergence: 2824.432
+Random effects:
+ Groups   Name        Std.Dev. Corr 
+ pid      (Intercept) 16.494        
+          blue5nm      1.401   -0.54
+ Residual              5.283        
+Number of obs: 400, groups:  pid, 75
+Fixed Effects:
+  (Intercept)        blue5nm  blue5nm:BSAPB  
+       34.902          5.582         -4.109  </code></pre>
+</div>
+</div>
+</section>
+<section id="quality-control-residuals-vs-predictions-2" class="slide level2">
+<h2>Quality control: residuals vs predictions</h2>
+<div class="cell" data-hash="uvb_vitaminD_cache/revealjs/resplot3_b93bae07582715938c7dc9fb234bf50e">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a><span class="fu">plot</span>(m3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+<img data-src="uvb_vitaminD_files/figure-revealjs/resplot3-1.png" width="960" class="r-stretch"></section>
+<section id="confidence-intervals-of-model-3-parameters" class="slide level2">
+<h2>Confidence intervals of model 3 parameters</h2>
+<div class="cell" data-hash="uvb_vitaminD_cache/revealjs/confint3_f414c24444c607f4aa2bbe5ca53c1d0e">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a>mixedup<span class="sc">::</span><span class="fu">summarise_model</span>(m3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    Group    Effect Variance    SD SD_2.5 SD_97.5 Var_prop
+      pid Intercept   272.06 16.49  13.92   19.55     0.90
+      pid   blue5nm     1.96  1.40   1.04    1.77     0.01
+ Residual        NA    27.91  5.28   4.85    5.79     0.09
+          Term Value   SE      t P_value Lower_2.5 Upper_97.5
+     Intercept 34.90 1.96  17.83    0.00     31.07      38.74
+       blue5nm  5.58 0.26  21.59    0.00      5.07       6.09
+ blue5nm:BSAPB -4.11 0.34 -12.11    0.00     -4.77      -3.44</code></pre>
+</div>
+</div>
+</section>
+<section id="measurements-vs-final-predictions" class="slide level2">
+<h2>Measurements vs final predictions</h2>
+<div class="cell" data-hash="uvb_vitaminD_cache/revealjs/measures vs final predictions_dfc3f4111b246d037d10df8fa1f649e6">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a>dat_final <span class="ot">&lt;-</span> dat <span class="sc">|&gt;</span></span>
+<span id="cb31-2"><a href="#cb31-2"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">pred3=</span><span class="fu">predict</span>(m3))</span>
+<span id="cb31-3"><a href="#cb31-3"></a><span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>pred3, <span class="at">y=</span>d3, <span class="at">colour=</span>BSA_UVR, <span class="at">group=</span>BSA_UVR), <span class="at">data=</span>dat_final) <span class="sc">+</span></span>
+<span id="cb31-4"><a href="#cb31-4"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">geom_smooth</span>(<span class="at">se=</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+<img data-src="uvb_vitaminD_files/figure-revealjs/measures vs final predictions-1.png" width="960" class="r-stretch"></section>
+<section id="comparison-of-prediction-quality" class="slide level2">
+<h2>comparison of prediction quality</h2>
+<div class="cell" data-hash="uvb_vitaminD_cache/revealjs/prediction quality_4d75234ad306e138fd760ced6bf0446d">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>dat_final, <span class="fu">aes</span>(<span class="at">x=</span>d3, <span class="at">y=</span>pred1)) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">color=</span><span class="st">'black'</span>) <span class="sc">+</span></span>
+<span id="cb32-2"><a href="#cb32-2"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">y=</span>pred3, <span class="at">alpha=</span><span class="fl">0.4</span>), <span class="at">color=</span><span class="st">'red'</span>) <span class="sc">+</span></span>
+<span id="cb32-3"><a href="#cb32-3"></a>  <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"none"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+
+<img data-src="uvb_vitaminD_files/figure-revealjs/prediction quality-1.png" width="960" class="r-stretch"><div class="footer footer-default">
 <p>Basel Data Science</p>
 </div>
 </section>
