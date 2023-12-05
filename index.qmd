@@ -22,31 +22,38 @@ format:
     font-family: ["Ubuntu", sans-serif]
     mainfont: "Ubuntu"
     title-block-banner: baseldatasciencelogo.jpeg
+editor: 
+  markdown: 
+    wrap: sentence
 ---
 
-[^banner]
+[^1]
+
+[^1]: banner picture (c) CC-BY-4.0 based on <https://commons.wikimedia.org/wiki/File:Basel-Muenster-04-gje.jpg>
 
 # About Basel Data Science
 
 **BaselDataScience**'s purpose is to organize **data science events in Basel**.
 Historically mainly focussed on R, we are open for other languages as the landscape is evolving.
-Right now we begin with a monthly jour fixe, the first Wednesday of each month, starting at
-18:00 in [Unternehmen Mitte, Gerbergasse 30, 4001 Basel](https://mitte.ch/).
+Right now we begin with a monthly jour fixe, the first Wednesday of each month, starting at 18:00 in [Unternehmen Mitte, Gerbergasse 30, 4001 Basel](https://mitte.ch/).
 Look for some laptops and some Basel data science pictures.
 
 Topics are open to suggestions and contributions in the form of short presentations / discussions!
 Longer topics are welcome, too, but please announce these in the corresponding event on linkedIn.
 
+There is also an electronic forum for online discussions within the group based on [zulip]( https://baseldatascience.zulipchat.com/join/cf6md2ekmg24q7avqnfi4qdk/).
+Feel free to contribute!
+
 # [Events](events.qmd)
 
-
- | Next meeting
----- | ----
-When | 2023-12-06 18:00
-Where | Unternehmen Mitte, Gerbergasse 30, 4001 Basel
-Topics | * linkedIn as electronic backbone for the group <br/> * zulip for Q&A and electronic discussions <br/> * better (?) analysis of UVB irradiation and vitamin D studied in [paper](https://www.pnas.org/doi/10.1073/pnas.2015867118)
+| Next meeting |                                                                                                                                                                                                                                       |
+|------------------------------------|------------------------------------|
+| When         | 2023-12-06 18:00                                                                                                                                                                                                                      |
+| Where        | Unternehmen Mitte, Gerbergasse 30, 4001 Basel                                                                                                                                                                                         |
+| Topics       | \* linkedIn as electronic backbone for the group <br/> \* zulip for Q&A and electronic discussions <br/> \* better (?) analysis of UVB irradiation and vitamin D studied in [paper](https://www.pnas.org/doi/10.1073/pnas.2015867118) |
 
 ### contributions from events
+
 ```{r write-redirects}
 #| echo: false
 # list names of post folders
@@ -90,5 +97,3 @@ category_redirects <- paste0("/category/", keys, " ", "/#category=", values)
 # write the _redirect file
 writeLines(c(post_redirects, category_redirects), here::here("_site", "_redirects"))
 ```
-
-[^banner]: banner picture (c) CC-BY-4.0 based on [https://commons.wikimedia.org/wiki/File:Basel-Muenster-04-gje.jpg](https://commons.wikimedia.org/wiki/File:Basel-Muenster-04-gje.jpg)
