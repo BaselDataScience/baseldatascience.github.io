@@ -49,9 +49,9 @@ Feel free to contribute!
 
 | Next meeting |                                                                                                                                                                                                                                       |
 |------------------------------------|------------------------------------|
-| When         | 2023-12-06 18:00                                                                                                                                                                                                                      |
+| When         | 2024-02-07 18:00                                                                                                                                                                                                                      |
 | Where        | Unternehmen Mitte, Gerbergasse 30, 4001 Basel                                                                                                                                                                                         |
-| Topics       | \* linkedIn as electronic backbone for the group <br/> \* zulip for Q&A and electronic discussions <br/> \* better (?) analysis of UVB irradiation and vitamin D studied in [paper](https://www.pnas.org/doi/10.1073/pnas.2015867118) |
+| Topics       | \* working with large amounts of data, like meteorological data |
 
 ### contributions from events
 
