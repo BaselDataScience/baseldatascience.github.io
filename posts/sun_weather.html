@@ -392,6 +392,8 @@
 <meta property="og:description" content="Investigation via linear models, including mixed models, how much daily average temperature is determined by solar irradiation.">
 <meta property="og:image" content="https://BaselDataScience.github.io/baseldatascience.github.io/posts/sun_weather.png">
 <meta property="og:site-name" content="BaselDataScience">
+<meta property="og:image:height" content="788">
+<meta property="og:image:width" content="1276">
 </head>
 <body class="quarto-light">
   <div class="reveal">
@@ -606,8 +608,8 @@ insltn:dlt_ -0.003  0.005  0.009 -0.342</code></pre>
 </div>
 </div>
 </section>
-<section id="deal-with-phase-lag-sun-and-temperature" class="slide level2">
-<h2>deal with phase lag sun and temperature</h2>
+<section id="deal-with-phase-lag-of-sun-and-temperature" class="slide level2">
+<h2>deal with phase lag of sun and temperature</h2>
 <div class="cell" data-hash="sun_weather_cache/revealjs/prediction_aa4ee6b27fc39fe1d0bf425bbce58ecb">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a>dat<span class="sc">$</span>pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(m0)</span>
 <span id="cb16-2"><a href="#cb16-2"></a><span class="fu">ggplot</span>(<span class="fu">subset</span>(dat, STATION <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">'01001099999'</span>, <span class="st">'64450099999'</span>, <span class="st">'40192199999'</span>)),</span>

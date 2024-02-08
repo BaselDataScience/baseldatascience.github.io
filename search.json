@@ -343,11 +343,11 @@
     "text": "a parsimonious mixed effect model\n\nm0 &lt;- lme4::lmer(TEMP ~ ELEVATION + insolation * delta_maxsun + (delta_maxsun|STATION),\n                 data=dat)\nsummary(m0)\n\nLinear mixed model fit by REML ['lmerMod']\nFormula: TEMP ~ ELEVATION + insolation * delta_maxsun + (delta_maxsun |  \n    STATION)\n   Data: dat\n\nREML criterion at convergence: 16761814\n\nScaled residuals: \n     Min       1Q   Median       3Q      Max \n-13.5352  -0.5366   0.0216   0.5887   6.3420 \n\nRandom effects:\n Groups   Name         Variance Std.Dev. Corr\n STATION  (Intercept)  41.38    6.433        \n          delta_maxsun 31.36    5.600    0.75\n Residual              19.75    4.444        \nNumber of obs: 2866271, groups:  STATION, 7894\n\nFixed effects:\n                          Estimate Std. Error t value\n(Intercept)             -1.3189055  0.0799846  -16.49\nELEVATION               -2.6139726  0.1041290  -25.10\ninsolation               2.0087287  0.0008365 2401.31\ndelta_maxsun            -0.7451291  0.0679113  -10.97\ninsolation:delta_maxsun -1.2813487  0.0034485 -371.56\n\nCorrelation of Fixed Effects:\n            (Intr) ELEVAT insltn dlt_mx\nELEVATION   -0.416                     \ninsolation  -0.081 -0.002              \ndelta_maxsn  0.627 -0.001 -0.004       \ninsltn:dlt_ -0.003  0.005  0.009 -0.342"
   },
   {
-    "objectID": "posts/sun_weather.html#deal-with-phase-lag-sun-and-temperature",
-    "href": "posts/sun_weather.html#deal-with-phase-lag-sun-and-temperature",
+    "objectID": "posts/sun_weather.html#deal-with-phase-lag-of-sun-and-temperature",
+    "href": "posts/sun_weather.html#deal-with-phase-lag-of-sun-and-temperature",
     "title": "Sun Drives Weather",
-    "section": "deal with phase lag sun and temperature",
-    "text": "deal with phase lag sun and temperature\n\ndat$pred &lt;- predict(m0)\nggplot(subset(dat, STATION %in% c('01001099999', '64450099999', '40192199999')),\naes(x=DATE, y=TEMP)) + geom_point() +\nfacet_wrap(~LATITUDE) + geom_point(color='green', aes(y=pred))"
+    "section": "deal with phase lag of sun and temperature",
+    "text": "deal with phase lag of sun and temperature\n\ndat$pred &lt;- predict(m0)\nggplot(subset(dat, STATION %in% c('01001099999', '64450099999', '40192199999')),\naes(x=DATE, y=TEMP)) + geom_point() +\nfacet_wrap(~LATITUDE) + geom_point(color='green', aes(y=pred))"
   },
   {
     "objectID": "posts/sun_weather.html#station-specifics",
