@@ -1,0 +1,234 @@
+---
+title: "Sun Drives Weather"
+author: "Reinhold Koch"
+date: 2024-02-07
+image: sun_weather.png
+abstract: Investigation via linear models, including mixed models, how much daily average
+  temperature is determined by solar irradiation.
+format:
+  revealjs:
+    code-fold: false
+    toc: false
+    footer: "Basel Data Science"
+    theme: beige
+execute: 
+  echo: true
+---
+
+```{r setup}
+#| echo: false
+
+library(dplyr)
+library(ggplot2)
+library(lme4)
+library(mixedup)
+library(readr)
+library(readxl)
+library(stats)
+library(tibble)
+
+```
+
+## Background
+
+The [National Oceanic and Atmospheric Administration](https://www.ncei.noaa.gov/products/land-based-station/global-historical-climatology-network-daily) publishes freely accessible daily climate data from thousands of weather stations in the world.
+
+I wondered how much daily average temperature in each station can be explained by solar irradiation alone.
+
+It also peeked my interest how well statistical linear models could handle the amount of data from meteorology.
+
+Let's see!
+
+## Data
+
+```{r read}
+years <- as.character(2023:2023)
+for (year in years[!file.exists(years)]) {
+  tf <- tempfile('climate', fileext = '.tar.gz')
+  download.file(url = paste0('https://www.ncei.noaa.gov/data/global-summary-of-the-day/archive/',
+                             year, '.tar.gz'),
+                destfile = tf)
+  untar(tf, exdir = year)
+}
+# col_date(format='%F')
+coltypes <- readr::cols_only(STATION='c',
+                        DATE=readr::col_date(format = '%F'),
+                        LATITUDE='d',
+                        LONGITUDE='d',
+                        ELEVATION='d',
+                        NAME='c',
+                        TEMP='d')
+
+dat0 <- dplyr::bind_rows(lapply(list.files(path=years, full.names = TRUE),
+                               readr::read_csv, col_types=coltypes))
+
+```
+
+## peek into data
+
+```{r peek}
+print(dat0, n=10, width=70)
+```
+
+## data quality
+
+```{r data quality}
+summary(dat0)
+```
+
+## "-999.9" as missing elevation and other fixes
+
+```{r missing elevation}
+dat0$ELEVATION <- ifelse(dat0$ELEVATION == -999.9, NA, dat0$ELEVATION)
+```
+
+convert temperature to Celsius and elevation to km (for numerical reasons)
+
+```{r convert}
+dat0$ELEVATION <- dat0$ELEVATION/1000
+dat0$TEMP <- (dat0$TEMP-32)*5/9
+```
+
+## how many observations per station?
+
+```{r numbers}
+tail(table(table(dat0$STATION)), n=15)
+```
+
+About half of the stations have an observation for each day in 2023.\
+Let's concentrate on the stations with at least 360 observations -
+
+and remove all stations with missing coordinates.
+
+## base data
+
+```{r base}
+nrecords <- dat0 |>
+  dplyr::group_by(STATION) |> tally()
+dat1 <- dat0 |> 
+  dplyr::filter(!is.na(LATITUDE) & !is.na(LONGITUDE) & !is.na(ELEVATION) & STATION %in% 
+                  subset(nrecords, n>=360)$STATION)
+```
+
+This data now provides my base for investigation.
+
+## functions for insolation and maximum sun elevation
+
+From Jean Meeus' book "[Astronomical Algorithms](https://www.agopax.it/Libri_astronomia/pdf/Astronomical%20Algorithms.pdf)" good approximations for solar irradiation per day and maximum sun elevation can be computed - see code for details.
+
+```{r meeus}
+#| echo: false
+# helpful functions according to Meeus https://www.agopax.it/Libri_astronomia/pdf/Astronomical%20Algorithms.pdf
+J2000_cent <- function(dt) {
+  (as.numeric(dt)-946728000.0)/3155760000.0
+}
+
+# mean obliquity of the ecliptic
+epsilon <- function(J2000T) {
+  (pi/180)*(((5.03611111111e-07*J2000T - 1.63888888889e-07)*J2000T - 0.0130041666667)*J2000T + 23.4392911111)
+}
+
+# mean anomaly of the sun
+M <- function(J2000T) (pi/180) * (J2000T*(J2000T*(J2000T*-0.00000048 - 0.0001559) + 35999.05030) + 357.52910)
+
+# eccentricity of the Earth's orbit
+ecc <- function(J2000T) J2000T*(J2000T* -0.0000001236 - 0.000042037) + 0.016708617
+
+# sun's equation of center
+C <- function(J2000T) {
+  M <- M(J2000T)
+  (pi/180) * ((J2000T*(J2000T* -0.000014 - 0.004817) + 1.914600) * sin(M) +
+  (0.019993 - 0.000101*J2000T)*sin(2*M) + 0.000290*sin(3*M))
+}
+# sun - earth distance
+rho <- function(J2000T) {
+  ecc <- ecc(J2000T)
+  1.000001018*(1-ecc*ecc) / (1 + ecc*cos(C(J2000T) + M(J2000T)))
+}
+
+# mean longitude of sun
+L0 <- function(J2000T) (pi/180) * (280.46645 + J2000T*(36000.76983 + J2000T*0.0003032))
+
+# longitude of ascending node of moon
+omega <- function(J2000T) (pi/180) * (125.04452 + J2000T*(-1934.136261 + J2000T*(0.0020708 + J2000T/450000)))
+
+# apparent longitude of sun
+lambda <- function(J2000T) L0(J2000T) + C(J2000T) - 0.00569 - 0.00478*sin(omega(J2000T))
+
+# sunrise hour angle
+h0 <- function(J2000T, latitude) {
+  x <- tan(declination(J2000T))*tan(latitude)
+  ifelse (x< -1, 0, ifelse(x>1, pi, acos(-x)))
+}
+```
+
+```{r insolation and declination}
+# sun declination
+declination <- function(J2000T) asin(sin(epsilon(J2000T)) * sin(lambda(J2000T)))
+
+# irradiation in kWh per m^2 per day
+insolation <- function(J2000T, latitude) {
+  rho <- rho(J2000T)
+  h0 <- h0(J2000T, latitude)
+  x <- sin(epsilon(J2000T)) * sin(lambda(J2000T))
+  10.4033856721 * rho*rho * (h0*sin(latitude)*x + cos(latitude)*cos(asin(x))*sin(h0))
+}
+```
+
+## add sun parameters to dataframe
+
+With astronomical functions in place I can compute for each observation the daily sun irradiation energy per m\^2 and the sine of maximum sun elevation.
+
+```{r sun}
+dat <- dat1 |>
+  dplyr::group_by(STATION) |>
+  dplyr::mutate(
+    insolation=insolation(J2000_cent(as.POSIXct(DATE)+43200), pi*LATITUDE/180),
+    delta_sol= ifelse(DATE==lag(DATE)+1, 100*(insolation-lag(insolation)), NA),
+    maxsun = cos(pi*LATITUDE/180-declination(J2000_cent(as.POSIXct(DATE)+43200))),
+    delta_maxsun=ifelse(DATE==lag(DATE)+1, 100*(maxsun-lag(maxsun)), NA)) |> 
+  ungroup() |> 
+  dplyr::filter(!is.na(delta_sol), !is.na(delta_maxsun))
+```
+
+## sun parameters at diffent latitudes
+
+```{r sun parameters}
+ggplot(subset(dat, STATION %in% c('01001099999', '64450099999', '40192199999')),
+       aes(x=DATE, y=maxsun)) + geom_point(color='green') + 
+  geom_point(color='blue', aes(y=insolation/10)) +
+  facet_wrap(~LATITUDE) + geom_point(color='black', aes(y=TEMP/15))
+```
+
+## a parsimonious mixed effect model
+
+```{r model}
+m0 <- lme4::lmer(TEMP ~ ELEVATION + insolation * delta_maxsun + (delta_maxsun|STATION),
+                 data=dat)
+summary(m0)
+```
+
+## deal with phase lag of sun and temperature
+
+```{r prediction}
+dat$pred <- predict(m0)
+ggplot(subset(dat, STATION %in% c('01001099999', '64450099999', '40192199999')),
+aes(x=DATE, y=TEMP)) + geom_point() +
+facet_wrap(~LATITUDE) + geom_point(color='green', aes(y=pred))
+```
+
+## station specifics
+
+```{r stations}
+stations <- dat[, c('STATION', 'LATITUDE', 'LONGITUDE', 'NAME')] |> 
+  dplyr::group_by(STATION) |> 
+  dplyr::slice_tail(n=1) |> 
+  dplyr::left_join(tibble::rownames_to_column(lme4::ranef(m0)$STATION, var='STATION')) |> 
+  ungroup()
+```
+
+## station plot
+
+```{r station plot}
+ggplot(data=stations, aes(x=LONGITUDE, y=LATITUDE, color=delta_maxsun)) + geom_point()
+```
