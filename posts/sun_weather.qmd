@@ -9,7 +9,7 @@ format:
   revealjs:
     code-fold: false
     toc: false
-    footer: "Basel Data Science"
+    footer: "source in https://github.com/BaselDataScience/baseldatascience.github.io/blob/main/posts/sun_weather.qmd"
     theme: beige
 execute: 
   echo: true
