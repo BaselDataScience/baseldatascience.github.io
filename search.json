@@ -361,7 +361,7 @@
     "href": "posts/sun_weather.html#station-plot",
     "title": "Sun Drives Weather",
     "section": "station plot",
-    "text": "station plot\n\nggplot(data=stations, aes(x=LONGITUDE, y=LATITUDE, color=delta_maxsun)) + geom_point()\n\n\n\n\nBasel Data Science"
+    "text": "station plot\n\nggplot(data=stations, aes(x=LONGITUDE, y=LATITUDE, color=delta_maxsun)) + geom_point()\n\n\n\n\nsource in https://github.com/BaselDataScience/baseldatascience.github.io/blob/main/posts/sun_weather.qmd"
   },
   {
     "objectID": "index.html",
