@@ -49,9 +49,9 @@ Feel free to contribute!
 
 | Next meeting |                                                                                                                                                                                                                                       |
 |------------------------------------|------------------------------------|
-| When         | 2024-02-07 18:00                                                                                                                                                                                                                      |
+| When         | 2024-03-06 18:00                                                                                                                                                                                                                      |
 | Where        | Unternehmen Mitte, Gerbergasse 30, 4001 Basel                                                                                                                                                                                         |
-| Topics       | \* working with large amounts of data, like meteorological data |
+| Topics       |  |
 
 ### contributions from events
 

@@ -20,3 +20,7 @@ website:
 format:
   html:
     css: styles.css
+
+execute:
+  freeze: auto
+  
