@@ -390,6 +390,7 @@
   <script src="../site_libs/pagedtable-1.1/js/pagedtable.js"></script>
 <meta property="og:title" content="BaselDataScience - Sun Drives Weather">
 <meta property="og:description" content="Investigation via linear models, including mixed models, how much daily average temperature is determined by solar irradiation.">
+<meta property="og:image" content="https://BaselDataScience.github.io/baseldatascience.github.io/posts/sun_weather.png">
 <meta property="og:site-name" content="BaselDataScience">
 </head>
 <body class="quarto-light">
@@ -524,7 +525,7 @@ Let’s concentrate on the stations with at least 360 observations -</p>
 </section>
 <section id="functions-for-insolation-and-maximum-sun-elevation" class="slide level2">
 <h2>functions for insolation and maximum sun elevation</h2>
-<p>From Jean Meeus’ book “Astronomical Algorithms” good approximations for solar irradiation per day and maximum sun elevation can be computed - see code for details.</p>
+<p>From Jean Meeus’ book “<a href="https://www.agopax.it/Libri_astronomia/pdf/Astronomical%20Algorithms.pdf">Astronomical Algorithms</a>” good approximations for solar irradiation per day and maximum sun elevation can be computed - see code for details.</p>
 <div class="cell" data-hash="sun_weather_cache/revealjs/insolation and declination_c265ca50f27fa697bf11e4d2782d3353">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="co"># sun declination</span></span>
 <span id="cb11-2"><a href="#cb11-2"></a>declination <span class="ot">&lt;-</span> <span class="cf">function</span>(J2000T) <span class="fu">asin</span>(<span class="fu">sin</span>(<span class="fu">epsilon</span>(J2000T)) <span class="sc">*</span> <span class="fu">sin</span>(<span class="fu">lambda</span>(J2000T)))</span>
