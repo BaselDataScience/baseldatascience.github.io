@@ -2,6 +2,7 @@
   {
     "listing": "/events.html",
     "items": [
+      "/posts/sun_weather.html",
       "/posts/uvb_vitaminD.html",
       "/posts/nationalratswahlen_2023.html",
       "/posts/2023-09-06_wastewater.html",
@@ -11,6 +12,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/sun_weather.html",
       "/posts/uvb_vitaminD.html",
       "/posts/nationalratswahlen_2023.html",
       "/posts/2023-09-06_wastewater.html",

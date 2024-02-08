@@ -28,62 +28,6 @@
     "text": "Footnotes\n\n\nbanner picture (c) CC-BY-4.0 based on https://commons.wikimedia.org/wiki/File:Basel-Muenster-04-gje.jpg↩︎"
   },
   {
-    "objectID": "posts/2023-09-06_wastewater.html",
-    "href": "posts/2023-09-06_wastewater.html",
-    "title": "Wastewater drug monitoring Europe",
-    "section": "",
-    "text": "Wastewater drug monitoring Europe\nSee https://reikoch.shinyapps.io/wastewater/ for an interactive application based on data from https://www.emcdda.europa.eu/publications/html/pods/waste-water-analysis_en#sourceData\ncode in https://github.com/baseldatascience/wastewater."
-  },
-  {
-    "objectID": "posts/rtables.html",
-    "href": "posts/rtables.html",
-    "title": "rtables",
-    "section": "",
-    "text": "rtables"
-  },
-  {
-    "objectID": "posts/nationalratswahlen_2023.html",
-    "href": "posts/nationalratswahlen_2023.html",
-    "title": "Nationalratswahlen Basel 2023",
-    "section": "",
-    "text": "On 2023-10-22 Nationalratswahlen took place in Switzerland, so also in Basel. The results can be seen on https://www.staatskanzlei.bs.ch/politische-rechte/wahlen-abstimmungen/wahlen-2023.html including the protocols how the 4 Basel seats in the Nationalrat were assigned.\nA nice open government data service are the downloadable vote counts from a link on this page. As the Swiss election system is far from simple I thought it informativ to look into the vote counts and see whether I could compute the election results myself and see whether I arrive at the same results as the Basel Staatskanzlei.\n\n\nCode\nlibrary(data.tree)\nlibrary(dplyr, warn.conflicts = FALSE)\nlibrary(philentropy)\nlibrary(readxl, warn.conflicts = FALSE)\n\ndistinctness &lt;- function(x) philentropy::H(table(x, useNA = 'ifany')/length(x)) / log(length(x), 2)\n\n\n\n\nIf not already in the active R session, I download the Excel file containing the vote counts. Excel file, because it is type safe (“01” != 1) and provides a familiar table format.\n\n\nCode\n# read in data if not already present\nif (!exists('dat0')) {\n  download.file('https://data.bs.ch/api/explore/v2.1/catalog/datasets/100281/exports/xlsx', tf &lt;- tempfile(fileext = '.xlsx'))\n  dat0 &lt;- readxl::read_xlsx(tf)\n}\ndim(dat0)\n\n\n[1] 610  90\n\n\n\n\n\nThis is a pretty wide data table with 90 columns. A description of the columns can be found as “Datensatzschema” in the tab “Information” on https://data.bs.ch/explore/dataset/100281/information. The first columns contain constant values, like wahlbezeichnung “Wahl von vier Mitgliedern des Nationalrates”.\nTo find and remove such columns I employ the entropy of a column’s values. The distinctness() function defined above returns 0 for columns with constant values and 1 for columns that have a different value for each row in the table (row identifying columns).\n\n\nCode\n# determine constant columns, move them to \"general\" dataframe\nentropy0 &lt;- sapply(dat0, distinctness)\ngeneral &lt;- unique(dat0[,names(entropy0[entropy0==0])])\ngeneral\n\n\n\n\n  \n\n\n\nCode\ndat1 &lt;- dat0[, setdiff(names(dat0), names(general))]\ndim(dat1)\n\n\n[1] 610  85"
-  },
-  {
-    "objectID": "posts/nationalratswahlen_2023.html#nationalratswahlen-basel-2023",
-    "href": "posts/nationalratswahlen_2023.html#nationalratswahlen-basel-2023",
-    "title": "Nationalratswahlen Basel 2023",
-    "section": "",
-    "text": "On 2023-10-22 Nationalratswahlen took place in Switzerland, so also in Basel. The results can be seen on https://www.staatskanzlei.bs.ch/politische-rechte/wahlen-abstimmungen/wahlen-2023.html including the protocols how the 4 Basel seats in the Nationalrat were assigned.\nA nice open government data service are the downloadable vote counts from a link on this page. As the Swiss election system is far from simple I thought it informativ to look into the vote counts and see whether I could compute the election results myself and see whether I arrive at the same results as the Basel Staatskanzlei.\n\n\nCode\nlibrary(data.tree)\nlibrary(dplyr, warn.conflicts = FALSE)\nlibrary(philentropy)\nlibrary(readxl, warn.conflicts = FALSE)\n\ndistinctness &lt;- function(x) philentropy::H(table(x, useNA = 'ifany')/length(x)) / log(length(x), 2)\n\n\n\n\nIf not already in the active R session, I download the Excel file containing the vote counts. Excel file, because it is type safe (“01” != 1) and provides a familiar table format.\n\n\nCode\n# read in data if not already present\nif (!exists('dat0')) {\n  download.file('https://data.bs.ch/api/explore/v2.1/catalog/datasets/100281/exports/xlsx', tf &lt;- tempfile(fileext = '.xlsx'))\n  dat0 &lt;- readxl::read_xlsx(tf)\n}\ndim(dat0)\n\n\n[1] 610  90\n\n\n\n\n\nThis is a pretty wide data table with 90 columns. A description of the columns can be found as “Datensatzschema” in the tab “Information” on https://data.bs.ch/explore/dataset/100281/information. The first columns contain constant values, like wahlbezeichnung “Wahl von vier Mitgliedern des Nationalrates”.\nTo find and remove such columns I employ the entropy of a column’s values. The distinctness() function defined above returns 0 for columns with constant values and 1 for columns that have a different value for each row in the table (row identifying columns).\n\n\nCode\n# determine constant columns, move them to \"general\" dataframe\nentropy0 &lt;- sapply(dat0, distinctness)\ngeneral &lt;- unique(dat0[,names(entropy0[entropy0==0])])\ngeneral\n\n\n\n\n  \n\n\n\nCode\ndat1 &lt;- dat0[, setdiff(names(dat0), names(general))]\ndim(dat1)\n\n\n[1] 610  85"
-  },
-  {
-    "objectID": "posts/nationalratswahlen_2023.html#wahlkreise",
-    "href": "posts/nationalratswahlen_2023.html#wahlkreise",
-    "title": "Nationalratswahlen Basel 2023",
-    "section": "Wahlkreise",
-    "text": "Wahlkreise\nAmong the remaining 85 columns there are 3 that identify Wahlkreise. I am not interested in the individual Wahlkreise (electoral district), but in the “Kanton Basel-Stadt”. So I split dat1 accordingly and concentrate on this pseudo Wahlkreis.\n\n\nCode\n## find right Wahlkreis for Kanton\ntable(dat1$wahlkreisbezeichnung)\n\n\n\n  Auslandschweizer Gemeinde Bettingen    Gemeinde Riehen Kanton Basel-Stadt        Stadt Basel \n               122                122                122                122                122 \n\n\nCode\n# split dat1 by Wahlkreise\nwahlkreise &lt;- split(dat1, dat1$wahlkreisbezeichnung)\n# concentrate on Kanton\nkanton0 &lt;- wahlkreise[['Kanton Basel-Stadt']]\ndim(kanton0)\n\n\n[1] 122  85\n\n\n\nscrub kanton\nThere are a number of constant columns in the kanton data table. Like with the original data table I move them out to a separate table.\n\n\nCode\nentropy_kanton &lt;- sapply(kanton0, distinctness)\nkanton_general &lt;- unique(kanton0[,names(entropy_kanton[entropy_kanton==0])])\n\nkanton &lt;- kanton0[, setdiff(names(kanton0), names(kanton_general))]\ndim(kanton)\n\n\n[1] 122  67\n\n\nThe entropy shows that the candidates’ name and its equivalents kandidaten_nr and personen_id uniquely determine a single row in the kanton table.\n\n\nexcursion: distribution of candidate ages\nJust for fun let us have a look at the distribution of the candidates’ ages:\n\n\nCode\n## age distribution of candidates\nage_distr &lt;- function(dat, dataspec=NULL) {\n  hist(dat$alter_am_jahresende_2023, freq = FALSE,\n       main = paste('Altersverteilung der Kandidaten', dataspec), xlab = 'Kandidatenalter',\n       breaks = seq(15,90,5))\n  lines(density(dat$alter_am_jahresende_2023, adjust=.5), col='blue')\n  lines(density(dat$alter_am_jahresende_2023), col='red')\n}\nage_distr(kanton)\n\n\n\n\n\nCode\n# by gender\npar(mfrow=c(2,1))\nage_distr(subset(kanton, geschlecht=='F'), 'weiblich')\nage_distr(subset(kanton, geschlecht=='M'), 'männlich')\n\n\n\n\n\nCode\npar(mfrow=c(1,1))"
-  },
-  {
-    "objectID": "posts/nationalratswahlen_2023.html#candidate-votes",
-    "href": "posts/nationalratswahlen_2023.html#candidate-votes",
-    "title": "Nationalratswahlen Basel 2023",
-    "section": "candidate votes",
-    "text": "candidate votes\nBack to the main topic: number of votes. How many did each candidate collect?\n\n\nCode\nkanton %&gt;% \n  dplyr::select(kandidaten_nr, parteikurzbezeichnung, bisher, gewahlt, ganzer_name, stimmen_total_aus_wahlzettel, hlv_nr) %&gt;% \n  dplyr::arrange(desc(stimmen_total_aus_wahlzettel))\n\n\n\n\n  \n\n\n\nNaively one could imagine the seats go to the 4 candidates with the most votes - but that ignores the intention to try to assign seats in a fashion that mirrors the votes for lists; here in Switzerland the most decisive seat distribution factor are the votes for a “Listenverbindung”."
-  },
-  {
-    "objectID": "posts/nationalratswahlen_2023.html#tree-structure-of-listenverbindungen",
-    "href": "posts/nationalratswahlen_2023.html#tree-structure-of-listenverbindungen",
-    "title": "Nationalratswahlen Basel 2023",
-    "section": "tree structure of Listenverbindungen",
-    "text": "tree structure of Listenverbindungen\nThere are Hauptlistenverbindungen and Unterlistenverbindungen, though these are not mandatory for lists, they generate a tree structure with 3 major blocks competing for 4 seats.\nAnalysis of a values in tree structures is not mainstream in R. I employ the package data.tree to do so and first need to construct another column in table lists that indicates the position in the tree:\n\n\nCode\n# tree structure of the lists:\nlists$pathString &lt;- paste('basel',\n                          dplyr::coalesce(lists$hlv_nr, ''),\n                          dplyr::coalesce(lists$ulv_nr, ''),\n                          lists$listen_nr,\n                          sep = '/'\n                          )\nzz &lt;- data.tree::as.Node(lists)\nprint(zz, 'parteikurzbezeichnung')\n\n\n        levelName parteikurzbezeichnung\n1  basel                               \n2   ¦--1                               \n3   ¦   ¦--1                           \n4   ¦   ¦   ¦--01                   FDP\n5   ¦   ¦   ¦--06                  JFDP\n6   ¦   ¦   °--26                  FDP+\n7   ¦   ¦--2                           \n8   ¦   ¦   ¦--03                   LDP\n9   ¦   ¦   ¦--23                   JLB\n10  ¦   ¦   °--34               LDP-Gew\n11  ¦   ¦--04                       EVP\n12  ¦   ¦--4                           \n13  ¦   ¦   ¦--07                 Mitte\n14  ¦   ¦   ¦--22                JMITTE\n15  ¦   ¦   °--36              Mitte60+\n16  ¦   °--6                           \n17  ¦       ¦--10                   GLP\n18  ¦       ¦--25                  JGLP\n19  ¦       ¦--32               GLP-K-U\n20  ¦       ¦--33                 GLP-B\n21  ¦       ¦--35               GLP-R-E\n22  ¦       ¦--37               GLP-KMU\n23  ¦       °--38                 GLP-I\n24  ¦--2                               \n25  ¦   ¦--3                           \n26  ¦   ¦   ¦--05                    SP\n27  ¦   ¦   ¦--20                  JUSO\n28  ¦   ¦   °--24                 SP60+\n29  ¦   °--5                           \n30  ¦       ¦--08                   BGB\n31  ¦       ¦--17              Basta-rm\n32  ¦       ¦--21                   jgb\n33  ¦       °--27              BastA-jA\n34  ¦--3                               \n35  ¦   ¦--09                       EDU\n36  ¦   °--7                           \n37  ¦       ¦--12                   SVP\n38  ¦       ¦--18                  JSVP\n39  ¦       ¦--30               SVP-Gew\n40  ¦       °--31                SVP60+\n41  ¦--11                           PdA\n42  ¦--14                            VA\n43  °--28                            MV\n\n\nThree lists, PdA, VA, and MV, do not belong to any Listenverbindung. There are three Hauptlistenverbindungen:\n\n1 conservatives\n2 moderate left\n3 SVP\n\namong which the seats have to be distributed.\n\ncandidates per Hauptlistenverbindung\n\n\nCode\n# number of candidates per Hauptliste\nzz$Do( function(x) {\n  x$kandidaten_total &lt;- Aggregate(node = x,\n                       attribute = \"kandidates\",\n                       aggFun = sum)\n                  }\n     )\ndata.tree::Get(zz$children, 'kandidaten_total')\n\n\n 1  2  3 11 14 28 \n68 28 18  3  2  3 \n\n\nExtensive use of Listenverbindungen blows up the number of candidates; Hauptlistenverbindung 1 comes with 68 of these!"
-  },
-  {
-    "objectID": "posts/nationalratswahlen_2023.html#seats-per-hauptlistenverbindung",
-    "href": "posts/nationalratswahlen_2023.html#seats-per-hauptlistenverbindung",
-    "title": "Nationalratswahlen Basel 2023",
-    "section": "seats per Hauptlistenverbindung",
-    "text": "seats per Hauptlistenverbindung\nFirst step in seat distribution is to determine the quorum: the number of votes is divided by number of seats plus 1, then the next higher integer number is set as quorum. The integer part of the division of the votes of Hauptlistenverbindungen by the quorum indicates number of seats given to the Hauplistenverbindung.\nIt is possible that this first round does not distribute all seats - as is the case here. Votes of the Hauptlistenverbindung then are divided by 1 plus number of seats received and the remaining seat goes to the Hauptlistenverbindung with the highest quotient, here 1.\n\n\nCode\n# 1st seat distribution\n(quorum1 &lt;- ceiling(sum(hl_votes)/(4+1)))\n\n\n[1] 44935\n\n\nCode\n(seats1 &lt;- floor(hl_votes/quorum1))\n\n\n 2  1  3 28 11 14 \n 2  1  0  0  0  0 \n\n\nCode\n# 2nd seat distribution\nsort(hl_votes/(1+seats1), decreasing = TRUE)\n\n\n       1        2        3       28       11       14 \n38677.00 36644.67 31600.00  2163.00  1933.00  1690.00 \n\n\nWithin the Hauptlistenverbindung the seats get distributed according to the same multi-step process first to Unterlistenverbindung, then Liste.\nDetailed protocols of this process are provided by the Basel Staatskanzlei, see https://www.staatskanzlei.bs.ch/dam/jcr:302a9016-ef8c-41b8-888a-f6d7332ff1ab/Ausw_5a.pdf.\nFor a general picture what Swiss voters can do with their ballot paper, see https://www.srf.ch/news/schweiz/wahlhilfe/kumulieren-und-panaschieren-so-waehlt-man-mit-listen."
-  },
-  {
     "objectID": "posts/uvb_vitaminD.html#background",
     "href": "posts/uvb_vitaminD.html#background",
     "title": "UVB radiation and vitamin D balance",
@@ -264,6 +208,160 @@
     "title": "UVB radiation and vitamin D balance",
     "section": "comparison of prediction quality",
     "text": "comparison of prediction quality\n\nggplot(data=dat_final, aes(x=d3, y=pred1)) + geom_point(color='black') +\n  geom_point(aes(y=pred3, alpha=0.4), color='red') +\n  theme(legend.position=\"none\")\n\n\n\n\nBasel Data Science"
+  },
+  {
+    "objectID": "posts/nationalratswahlen_2023.html",
+    "href": "posts/nationalratswahlen_2023.html",
+    "title": "Nationalratswahlen Basel 2023",
+    "section": "",
+    "text": "On 2023-10-22 Nationalratswahlen took place in Switzerland, so also in Basel. The results can be seen on https://www.staatskanzlei.bs.ch/politische-rechte/wahlen-abstimmungen/wahlen-2023.html including the protocols how the 4 Basel seats in the Nationalrat were assigned.\nA nice open government data service are the downloadable vote counts from a link on this page. As the Swiss election system is far from simple I thought it informativ to look into the vote counts and see whether I could compute the election results myself and see whether I arrive at the same results as the Basel Staatskanzlei.\n\n\nCode\nlibrary(data.tree)\nlibrary(dplyr, warn.conflicts = FALSE)\nlibrary(philentropy)\nlibrary(readxl, warn.conflicts = FALSE)\n\ndistinctness &lt;- function(x) philentropy::H(table(x, useNA = 'ifany')/length(x)) / log(length(x), 2)\n\n\n\n\nIf not already in the active R session, I download the Excel file containing the vote counts. Excel file, because it is type safe (“01” != 1) and provides a familiar table format.\n\n\nCode\n# read in data if not already present\nif (!exists('dat0')) {\n  download.file('https://data.bs.ch/api/explore/v2.1/catalog/datasets/100281/exports/xlsx', tf &lt;- tempfile(fileext = '.xlsx'))\n  dat0 &lt;- readxl::read_xlsx(tf)\n}\ndim(dat0)\n\n\n[1] 610  90\n\n\n\n\n\nThis is a pretty wide data table with 90 columns. A description of the columns can be found as “Datensatzschema” in the tab “Information” on https://data.bs.ch/explore/dataset/100281/information. The first columns contain constant values, like wahlbezeichnung “Wahl von vier Mitgliedern des Nationalrates”.\nTo find and remove such columns I employ the entropy of a column’s values. The distinctness() function defined above returns 0 for columns with constant values and 1 for columns that have a different value for each row in the table (row identifying columns).\n\n\nCode\n# determine constant columns, move them to \"general\" dataframe\nentropy0 &lt;- sapply(dat0, distinctness)\ngeneral &lt;- unique(dat0[,names(entropy0[entropy0==0])])\ngeneral\n\n\n\n\n  \n\n\n\nCode\ndat1 &lt;- dat0[, setdiff(names(dat0), names(general))]\ndim(dat1)\n\n\n[1] 610  85"
+  },
+  {
+    "objectID": "posts/nationalratswahlen_2023.html#nationalratswahlen-basel-2023",
+    "href": "posts/nationalratswahlen_2023.html#nationalratswahlen-basel-2023",
+    "title": "Nationalratswahlen Basel 2023",
+    "section": "",
+    "text": "On 2023-10-22 Nationalratswahlen took place in Switzerland, so also in Basel. The results can be seen on https://www.staatskanzlei.bs.ch/politische-rechte/wahlen-abstimmungen/wahlen-2023.html including the protocols how the 4 Basel seats in the Nationalrat were assigned.\nA nice open government data service are the downloadable vote counts from a link on this page. As the Swiss election system is far from simple I thought it informativ to look into the vote counts and see whether I could compute the election results myself and see whether I arrive at the same results as the Basel Staatskanzlei.\n\n\nCode\nlibrary(data.tree)\nlibrary(dplyr, warn.conflicts = FALSE)\nlibrary(philentropy)\nlibrary(readxl, warn.conflicts = FALSE)\n\ndistinctness &lt;- function(x) philentropy::H(table(x, useNA = 'ifany')/length(x)) / log(length(x), 2)\n\n\n\n\nIf not already in the active R session, I download the Excel file containing the vote counts. Excel file, because it is type safe (“01” != 1) and provides a familiar table format.\n\n\nCode\n# read in data if not already present\nif (!exists('dat0')) {\n  download.file('https://data.bs.ch/api/explore/v2.1/catalog/datasets/100281/exports/xlsx', tf &lt;- tempfile(fileext = '.xlsx'))\n  dat0 &lt;- readxl::read_xlsx(tf)\n}\ndim(dat0)\n\n\n[1] 610  90\n\n\n\n\n\nThis is a pretty wide data table with 90 columns. A description of the columns can be found as “Datensatzschema” in the tab “Information” on https://data.bs.ch/explore/dataset/100281/information. The first columns contain constant values, like wahlbezeichnung “Wahl von vier Mitgliedern des Nationalrates”.\nTo find and remove such columns I employ the entropy of a column’s values. The distinctness() function defined above returns 0 for columns with constant values and 1 for columns that have a different value for each row in the table (row identifying columns).\n\n\nCode\n# determine constant columns, move them to \"general\" dataframe\nentropy0 &lt;- sapply(dat0, distinctness)\ngeneral &lt;- unique(dat0[,names(entropy0[entropy0==0])])\ngeneral\n\n\n\n\n  \n\n\n\nCode\ndat1 &lt;- dat0[, setdiff(names(dat0), names(general))]\ndim(dat1)\n\n\n[1] 610  85"
+  },
+  {
+    "objectID": "posts/nationalratswahlen_2023.html#wahlkreise",
+    "href": "posts/nationalratswahlen_2023.html#wahlkreise",
+    "title": "Nationalratswahlen Basel 2023",
+    "section": "Wahlkreise",
+    "text": "Wahlkreise\nAmong the remaining 85 columns there are 3 that identify Wahlkreise. I am not interested in the individual Wahlkreise (electoral district), but in the “Kanton Basel-Stadt”. So I split dat1 accordingly and concentrate on this pseudo Wahlkreis.\n\n\nCode\n## find right Wahlkreis for Kanton\ntable(dat1$wahlkreisbezeichnung)\n\n\n\n  Auslandschweizer Gemeinde Bettingen    Gemeinde Riehen Kanton Basel-Stadt        Stadt Basel \n               122                122                122                122                122 \n\n\nCode\n# split dat1 by Wahlkreise\nwahlkreise &lt;- split(dat1, dat1$wahlkreisbezeichnung)\n# concentrate on Kanton\nkanton0 &lt;- wahlkreise[['Kanton Basel-Stadt']]\ndim(kanton0)\n\n\n[1] 122  85\n\n\n\nscrub kanton\nThere are a number of constant columns in the kanton data table. Like with the original data table I move them out to a separate table.\n\n\nCode\nentropy_kanton &lt;- sapply(kanton0, distinctness)\nkanton_general &lt;- unique(kanton0[,names(entropy_kanton[entropy_kanton==0])])\n\nkanton &lt;- kanton0[, setdiff(names(kanton0), names(kanton_general))]\ndim(kanton)\n\n\n[1] 122  67\n\n\nThe entropy shows that the candidates’ name and its equivalents kandidaten_nr and personen_id uniquely determine a single row in the kanton table.\n\n\nexcursion: distribution of candidate ages\nJust for fun let us have a look at the distribution of the candidates’ ages:\n\n\nCode\n## age distribution of candidates\nage_distr &lt;- function(dat, dataspec=NULL) {\n  hist(dat$alter_am_jahresende_2023, freq = FALSE,\n       main = paste('Altersverteilung der Kandidaten', dataspec), xlab = 'Kandidatenalter',\n       breaks = seq(15,90,5))\n  lines(density(dat$alter_am_jahresende_2023, adjust=.5), col='blue')\n  lines(density(dat$alter_am_jahresende_2023), col='red')\n}\nage_distr(kanton)\n\n\n\n\n\nCode\n# by gender\npar(mfrow=c(2,1))\nage_distr(subset(kanton, geschlecht=='F'), 'weiblich')\nage_distr(subset(kanton, geschlecht=='M'), 'männlich')\n\n\n\n\n\nCode\npar(mfrow=c(1,1))"
+  },
+  {
+    "objectID": "posts/nationalratswahlen_2023.html#candidate-votes",
+    "href": "posts/nationalratswahlen_2023.html#candidate-votes",
+    "title": "Nationalratswahlen Basel 2023",
+    "section": "candidate votes",
+    "text": "candidate votes\nBack to the main topic: number of votes. How many did each candidate collect?\n\n\nCode\nkanton %&gt;% \n  dplyr::select(kandidaten_nr, parteikurzbezeichnung, bisher, gewahlt, ganzer_name, stimmen_total_aus_wahlzettel, hlv_nr) %&gt;% \n  dplyr::arrange(desc(stimmen_total_aus_wahlzettel))\n\n\n\n\n  \n\n\n\nNaively one could imagine the seats go to the 4 candidates with the most votes - but that ignores the intention to try to assign seats in a fashion that mirrors the votes for lists; here in Switzerland the most decisive seat distribution factor are the votes for a “Listenverbindung”."
+  },
+  {
+    "objectID": "posts/nationalratswahlen_2023.html#tree-structure-of-listenverbindungen",
+    "href": "posts/nationalratswahlen_2023.html#tree-structure-of-listenverbindungen",
+    "title": "Nationalratswahlen Basel 2023",
+    "section": "tree structure of Listenverbindungen",
+    "text": "tree structure of Listenverbindungen\nThere are Hauptlistenverbindungen and Unterlistenverbindungen, though these are not mandatory for lists, they generate a tree structure with 3 major blocks competing for 4 seats.\nAnalysis of a values in tree structures is not mainstream in R. I employ the package data.tree to do so and first need to construct another column in table lists that indicates the position in the tree:\n\n\nCode\n# tree structure of the lists:\nlists$pathString &lt;- paste('basel',\n                          dplyr::coalesce(lists$hlv_nr, ''),\n                          dplyr::coalesce(lists$ulv_nr, ''),\n                          lists$listen_nr,\n                          sep = '/'\n                          )\nzz &lt;- data.tree::as.Node(lists)\nprint(zz, 'parteikurzbezeichnung')\n\n\n        levelName parteikurzbezeichnung\n1  basel                               \n2   ¦--1                               \n3   ¦   ¦--1                           \n4   ¦   ¦   ¦--01                   FDP\n5   ¦   ¦   ¦--06                  JFDP\n6   ¦   ¦   °--26                  FDP+\n7   ¦   ¦--2                           \n8   ¦   ¦   ¦--03                   LDP\n9   ¦   ¦   ¦--23                   JLB\n10  ¦   ¦   °--34               LDP-Gew\n11  ¦   ¦--04                       EVP\n12  ¦   ¦--4                           \n13  ¦   ¦   ¦--07                 Mitte\n14  ¦   ¦   ¦--22                JMITTE\n15  ¦   ¦   °--36              Mitte60+\n16  ¦   °--6                           \n17  ¦       ¦--10                   GLP\n18  ¦       ¦--25                  JGLP\n19  ¦       ¦--32               GLP-K-U\n20  ¦       ¦--33                 GLP-B\n21  ¦       ¦--35               GLP-R-E\n22  ¦       ¦--37               GLP-KMU\n23  ¦       °--38                 GLP-I\n24  ¦--2                               \n25  ¦   ¦--3                           \n26  ¦   ¦   ¦--05                    SP\n27  ¦   ¦   ¦--20                  JUSO\n28  ¦   ¦   °--24                 SP60+\n29  ¦   °--5                           \n30  ¦       ¦--08                   BGB\n31  ¦       ¦--17              Basta-rm\n32  ¦       ¦--21                   jgb\n33  ¦       °--27              BastA-jA\n34  ¦--3                               \n35  ¦   ¦--09                       EDU\n36  ¦   °--7                           \n37  ¦       ¦--12                   SVP\n38  ¦       ¦--18                  JSVP\n39  ¦       ¦--30               SVP-Gew\n40  ¦       °--31                SVP60+\n41  ¦--11                           PdA\n42  ¦--14                            VA\n43  °--28                            MV\n\n\nThree lists, PdA, VA, and MV, do not belong to any Listenverbindung. There are three Hauptlistenverbindungen:\n\n1 conservatives\n2 moderate left\n3 SVP\n\namong which the seats have to be distributed.\n\ncandidates per Hauptlistenverbindung\n\n\nCode\n# number of candidates per Hauptliste\nzz$Do( function(x) {\n  x$kandidaten_total &lt;- Aggregate(node = x,\n                       attribute = \"kandidates\",\n                       aggFun = sum)\n                  }\n     )\ndata.tree::Get(zz$children, 'kandidaten_total')\n\n\n 1  2  3 11 14 28 \n68 28 18  3  2  3 \n\n\nExtensive use of Listenverbindungen blows up the number of candidates; Hauptlistenverbindung 1 comes with 68 of these!"
+  },
+  {
+    "objectID": "posts/nationalratswahlen_2023.html#seats-per-hauptlistenverbindung",
+    "href": "posts/nationalratswahlen_2023.html#seats-per-hauptlistenverbindung",
+    "title": "Nationalratswahlen Basel 2023",
+    "section": "seats per Hauptlistenverbindung",
+    "text": "seats per Hauptlistenverbindung\nFirst step in seat distribution is to determine the quorum: the number of votes is divided by number of seats plus 1, then the next higher integer number is set as quorum. The integer part of the division of the votes of Hauptlistenverbindungen by the quorum indicates number of seats given to the Hauplistenverbindung.\nIt is possible that this first round does not distribute all seats - as is the case here. Votes of the Hauptlistenverbindung then are divided by 1 plus number of seats received and the remaining seat goes to the Hauptlistenverbindung with the highest quotient, here 1.\n\n\nCode\n# 1st seat distribution\n(quorum1 &lt;- ceiling(sum(hl_votes)/(4+1)))\n\n\n[1] 44935\n\n\nCode\n(seats1 &lt;- floor(hl_votes/quorum1))\n\n\n 2  1  3 28 11 14 \n 2  1  0  0  0  0 \n\n\nCode\n# 2nd seat distribution\nsort(hl_votes/(1+seats1), decreasing = TRUE)\n\n\n       1        2        3       28       11       14 \n38677.00 36644.67 31600.00  2163.00  1933.00  1690.00 \n\n\nWithin the Hauptlistenverbindung the seats get distributed according to the same multi-step process first to Unterlistenverbindung, then Liste.\nDetailed protocols of this process are provided by the Basel Staatskanzlei, see https://www.staatskanzlei.bs.ch/dam/jcr:302a9016-ef8c-41b8-888a-f6d7332ff1ab/Ausw_5a.pdf.\nFor a general picture what Swiss voters can do with their ballot paper, see https://www.srf.ch/news/schweiz/wahlhilfe/kumulieren-und-panaschieren-so-waehlt-man-mit-listen."
+  },
+  {
+    "objectID": "posts/rtables.html",
+    "href": "posts/rtables.html",
+    "title": "rtables",
+    "section": "",
+    "text": "rtables"
+  },
+  {
+    "objectID": "posts/2023-09-06_wastewater.html",
+    "href": "posts/2023-09-06_wastewater.html",
+    "title": "Wastewater drug monitoring Europe",
+    "section": "",
+    "text": "Wastewater drug monitoring Europe\nSee https://reikoch.shinyapps.io/wastewater/ for an interactive application based on data from https://www.emcdda.europa.eu/publications/html/pods/waste-water-analysis_en#sourceData\ncode in https://github.com/baseldatascience/wastewater."
+  },
+  {
+    "objectID": "posts/sun_weather.html#background",
+    "href": "posts/sun_weather.html#background",
+    "title": "Sun Drives Weather",
+    "section": "Background",
+    "text": "Background\nThe National Oceanic and Atmospheric Administration publishes freely accessible daily climate data from thousands of weather stations in the world.\nI wondered how much daily average temperature in each station can be explained by solar irradiation alone.\nIt also peeked my interest how well statistical linear models could handle the amount of data from meteorology.\nLet’s see!"
+  },
+  {
+    "objectID": "posts/sun_weather.html#data",
+    "href": "posts/sun_weather.html#data",
+    "title": "Sun Drives Weather",
+    "section": "Data",
+    "text": "Data\n\nyears &lt;- as.character(2023:2023)\nfor (year in years[!file.exists(years)]) {\n  tf &lt;- tempfile('climate', fileext = '.tar.gz')\n  download.file(url = paste0('https://www.ncei.noaa.gov/data/global-summary-of-the-day/archive/',\n                             year, '.tar.gz'),\n                destfile = tf)\n  untar(tf, exdir = year)\n}\n# col_date(format='%F')\ncoltypes &lt;- readr::cols_only(STATION='c',\n                        DATE=readr::col_date(format = '%F'),\n                        LATITUDE='d',\n                        LONGITUDE='d',\n                        ELEVATION='d',\n                        NAME='c',\n                        TEMP='d')\n\ndat0 &lt;- dplyr::bind_rows(lapply(list.files(path=years, full.names = TRUE),\n                               readr::read_csv, col_types=coltypes))"
+  },
+  {
+    "objectID": "posts/sun_weather.html#peek-into-data",
+    "href": "posts/sun_weather.html#peek-into-data",
+    "title": "Sun Drives Weather",
+    "section": "peek into data",
+    "text": "peek into data\n\nprint(dat0, n=10, width=70)\n\n# A tibble: 4,038,747 × 7\n   STATION     DATE       LATITUDE LONGITUDE ELEVATION NAME       TEMP\n   &lt;chr&gt;       &lt;date&gt;        &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt;\n 1 01001099999 2023-01-01     70.9     -8.67         9 JAN MAYE…  18.1\n 2 01001099999 2023-01-02     70.9     -8.67         9 JAN MAYE…  25.8\n 3 01001099999 2023-01-03     70.9     -8.67         9 JAN MAYE…  35.8\n 4 01001099999 2023-01-04     70.9     -8.67         9 JAN MAYE…  37  \n 5 01001099999 2023-01-05     70.9     -8.67         9 JAN MAYE…  35.4\n 6 01001099999 2023-01-06     70.9     -8.67         9 JAN MAYE…  32.7\n 7 01001099999 2023-01-07     70.9     -8.67         9 JAN MAYE…  34.7\n 8 01001099999 2023-01-08     70.9     -8.67         9 JAN MAYE…  35.2\n 9 01001099999 2023-01-09     70.9     -8.67         9 JAN MAYE…  34  \n10 01001099999 2023-01-10     70.9     -8.67         9 JAN MAYE…  31.6\n# ℹ 4,038,737 more rows"
+  },
+  {
+    "objectID": "posts/sun_weather.html#data-quality",
+    "href": "posts/sun_weather.html#data-quality",
+    "title": "Sun Drives Weather",
+    "section": "data quality",
+    "text": "data quality\n\nsummary(dat0)\n\n   STATION               DATE               LATITUDE        LONGITUDE       \n Length:4038747     Min.   :2023-01-01   Min.   :-90.00   Min.   :-179.983  \n Class :character   1st Qu.:2023-04-01   1st Qu.: 23.84   1st Qu.: -82.454  \n Mode  :character   Median :2023-07-02   Median : 40.08   Median :   8.517  \n                    Mean   :2023-07-01   Mean   : 31.66   Mean   :  -1.280  \n                    3rd Qu.:2023-10-02   3rd Qu.: 49.22   3rd Qu.:  64.230  \n                    Max.   :2023-12-31   Max.   : 83.65   Max.   : 179.500  \n                                         NA's   :13408    NA's   :13408     \n   ELEVATION          NAME                TEMP        \n Min.   :-999.9   Length:4038747     Min.   :-114.30  \n 1st Qu.:  31.0   Class :character   1st Qu.:  42.70  \n Median : 155.1   Mode  :character   Median :  59.70  \n Mean   : 361.8                      Mean   :  56.49  \n 3rd Qu.: 446.2                      3rd Qu.:  74.10  \n Max.   :4701.0                      Max.   : 110.00  \n NA's   :13770"
+  },
+  {
+    "objectID": "posts/sun_weather.html#as-missing-elevation-and-other-fixes",
+    "href": "posts/sun_weather.html#as-missing-elevation-and-other-fixes",
+    "title": "Sun Drives Weather",
+    "section": "“-999.9” as missing elevation and other fixes",
+    "text": "“-999.9” as missing elevation and other fixes\n\ndat0$ELEVATION &lt;- ifelse(dat0$ELEVATION == -999.9, NA, dat0$ELEVATION)\n\nconvert temperature to Celsius and elevation to km (for numerical reasons)\n\ndat0$ELEVATION &lt;- dat0$ELEVATION/1000\ndat0$TEMP &lt;- (dat0$TEMP-32)*5/9"
+  },
+  {
+    "objectID": "posts/sun_weather.html#how-many-observations-per-station",
+    "href": "posts/sun_weather.html#how-many-observations-per-station",
+    "title": "Sun Drives Weather",
+    "section": "how many observations per station?",
+    "text": "how many observations per station?\n\ntail(table(table(dat0$STATION)), n=15)\n\n\n 351  352  353  354  355  356  357  358  359  360  361  362  363  364  365 \n  63  111  171  102   75  100   99   86  117  151  220  354  459  702 6032 \n\n\nAbout half of the stations have an observation for each day in 2023.\nLet’s concentrate on the stations with at least 360 observations -\nand remove all stations with missing coordinates."
+  },
+  {
+    "objectID": "posts/sun_weather.html#base-data",
+    "href": "posts/sun_weather.html#base-data",
+    "title": "Sun Drives Weather",
+    "section": "base data",
+    "text": "base data\n\nnrecords &lt;- dat0 |&gt;\n  dplyr::group_by(STATION) |&gt; tally()\ndat1 &lt;- dat0 |&gt; \n  dplyr::filter(!is.na(LATITUDE) & !is.na(LONGITUDE) & !is.na(ELEVATION) & STATION %in% \n                  subset(nrecords, n&gt;=360)$STATION)\n\nThis data now provides my base for investigation."
+  },
+  {
+    "objectID": "posts/sun_weather.html#functions-for-insolation-and-maximum-sun-elevation",
+    "href": "posts/sun_weather.html#functions-for-insolation-and-maximum-sun-elevation",
+    "title": "Sun Drives Weather",
+    "section": "functions for insolation and maximum sun elevation",
+    "text": "functions for insolation and maximum sun elevation\nFrom Jean Meeus’ book “Astronomical Algorithms” good approximations for solar irradiation per day and maximum sun elevation can be computed - see code for details.\n\n# sun declination\ndeclination &lt;- function(J2000T) asin(sin(epsilon(J2000T)) * sin(lambda(J2000T)))\n\n# irradiation in kWh per m^2 per day\ninsolation &lt;- function(J2000T, latitude) {\n  rho &lt;- rho(J2000T)\n  h0 &lt;- h0(J2000T, latitude)\n  x &lt;- sin(epsilon(J2000T)) * sin(lambda(J2000T))\n  10.4033856721 * rho*rho * (h0*sin(latitude)*x + cos(latitude)*cos(asin(x))*sin(h0))\n}"
+  },
+  {
+    "objectID": "posts/sun_weather.html#add-sun-parameters-to-dataframe",
+    "href": "posts/sun_weather.html#add-sun-parameters-to-dataframe",
+    "title": "Sun Drives Weather",
+    "section": "add sun parameters to dataframe",
+    "text": "add sun parameters to dataframe\nWith astronomical functions in place I can compute for each observation the daily sun irradiation energy per m^2 and the sine of maximum sun elevation.\n\ndat &lt;- dat1 |&gt;\n  dplyr::group_by(STATION) |&gt;\n  dplyr::mutate(\n    insolation=insolation(J2000_cent(as.POSIXct(DATE)+43200), pi*LATITUDE/180),\n    delta_sol= ifelse(DATE==lag(DATE)+1, 100*(insolation-lag(insolation)), NA),\n    maxsun = cos(pi*LATITUDE/180-declination(J2000_cent(as.POSIXct(DATE)+43200))),\n    delta_maxsun=ifelse(DATE==lag(DATE)+1, 100*(maxsun-lag(maxsun)), NA)) |&gt; \n  ungroup() |&gt; \n  dplyr::filter(!is.na(delta_sol), !is.na(delta_maxsun))"
+  },
+  {
+    "objectID": "posts/sun_weather.html#sun-parameters-at-diffent-latitudes",
+    "href": "posts/sun_weather.html#sun-parameters-at-diffent-latitudes",
+    "title": "Sun Drives Weather",
+    "section": "sun parameters at diffent latitudes",
+    "text": "sun parameters at diffent latitudes\n\nggplot(subset(dat, STATION %in% c('01001099999', '64450099999', '40192199999')),\n       aes(x=DATE, y=maxsun)) + geom_point(color='green') + \n  geom_point(color='blue', aes(y=insolation/10)) +\n  facet_wrap(~LATITUDE) + geom_point(color='black', aes(y=TEMP/15))"
+  },
+  {
+    "objectID": "posts/sun_weather.html#a-parsimonious-mixed-effect-model",
+    "href": "posts/sun_weather.html#a-parsimonious-mixed-effect-model",
+    "title": "Sun Drives Weather",
+    "section": "a parsimonious mixed effect model",
+    "text": "a parsimonious mixed effect model\n\nm0 &lt;- lme4::lmer(TEMP ~ ELEVATION + insolation * delta_maxsun + (delta_maxsun|STATION),\n                 data=dat)\nsummary(m0)\n\nLinear mixed model fit by REML ['lmerMod']\nFormula: TEMP ~ ELEVATION + insolation * delta_maxsun + (delta_maxsun |  \n    STATION)\n   Data: dat\n\nREML criterion at convergence: 16761814\n\nScaled residuals: \n     Min       1Q   Median       3Q      Max \n-13.5352  -0.5366   0.0216   0.5887   6.3420 \n\nRandom effects:\n Groups   Name         Variance Std.Dev. Corr\n STATION  (Intercept)  41.38    6.433        \n          delta_maxsun 31.36    5.600    0.75\n Residual              19.75    4.444        \nNumber of obs: 2866271, groups:  STATION, 7894\n\nFixed effects:\n                          Estimate Std. Error t value\n(Intercept)             -1.3189055  0.0799846  -16.49\nELEVATION               -2.6139726  0.1041290  -25.10\ninsolation               2.0087287  0.0008365 2401.31\ndelta_maxsun            -0.7451291  0.0679113  -10.97\ninsolation:delta_maxsun -1.2813487  0.0034485 -371.56\n\nCorrelation of Fixed Effects:\n            (Intr) ELEVAT insltn dlt_mx\nELEVATION   -0.416                     \ninsolation  -0.081 -0.002              \ndelta_maxsn  0.627 -0.001 -0.004       \ninsltn:dlt_ -0.003  0.005  0.009 -0.342"
+  },
+  {
+    "objectID": "posts/sun_weather.html#deal-with-phase-lag-sun-and-temperature",
+    "href": "posts/sun_weather.html#deal-with-phase-lag-sun-and-temperature",
+    "title": "Sun Drives Weather",
+    "section": "deal with phase lag sun and temperature",
+    "text": "deal with phase lag sun and temperature\n\ndat$pred &lt;- predict(m0)\nggplot(subset(dat, STATION %in% c('01001099999', '64450099999', '40192199999')),\naes(x=DATE, y=TEMP)) + geom_point() +\nfacet_wrap(~LATITUDE) + geom_point(color='green', aes(y=pred))"
+  },
+  {
+    "objectID": "posts/sun_weather.html#station-specifics",
+    "href": "posts/sun_weather.html#station-specifics",
+    "title": "Sun Drives Weather",
+    "section": "station specifics",
+    "text": "station specifics\n\nstations &lt;- dat[, c('STATION', 'LATITUDE', 'LONGITUDE', 'NAME')] |&gt; \n  dplyr::group_by(STATION) |&gt; \n  dplyr::slice_tail(n=1) |&gt; \n  dplyr::left_join(tibble::rownames_to_column(lme4::ranef(m0)$STATION, var='STATION')) |&gt; \n  ungroup()"
+  },
+  {
+    "objectID": "posts/sun_weather.html#station-plot",
+    "href": "posts/sun_weather.html#station-plot",
+    "title": "Sun Drives Weather",
+    "section": "station plot",
+    "text": "station plot\n\nggplot(data=stations, aes(x=LONGITUDE, y=LATITUDE, color=delta_maxsun)) + geom_point()\n\n\n\n\nBasel Data Science"
   },
   {
     "objectID": "index.html",
