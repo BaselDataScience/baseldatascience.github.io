@@ -2,6 +2,7 @@
   {
     "listing": "/events.html",
     "items": [
+      "/posts/prwdkc.html",
       "/posts/sun_weather.html",
       "/posts/uvb_vitaminD.html",
       "/posts/nationalratswahlen_2023.html",
@@ -12,6 +13,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/prwdkc.html",
       "/posts/sun_weather.html",
       "/posts/uvb_vitaminD.html",
       "/posts/nationalratswahlen_2023.html",

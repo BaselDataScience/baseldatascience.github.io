@@ -7,12 +7,12 @@
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
 <link href="../site_libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.4.553">
 
   <meta name="author" content="Reinhold Koch">
-  <meta name="dcterms.date" content="2024-02-07">
-  <title>BaselDataScience - Sun Drives Weather</title>
+  <meta name="dcterms.date" content="2024-09-04">
+  <title>BaselDataScience - Claude helps to create an R package</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -57,44 +57,44 @@
         -khtml-user-select: none; -moz-user-select: none;
         -ms-user-select: none; user-select: none;
         padding: 0 4px; width: 4em;
-        color: #aaaaaa;
       }
-    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
     div.sourceCode
-      { color: #003b4f; background-color: #f1f3f5; }
+      { color: #f8f8f2;  }
     @media screen {
     pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
     }
-    code span { color: #003b4f; } /* Normal */
-    code span.al { color: #ad0000; } /* Alert */
-    code span.an { color: #5e5e5e; } /* Annotation */
-    code span.at { color: #657422; } /* Attribute */
-    code span.bn { color: #ad0000; } /* BaseN */
-    code span.bu { } /* BuiltIn */
-    code span.cf { color: #003b4f; } /* ControlFlow */
-    code span.ch { color: #20794d; } /* Char */
-    code span.cn { color: #8f5902; } /* Constant */
-    code span.co { color: #5e5e5e; } /* Comment */
-    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
-    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
-    code span.dt { color: #ad0000; } /* DataType */
-    code span.dv { color: #ad0000; } /* DecVal */
-    code span.er { color: #ad0000; } /* Error */
-    code span.ex { } /* Extension */
-    code span.fl { color: #ad0000; } /* Float */
-    code span.fu { color: #4758ab; } /* Function */
-    code span.im { color: #00769e; } /* Import */
-    code span.in { color: #5e5e5e; } /* Information */
-    code span.kw { color: #003b4f; } /* Keyword */
-    code span.op { color: #5e5e5e; } /* Operator */
-    code span.ot { color: #003b4f; } /* Other */
-    code span.pp { color: #ad0000; } /* Preprocessor */
-    code span.sc { color: #5e5e5e; } /* SpecialChar */
-    code span.ss { color: #20794d; } /* SpecialString */
-    code span.st { color: #20794d; } /* String */
-    code span.va { color: #111111; } /* Variable */
-    code span.vs { color: #20794d; } /* VerbatimString */
-    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+    code span { color: #f8f8f2; } /* Normal */
+    code span.al { color: #f07178; background-color: #2a0f15; font-weight: bold; } /* Alert */
+    code span.an { color: #d4d0ab; } /* Annotation */
+    code span.at { color: #00e0e0; } /* Attribute */
+    code span.bn { color: #d4d0ab; } /* BaseN */
+    code span.bu { color: #abe338; } /* BuiltIn */
+    code span.cf { color: #ffa07a; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #abe338; } /* Char */
+    code span.cn { color: #ffd700; } /* Constant */
+    code span.co { color: #f8f8f2; font-style: italic; } /* Comment */
+    code span.cv { color: #ffd700; } /* CommentVar */
+    code span.do { color: #f8f8f2; } /* Documentation */
+    code span.dt { color: #ffa07a; } /* DataType */
+    code span.dv { color: #d4d0ab; } /* DecVal */
+    code span.er { color: #f07178; text-decoration: underline; } /* Error */
+    code span.ex { color: #00e0e0; font-weight: bold; } /* Extension */
+    code span.fl { color: #d4d0ab; } /* Float */
+    code span.fu { color: #ffa07a; } /* Function */
+    code span.im { color: #abe338; } /* Import */
+    code span.in { color: #d4d0ab; } /* Information */
+    code span.kw { color: #ffa07a; font-weight: bold; } /* Keyword */
+    code span.op { color: #ffa07a; } /* Operator */
+    code span.ot { color: #00e0e0; } /* Other */
+    code span.pp { color: #dcc6e0; } /* Preprocessor */
+    code span.re { color: #00e0e0; background-color: #f8f8f2; } /* RegionMarker */
+    code span.sc { color: #abe338; } /* SpecialChar */
+    code span.ss { color: #abe338; } /* SpecialString */
+    code span.st { color: #abe338; } /* String */
+    code span.va { color: #00e0e0; } /* Variable */
+    code span.vs { color: #abe338; } /* VerbatimString */
+    code span.wa { color: #dcc6e0; } /* Warning */
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -388,19 +388,18 @@
   </style>
   <link href="../site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
   <script src="../site_libs/pagedtable-1.1/js/pagedtable.js"></script>
-<meta property="og:title" content="BaselDataScience - Sun Drives Weather">
-<meta property="og:description" content="Investigation via linear models, including mixed models, how much daily average temperature is determined by solar irradiation.">
-<meta property="og:image" content="https://BaselDataScience.github.io/baseldatascience.github.io/posts/sun_weather.png">
+<meta property="og:title" content="BaselDataScience - Claude helps to create an R package">
+<meta property="og:description" content="Based on https://arxiv.org/pdf/2210.00310 I asked Claude, https://claude.ai, package. The result is accessible in https://github.com/baselDataScience/prwkdc.">
+<meta property="og:image" content="prwkdc.jpg">
 <meta property="og:site_name" content="BaselDataScience">
-<meta property="og:image:height" content="788">
-<meta property="og:image:width" content="1276">
 </head>
-<body class="quarto-light">
+<body class="quarto-dark">
   <div class="reveal">
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Sun Drives Weather</h1>
+  <h1 class="title">Claude helps to create an R package</h1>
+  <p class="subtitle">Parametrized Random Walk Diffusion Kernel Clustering</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -410,234 +409,125 @@ Reinhold Koch
 </div>
 </div>
 
-  <p class="date">2024-02-07</p>
+  <p class="date">2024-09-04</p>
 </section>
-<section id="background" class="slide level2">
-<h2>Background</h2>
-<p>The <a href="https://www.ncei.noaa.gov/products/land-based-station/global-historical-climatology-network-daily">National Oceanic and Atmospheric Administration</a> publishes freely accessible daily climate data from thousands of weather stations in the world.</p>
-<p>I wondered how much daily average temperature in each station can be explained by solar irradiation alone.</p>
-<p>It also peeked my interest how well statistical linear models could handle the amount of data from meteorology.</p>
-<p>Let’s see!</p>
+<section id="introduction" class="slide level2">
+<h2>Introduction</h2>
+<p>Based on <a href="https://arxiv.org/pdf/2210.00310">arxiv.org/pdf/2210.00310</a> I asked <a href="https://claude.ai">Claude</a>, to help me create an R package that implements the described algorithms. The result is accessible in <a href="https://github.com/baselDataScience/prwdkc">github.com/baselDataScience/prwdkc</a>.</p>
+<p>My first encounter with Claude!</p>
 </section>
-<section id="data" class="slide level2">
-<h2>Data</h2>
-<div class="cell" data-hash="sun_weather_cache/revealjs/read_c32cb7f3360b5d055515e7e941a90427">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a></a>years <span class="ot">&lt;-</span> <span class="fu">as.character</span>(<span class="dv">2023</span><span class="sc">:</span><span class="dv">2023</span>)</span>
-<span id="cb1-2"><a></a><span class="cf">for</span> (year <span class="cf">in</span> years[<span class="sc">!</span><span class="fu">file.exists</span>(years)]) {</span>
-<span id="cb1-3"><a></a>  tf <span class="ot">&lt;-</span> <span class="fu">tempfile</span>(<span class="st">'climate'</span>, <span class="at">fileext =</span> <span class="st">'.tar.gz'</span>)</span>
-<span id="cb1-4"><a></a>  <span class="fu">download.file</span>(<span class="at">url =</span> <span class="fu">paste0</span>(<span class="st">'https://www.ncei.noaa.gov/data/global-summary-of-the-day/archive/'</span>,</span>
-<span id="cb1-5"><a></a>                             year, <span class="st">'.tar.gz'</span>),</span>
-<span id="cb1-6"><a></a>                <span class="at">destfile =</span> tf)</span>
-<span id="cb1-7"><a></a>  <span class="fu">untar</span>(tf, <span class="at">exdir =</span> year)</span>
-<span id="cb1-8"><a></a>}</span>
-<span id="cb1-9"><a></a><span class="co"># col_date(format='%F')</span></span>
-<span id="cb1-10"><a></a>coltypes <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">cols_only</span>(<span class="at">STATION=</span><span class="st">'c'</span>,</span>
-<span id="cb1-11"><a></a>                        <span class="at">DATE=</span>readr<span class="sc">::</span><span class="fu">col_date</span>(<span class="at">format =</span> <span class="st">'%F'</span>),</span>
-<span id="cb1-12"><a></a>                        <span class="at">LATITUDE=</span><span class="st">'d'</span>,</span>
-<span id="cb1-13"><a></a>                        <span class="at">LONGITUDE=</span><span class="st">'d'</span>,</span>
-<span id="cb1-14"><a></a>                        <span class="at">ELEVATION=</span><span class="st">'d'</span>,</span>
-<span id="cb1-15"><a></a>                        <span class="at">NAME=</span><span class="st">'c'</span>,</span>
-<span id="cb1-16"><a></a>                        <span class="at">TEMP=</span><span class="st">'d'</span>)</span>
-<span id="cb1-17"><a></a></span>
-<span id="cb1-18"><a></a>dat0 <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">bind_rows</span>(<span class="fu">lapply</span>(<span class="fu">list.files</span>(<span class="at">path=</span>years, <span class="at">full.names =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb1-19"><a></a>                               readr<span class="sc">::</span>read_csv, <span class="at">col_types=</span>coltypes))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
+<section id="the-algorithm-in-the-paper" class="slide level2">
+<h2>The Algorithm in the Paper</h2>
+<p>I said: “write me a R function that implements the following algorithm:” <img data-src="algorithm.jpg"></p>
 </section>
-<section id="peek-into-data" class="slide level2">
-<h2>peek into data</h2>
-<div class="cell" data-hash="sun_weather_cache/revealjs/peek_0dc6bc342e1cc2908b8f763aaccd069d">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a></a><span class="fu">print</span>(dat0, <span class="at">n=</span><span class="dv">10</span>, <span class="at">width=</span><span class="dv">70</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 4,038,747 × 7
-   STATION     DATE       LATITUDE LONGITUDE ELEVATION NAME       TEMP
-   &lt;chr&gt;       &lt;date&gt;        &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt;
- 1 01001099999 2023-01-01     70.9     -8.67         9 JAN MAYE…  18.1
- 2 01001099999 2023-01-02     70.9     -8.67         9 JAN MAYE…  25.8
- 3 01001099999 2023-01-03     70.9     -8.67         9 JAN MAYE…  35.8
- 4 01001099999 2023-01-04     70.9     -8.67         9 JAN MAYE…  37  
- 5 01001099999 2023-01-05     70.9     -8.67         9 JAN MAYE…  35.4
- 6 01001099999 2023-01-06     70.9     -8.67         9 JAN MAYE…  32.7
- 7 01001099999 2023-01-07     70.9     -8.67         9 JAN MAYE…  34.7
- 8 01001099999 2023-01-08     70.9     -8.67         9 JAN MAYE…  35.2
- 9 01001099999 2023-01-09     70.9     -8.67         9 JAN MAYE…  34  
-10 01001099999 2023-01-10     70.9     -8.67         9 JAN MAYE…  31.6
-# ℹ 4,038,737 more rows</code></pre>
-</div>
+<section id="claudes-first-attempt" class="slide level2">
+<h2>Claude’s first attempt:</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a></a>graph_clustering <span class="ot">&lt;-</span> <span class="cf">function</span>(W, k, nu, td) {</span>
+<span id="cb1-2"><a></a>  N <span class="ot">&lt;-</span> <span class="fu">nrow</span>(W)</span>
+<span id="cb1-3"><a></a>  </span>
+<span id="cb1-4"><a></a>  <span class="co"># Step 1: Compute the parametrized random walk operator P(ν)</span></span>
+<span id="cb1-5"><a></a>  D <span class="ot">&lt;-</span> <span class="fu">diag</span>(<span class="fu">rowSums</span>(W))</span>
+<span id="cb1-6"><a></a>  P_nu <span class="ot">&lt;-</span> <span class="fu">solve</span>(D) <span class="sc">%*%</span> W <span class="sc">%*%</span> <span class="fu">diag</span>(nu)</span>
+<span id="cb1-7"><a></a>  </span>
+<span id="cb1-8"><a></a>  <span class="co"># Step 2: Compute the parametrized random walk diffusion kernel K(td,ν)</span></span>
+<span id="cb1-9"><a></a>  K_td_nu <span class="ot">&lt;-</span> expm<span class="sc">::</span><span class="fu">expm</span>(td <span class="sc">*</span> (P_nu <span class="sc">-</span> <span class="fu">diag</span>(N)))</span>
+<span id="cb1-10"><a></a>  </span>
+<span id="cb1-11"><a></a>  <span class="co"># Step 3: Apply k-means clustering to the rows of K(td,ν)</span></span>
+<span id="cb1-12"><a></a>  kmeans_result <span class="ot">&lt;-</span> <span class="fu">kmeans</span>(K_td_nu, <span class="at">centers =</span> k)</span>
+<span id="cb1-13"><a></a>  </span>
+<span id="cb1-14"><a></a>  <span class="co"># Step 4: Obtain the k-partition Vtd based on the clustering result</span></span>
+<span id="cb1-15"><a></a>  Vtd <span class="ot">&lt;-</span> kmeans_result<span class="sc">$</span>cluster</span>
+<span id="cb1-16"><a></a>  </span>
+<span id="cb1-17"><a></a>  <span class="co"># Step 5: Return the partition</span></span>
+<span id="cb1-18"><a></a>  <span class="fu">return</span>(Vtd)</span>
+<span id="cb1-19"><a></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="data-quality" class="slide level2">
-<h2>data quality</h2>
-<div class="cell" data-hash="sun_weather_cache/revealjs/data quality_312d234234f4721a5b66f9f486661740">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a></a><span class="fu">summary</span>(dat0)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>   STATION               DATE               LATITUDE        LONGITUDE       
- Length:4038747     Min.   :2023-01-01   Min.   :-90.00   Min.   :-179.983  
- Class :character   1st Qu.:2023-04-01   1st Qu.: 23.84   1st Qu.: -82.454  
- Mode  :character   Median :2023-07-02   Median : 40.08   Median :   8.517  
-                    Mean   :2023-07-01   Mean   : 31.66   Mean   :  -1.280  
-                    3rd Qu.:2023-10-02   3rd Qu.: 49.22   3rd Qu.:  64.230  
-                    Max.   :2023-12-31   Max.   : 83.65   Max.   : 179.500  
-                                         NA's   :13408    NA's   :13408     
-   ELEVATION          NAME                TEMP        
- Min.   :-999.9   Length:4038747     Min.   :-114.30  
- 1st Qu.:  31.0   Class :character   1st Qu.:  42.70  
- Median : 155.1   Mode  :character   Median :  59.70  
- Mean   : 361.8                      Mean   :  56.49  
- 3rd Qu.: 446.2                      3rd Qu.:  74.10  
- Max.   :4701.0                      Max.   : 110.00  
- NA's   :13770                                        </code></pre>
-</div>
-</div>
+<section id="my-impression" class="slide level2">
+<h2>My Impression</h2>
+<ul>
+<li>Claude always answers very politely (later): “I apologize for the confusion. You’re right, and I appreciate your correction.”</li>
+<li>Claude can produce R code</li>
+<li>Claude knows some matrix functions</li>
+<li>Claude knows about package <strong>expm</strong></li>
+<li><strong>but</strong>
+<ul>
+<li>why should K_td_nu be an exponential matrix??</li>
+</ul></li>
+</ul>
 </section>
-<section id="as-missing-elevation-and-other-fixes" class="slide level2">
-<h2>“-999.9” as missing elevation and other fixes</h2>
-<div class="cell" data-hash="sun_weather_cache/revealjs/missing elevation_5ed9458f6399d461b3a9913d3ee59a13">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a></a>dat0<span class="sc">$</span>ELEVATION <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(dat0<span class="sc">$</span>ELEVATION <span class="sc">==</span> <span class="sc">-</span><span class="fl">999.9</span>, <span class="cn">NA</span>, dat0<span class="sc">$</span>ELEVATION)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="please-add-input-checks" class="slide level2">
+<h2>“please add input checks”</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a></a>  <span class="co"># Input checks</span></span>
+<span id="cb2-2"><a></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.matrix</span>(W) <span class="sc">||</span> <span class="sc">!</span><span class="fu">isSymmetric</span>(W) <span class="sc">||</span> <span class="fu">any</span>(W <span class="sc">&lt;</span> <span class="dv">0</span>)) {</span>
+<span id="cb2-3"><a></a>    <span class="fu">stop</span>(<span class="st">"W must be a symmetric matrix with non-negative entries"</span>)</span>
+<span id="cb2-4"><a></a>  }</span>
+<span id="cb2-5"><a></a>  </span>
+<span id="cb2-6"><a></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.numeric</span>(k) <span class="sc">||</span> <span class="fu">length</span>(k) <span class="sc">!=</span> <span class="dv">1</span> <span class="sc">||</span> k <span class="sc">&lt;=</span> <span class="dv">0</span> <span class="sc">||</span> k <span class="sc">!=</span> <span class="fu">round</span>(k)) {</span>
+<span id="cb2-7"><a></a>    <span class="fu">stop</span>(<span class="st">"k must be a positive integer"</span>)</span>
+<span id="cb2-8"><a></a>  }</span>
+<span id="cb2-9"><a></a>  </span>
+<span id="cb2-10"><a></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.numeric</span>(nu) <span class="sc">||</span> <span class="fu">length</span>(nu) <span class="sc">!=</span> <span class="fu">nrow</span>(W) <span class="sc">||</span> <span class="fu">any</span>(nu <span class="sc">&lt;=</span> <span class="dv">0</span>)) {</span>
+<span id="cb2-11"><a></a>    <span class="fu">stop</span>(<span class="st">"nu must be a positive numeric vector with length equal to the number of rows in W"</span>)</span>
+<span id="cb2-12"><a></a>  }</span>
+<span id="cb2-13"><a></a>  </span>
+<span id="cb2-14"><a></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.numeric</span>(td) <span class="sc">||</span> <span class="fu">length</span>(td) <span class="sc">!=</span> <span class="dv">1</span> <span class="sc">||</span> td <span class="sc">&lt;=</span> <span class="dv">0</span>) {</span>
+<span id="cb2-15"><a></a>    <span class="fu">stop</span>(<span class="st">"td must be a positive number"</span>)</span>
+<span id="cb2-16"><a></a>  }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>convert temperature to Celsius and elevation to km (for numerical reasons)</p>
-<div class="cell" data-hash="sun_weather_cache/revealjs/convert_fedcdfdd7130a08525a93fa9df3a4384">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a></a>dat0<span class="sc">$</span>ELEVATION <span class="ot">&lt;-</span> dat0<span class="sc">$</span>ELEVATION<span class="sc">/</span><span class="dv">1000</span></span>
-<span id="cb7-2"><a></a>dat0<span class="sc">$</span>TEMP <span class="ot">&lt;-</span> (dat0<span class="sc">$</span>TEMP<span class="dv">-32</span>)<span class="sc">*</span><span class="dv">5</span><span class="sc">/</span><span class="dv">9</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
+<p>W needs not be symmetric though …</p>
 </section>
-<section id="how-many-observations-per-station" class="slide level2">
-<h2>how many observations per station?</h2>
-<div class="cell" data-hash="sun_weather_cache/revealjs/numbers_7852f90071711eee4871af75d5a5a098">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a></a><span class="fu">tail</span>(<span class="fu">table</span>(<span class="fu">table</span>(dat0<span class="sc">$</span>STATION)), <span class="at">n=</span><span class="dv">15</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
- 351  352  353  354  355  356  357  358  359  360  361  362  363  364  365 
-  63  111  171  102   75  100   99   86  117  151  220  354  459  702 6032 </code></pre>
-</div>
-</div>
-<p>About half of the stations have an observation for each day in 2023.<br>
-Let’s concentrate on the stations with at least 360 observations -</p>
-<p>and remove all stations with missing coordinates.</p>
+<section id="interaction-with-claude" class="slide level2">
+<h2>Interaction with Claude</h2>
+<ul>
+<li>certainly helpful to get going</li>
+<li>deals reasonably well with mathematical notations like subscripts or exponents</li>
+<li>but can be strenuous to nudge him in the right direction</li>
+</ul>
 </section>
-<section id="base-data" class="slide level2">
-<h2>base data</h2>
-<div class="cell" data-hash="sun_weather_cache/revealjs/base_5fc6696b026b17e905e020595bfab2eb">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a></a>nrecords <span class="ot">&lt;-</span> dat0 <span class="sc">|&gt;</span></span>
-<span id="cb10-2"><a></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(STATION) <span class="sc">|&gt;</span> <span class="fu">tally</span>()</span>
-<span id="cb10-3"><a></a>dat1 <span class="ot">&lt;-</span> dat0 <span class="sc">|&gt;</span> </span>
-<span id="cb10-4"><a></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(LATITUDE) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(LONGITUDE) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(ELEVATION) <span class="sc">&amp;</span> STATION <span class="sc">%in%</span> </span>
-<span id="cb10-5"><a></a>                  <span class="fu">subset</span>(nrecords, n<span class="sc">&gt;=</span><span class="dv">360</span>)<span class="sc">$</span>STATION)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>This data now provides my base for investigation.</p>
+<section id="back-to-clustering" class="slide level2">
+<h2>back to clustering</h2>
+<ul>
+<li>usable code is now in <a href="https://github.com/baselDataScience/prwdkc">github.com/baselDataScience/prwdkc</a></li>
+<li>which functions to provide?</li>
+<li>some helpful examples should be added …</li>
+<li>and some tests!</li>
+</ul>
 </section>
-<section id="functions-for-insolation-and-maximum-sun-elevation" class="slide level2">
-<h2>functions for insolation and maximum sun elevation</h2>
-<p>From Jean Meeus’ book “<a href="https://www.agopax.it/Libri_astronomia/pdf/Astronomical%20Algorithms.pdf">Astronomical Algorithms</a>” good approximations for solar irradiation per day and maximum sun elevation can be computed - see code for details.</p>
-<div class="cell" data-hash="sun_weather_cache/revealjs/insolation and declination_c265ca50f27fa697bf11e4d2782d3353">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a></a><span class="co"># sun declination</span></span>
-<span id="cb11-2"><a></a>declination <span class="ot">&lt;-</span> <span class="cf">function</span>(J2000T) <span class="fu">asin</span>(<span class="fu">sin</span>(<span class="fu">epsilon</span>(J2000T)) <span class="sc">*</span> <span class="fu">sin</span>(<span class="fu">lambda</span>(J2000T)))</span>
-<span id="cb11-3"><a></a></span>
-<span id="cb11-4"><a></a><span class="co"># irradiation in kWh per m^2 per day</span></span>
-<span id="cb11-5"><a></a>insolation <span class="ot">&lt;-</span> <span class="cf">function</span>(J2000T, latitude) {</span>
-<span id="cb11-6"><a></a>  rho <span class="ot">&lt;-</span> <span class="fu">rho</span>(J2000T)</span>
-<span id="cb11-7"><a></a>  h0 <span class="ot">&lt;-</span> <span class="fu">h0</span>(J2000T, latitude)</span>
-<span id="cb11-8"><a></a>  x <span class="ot">&lt;-</span> <span class="fu">sin</span>(<span class="fu">epsilon</span>(J2000T)) <span class="sc">*</span> <span class="fu">sin</span>(<span class="fu">lambda</span>(J2000T))</span>
-<span id="cb11-9"><a></a>  <span class="fl">10.4033856721</span> <span class="sc">*</span> rho<span class="sc">*</span>rho <span class="sc">*</span> (h0<span class="sc">*</span><span class="fu">sin</span>(latitude)<span class="sc">*</span>x <span class="sc">+</span> <span class="fu">cos</span>(latitude)<span class="sc">*</span><span class="fu">cos</span>(<span class="fu">asin</span>(x))<span class="sc">*</span><span class="fu">sin</span>(h0))</span>
-<span id="cb11-10"><a></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
-<section id="add-sun-parameters-to-dataframe" class="slide level2">
-<h2>add sun parameters to dataframe</h2>
-<p>With astronomical functions in place I can compute for each observation the daily sun irradiation energy per m^2 and the sine of maximum sun elevation.</p>
-<div class="cell" data-hash="sun_weather_cache/revealjs/sun_b00a993441f0ebc064690fb131f48236">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a></a>dat <span class="ot">&lt;-</span> dat1 <span class="sc">|&gt;</span></span>
-<span id="cb12-2"><a></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(STATION) <span class="sc">|&gt;</span></span>
-<span id="cb12-3"><a></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
-<span id="cb12-4"><a></a>    <span class="at">insolation=</span><span class="fu">insolation</span>(<span class="fu">J2000_cent</span>(<span class="fu">as.POSIXct</span>(DATE)<span class="sc">+</span><span class="dv">43200</span>), pi<span class="sc">*</span>LATITUDE<span class="sc">/</span><span class="dv">180</span>),</span>
-<span id="cb12-5"><a></a>    <span class="at">delta_sol=</span> <span class="fu">ifelse</span>(DATE<span class="sc">==</span><span class="fu">lag</span>(DATE)<span class="sc">+</span><span class="dv">1</span>, <span class="dv">100</span><span class="sc">*</span>(insolation<span class="sc">-</span><span class="fu">lag</span>(insolation)), <span class="cn">NA</span>),</span>
-<span id="cb12-6"><a></a>    <span class="at">maxsun =</span> <span class="fu">cos</span>(pi<span class="sc">*</span>LATITUDE<span class="sc">/</span><span class="dv">180</span><span class="sc">-</span><span class="fu">declination</span>(<span class="fu">J2000_cent</span>(<span class="fu">as.POSIXct</span>(DATE)<span class="sc">+</span><span class="dv">43200</span>))),</span>
-<span id="cb12-7"><a></a>    <span class="at">delta_maxsun=</span><span class="fu">ifelse</span>(DATE<span class="sc">==</span><span class="fu">lag</span>(DATE)<span class="sc">+</span><span class="dv">1</span>, <span class="dv">100</span><span class="sc">*</span>(maxsun<span class="sc">-</span><span class="fu">lag</span>(maxsun)), <span class="cn">NA</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb12-8"><a></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb12-9"><a></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(delta_sol), <span class="sc">!</span><span class="fu">is.na</span>(delta_maxsun))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
-<section id="sun-parameters-at-diffent-latitudes" class="slide level2">
-<h2>sun parameters at diffent latitudes</h2>
-<div class="cell" data-hash="sun_weather_cache/revealjs/sun parameters_2ce591c80c80a38a78ffe1528ed26c1a">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a></a><span class="fu">ggplot</span>(<span class="fu">subset</span>(dat, STATION <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">'01001099999'</span>, <span class="st">'64450099999'</span>, <span class="st">'40192199999'</span>)),</span>
-<span id="cb13-2"><a></a>       <span class="fu">aes</span>(<span class="at">x=</span>DATE, <span class="at">y=</span>maxsun)) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">color=</span><span class="st">'green'</span>) <span class="sc">+</span> </span>
-<span id="cb13-3"><a></a>  <span class="fu">geom_point</span>(<span class="at">color=</span><span class="st">'blue'</span>, <span class="fu">aes</span>(<span class="at">y=</span>insolation<span class="sc">/</span><span class="dv">10</span>)) <span class="sc">+</span></span>
-<span id="cb13-4"><a></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>LATITUDE) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">color=</span><span class="st">'black'</span>, <span class="fu">aes</span>(<span class="at">y=</span>TEMP<span class="sc">/</span><span class="dv">15</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="spirals---what-can-prwdkc-do" class="slide level2">
+<h2>spirals - what can prwdkc do?</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a></a><span class="fu">data</span>(spirals, <span class="at">package=</span><span class="st">'kernlab'</span>)</span>
+<span id="cb3-2"><a></a>W <span class="ot">&lt;-</span> Matrix<span class="sc">::</span><span class="fu">sparseMatrix</span>(<span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span>(N <span class="ot">&lt;-</span> <span class="fu">nrow</span>(spirals)), k <span class="ot">&lt;-</span> <span class="fu">floor</span>(<span class="fu">log</span>(N))),</span>
+<span id="cb3-3"><a></a>  FNN<span class="sc">::</span><span class="fu">get.knn</span>(spirals, <span class="at">k=</span>k)<span class="sc">$</span>nn.index, <span class="at">x=</span><span class="dv">1</span>)</span>
+<span id="cb3-4"><a></a><span class="fu">plot</span>(spirals, <span class="at">col=</span>prwdkc<span class="sc">::</span><span class="fu">prwdkc</span>(W, <span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">2</span>), <span class="at">pch=</span><span class="dv">16</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="sun_weather_files/figure-revealjs/sun parameters-1.png" width="960" class="r-stretch"></section>
-<section id="a-parsimonious-mixed-effect-model" class="slide level2">
-<h2>a parsimonious mixed effect model</h2>
-<div class="cell" data-hash="sun_weather_cache/revealjs/model_483eb80e4d0bf05695b6c1a40cce6ea8">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a></a>m0 <span class="ot">&lt;-</span> lme4<span class="sc">::</span><span class="fu">lmer</span>(TEMP <span class="sc">~</span> ELEVATION <span class="sc">+</span> insolation <span class="sc">*</span> delta_maxsun <span class="sc">+</span> (delta_maxsun<span class="sc">|</span>STATION),</span>
-<span id="cb14-2"><a></a>                 <span class="at">data=</span>dat)</span>
-<span id="cb14-3"><a></a><span class="fu">summary</span>(m0)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Linear mixed model fit by REML ['lmerMod']
-Formula: TEMP ~ ELEVATION + insolation * delta_maxsun + (delta_maxsun |  
-    STATION)
-   Data: dat
+<img data-src="prwkdc_files/figure-revealjs/unnamed-chunk-3-1.png" width="960" class="r-stretch"></section>
+<section id="spirals---with-kernlab" class="slide level2">
+<h2>spirals - with kernlab</h2>
+<p>not too great - see for comparison spectral clustering:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a></a><span class="fu">plot</span>(spirals, <span class="at">col=</span>kernlab<span class="sc">::</span><span class="fu">specc</span>(spirals, <span class="dv">2</span>), <span class="at">pch=</span><span class="dv">16</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
-REML criterion at convergence: 16761814
-
-Scaled residuals: 
-     Min       1Q   Median       3Q      Max 
--13.5352  -0.5366   0.0216   0.5887   6.3420 
-
-Random effects:
- Groups   Name         Variance Std.Dev. Corr
- STATION  (Intercept)  41.38    6.433        
-          delta_maxsun 31.36    5.600    0.75
- Residual              19.75    4.444        
-Number of obs: 2866271, groups:  STATION, 7894
-
-Fixed effects:
-                          Estimate Std. Error t value
-(Intercept)             -1.3189055  0.0799846  -16.49
-ELEVATION               -2.6139726  0.1041290  -25.10
-insolation               2.0087287  0.0008365 2401.31
-delta_maxsun            -0.7451291  0.0679113  -10.97
-insolation:delta_maxsun -1.2813487  0.0034485 -371.56
-
-Correlation of Fixed Effects:
-            (Intr) ELEVAT insltn dlt_mx
-ELEVATION   -0.416                     
-insolation  -0.081 -0.002              
-delta_maxsn  0.627 -0.001 -0.004       
-insltn:dlt_ -0.003  0.005  0.009 -0.342</code></pre>
 </div>
-</div>
+<img data-src="prwkdc_files/figure-revealjs/unnamed-chunk-4-1.png" width="960" class="r-stretch"></section>
+<section id="other-considerations" class="slide level2">
+<h2>other considerations</h2>
+<ul>
+<li>prwdkc does do better with other test cases and with examples from the Machine Learning Repository https://archive.ics.uci.edu/datasets</li>
+<li>sometimes no embedding in R<sup>n</sup> is given, only a graph with adjacency matrix - for instance links between web pages</li>
+</ul>
 </section>
-<section id="deal-with-phase-lag-of-sun-and-temperature" class="slide level2">
-<h2>deal with phase lag of sun and temperature</h2>
-<div class="cell" data-hash="sun_weather_cache/revealjs/prediction_aa4ee6b27fc39fe1d0bf425bbce58ecb">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a></a>dat<span class="sc">$</span>pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(m0)</span>
-<span id="cb16-2"><a></a><span class="fu">ggplot</span>(<span class="fu">subset</span>(dat, STATION <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">'01001099999'</span>, <span class="st">'64450099999'</span>, <span class="st">'40192199999'</span>)),</span>
-<span id="cb16-3"><a></a><span class="fu">aes</span>(<span class="at">x=</span>DATE, <span class="at">y=</span>TEMP)) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb16-4"><a></a><span class="fu">facet_wrap</span>(<span class="sc">~</span>LATITUDE) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">color=</span><span class="st">'green'</span>, <span class="fu">aes</span>(<span class="at">y=</span>pred))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="what-is-the-idea-behind-prwdkc" class="slide level2">
+<h2>what is the idea behind prwdkc?</h2>
+<p>“diffusion” along a graph: <img data-src="prwkdc.jpg"></p>
 
-</div>
-<img data-src="sun_weather_files/figure-revealjs/prediction-1.png" width="960" class="r-stretch"></section>
-<section id="station-specifics" class="slide level2">
-<h2>station specifics</h2>
-<div class="cell" data-hash="sun_weather_cache/revealjs/stations_9cbbf769c961f38bd030048de120b567">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a></a>stations <span class="ot">&lt;-</span> dat[, <span class="fu">c</span>(<span class="st">'STATION'</span>, <span class="st">'LATITUDE'</span>, <span class="st">'LONGITUDE'</span>, <span class="st">'NAME'</span>)] <span class="sc">|&gt;</span> </span>
-<span id="cb17-2"><a></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(STATION) <span class="sc">|&gt;</span> </span>
-<span id="cb17-3"><a></a>  dplyr<span class="sc">::</span><span class="fu">slice_tail</span>(<span class="at">n=</span><span class="dv">1</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb17-4"><a></a>  dplyr<span class="sc">::</span><span class="fu">left_join</span>(tibble<span class="sc">::</span><span class="fu">rownames_to_column</span>(lme4<span class="sc">::</span><span class="fu">ranef</span>(m0)<span class="sc">$</span>STATION, <span class="at">var=</span><span class="st">'STATION'</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb17-5"><a></a>  <span class="fu">ungroup</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
-<section id="station-plot" class="slide level2">
-<h2>station plot</h2>
-<div class="cell" data-hash="sun_weather_cache/revealjs/station plot_37dbbaafc4181f5af68f5214742b8d6f">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a></a><span class="fu">ggplot</span>(<span class="at">data=</span>stations, <span class="fu">aes</span>(<span class="at">x=</span>LONGITUDE, <span class="at">y=</span>LATITUDE, <span class="at">color=</span>delta_maxsun)) <span class="sc">+</span> <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-
-</div>
-
-<img data-src="sun_weather_files/figure-revealjs/station plot-1.png" width="960" class="r-stretch"><div class="quarto-auto-generated-content">
+<div class="quarto-auto-generated-content">
 <div class="footer footer-default">
-<p>source in https://github.com/BaselDataScience/baseldatascience.github.io/blob/main/posts/sun_weather.qmd</p>
+<p>source in https://github.com/BaselDataScience/baseldatascience.github.io/blob/main/posts/prwkdc.qmd</p>
 </div>
 </div>
 </section>
@@ -967,7 +857,7 @@ insltn:dlt_ -0.003  0.005  0.009 -0.342</code></pre>
       });
         var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
         var mailtoRegex = new RegExp(/^mailto:/);
-          var filterRegex = new RegExp("https:\/\/BaselDataScience\.github\.io\/baseldatascience\.github\.io\/");
+          var filterRegex = new RegExp('/' + window.location.host + '/');
         var isInternal = (href) => {
             return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
         }
