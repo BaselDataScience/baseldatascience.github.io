@@ -326,7 +326,7 @@
     "href": "posts/prwdkc.html#other-considerations",
     "title": "Claude helps to create an R package",
     "section": "other considerations",
-    "text": "other considerations\n\nprwdkc does do better with other test cases and with examples from the Machine Learning Repository https://archive.ics.uci.edu/datasets\nsometimes no embedding in Rn is given, only a graph with adjacency matrix - for instance links between web pages\nfirst(?) algorith able to deal with directed graphs,\ni.e.non-symmetric adjacency matrices"
+    "text": "other considerations\n\nprwdkc does do better with other test cases and with examples from the Machine Learning Repository https://archive.ics.uci.edu/datasets\nsometimes no embedding in Rn is given, only a graph with adjacency matrix - for instance links between web pages\nfirst(?) algorithm able to deal with directed graphs,\ni.e. non-symmetric adjacency matrices"
   },
   {
     "objectID": "posts/prwdkc.html#what-is-the-idea-behind-prwdkc",
